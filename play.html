@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=
+    , initial-scale=1.0"
+    />
+    <title>Document</title>
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <style>
+      /* img {
+            filter: invert();
+        } */
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+      #flagimg {
+        width: 100%;
+        box-shadow: -2px 5px 15px -4px #000000;
+      }
+      main {
+        width: 100%;
+        max-width: 500px;
+        margin: auto;
+        text-align: center;
+      }
+      .autocomplete {
+        position: relative;
+        display: inline-block;
+      }
+
+      input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+      }
+
+      input[type="text"] {
+        background-color: #f1f1f1;
+        width: 100%;
+      }
+
+      input[type="submit"] {
+        background-color: DodgerBlue;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+      }
+
+      .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+      }
+
+      /*when hovering an item:*/
+      .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+      }
+
+      /*when navigating through the items using the arrow keys:*/
+      .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+      }
+      #messagebar {
+        opacity: 0;
+        transition: 0.5s;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 20px;
+      }
+      .correct {
+        background-color: #ebffeb;
+        color: darkgreen;
+        opacity: 1 !important;
+      }
+      .incorrect {
+        background-color: rgb(255, 215, 215);
+        color: rgb(100, 0, 0);
+        opacity: 1 !important;
+      }
+
+      .btn {
+        all: unset;
+        padding: 10px 15px;
+        font-size: 20px;
+        border-radius: 10px;
+        background-color: #97e5ff;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Flagz</h1>
+      <div id="score"></div>
+      <img id="flagimg" src="/assets/getready.png" />
+      <div id="messagebar">Height Filler</div>
+      <form autocomplete="off" id="myForm">
+        <div class="autocomplete" style="width: 300px">
+          <input
+            id="myInput"
+            type="text"
+            name="myCountry"
+            placeholder="Country"
+          />
+        </div>
+        <input
+          onclick="event.preventDefault(); answer(document.getElementById('myInput'))"
+          type="submit"
+          value="Go"
+          style="display: none"
+        />
+      </form>
+    </main>
+    <script>
+      const queryString = window.location.search;
+      const u = new URLSearchParams(queryString);
+      const time = u.get("t");
+      const inverted = u.get("i");
+      const mode = u.get("m");
+      const easy = u.get("e");
+      let count;
+      if (inverted == "on") {
+        document.getElementById("flagimg").style.filter = "invert()";
+      }
+      if (mode == "q") {
+        document.getElementById("score").innerHTML = "<h2>0/15 </h2>";
+        count = 0;
+      }
+      let infill;
+      let topstreak;
+      if (mode == "s") {
+        infill = "";
+        if (easy == "on") {
+          if (localStorage.easytop) {
+            topstreak = localStorage.easytop;
+          } else {
+            localStorage.easytop = 0;
+            topstreak = 0;
+          }
+          infill = "Easy Mode ";
+        } else {
+          if (localStorage.top) {
+            topstreak = localStorage.top;
+          } else {
+            localStorage.easytop = 0;
+            topstreak = 0;
+          }
+        }
+        document.getElementById("score").innerHTML =
+          "<h2>Current Streak: 0 - Top " +
+          infill +
+          "Streak: " +
+          topstreak +
+          "</h2>";
+        count = 16;
+      }
+
+      let topresult = "";
+      document
+        .getElementById("myInput")
+        .addEventListener("keyup", ({ key }) => {
+          if (key === "Enter") {
+            document.getElementById("topresult").click();
+          }
+        });
+      var countries = [
+        {
+          Code: "AF",
+          Name: "Afghanistan",
+          Easy: false,
+        }, //
+        {
+          Code: "AL",
+          Name: "Albania",
+          Easy: false,
+        },
+        {
+          Code: "DZ",
+          Name: "Algeria",
+          Easy: false,
+        },
+        {
+          Code: "AD",
+          Name: "Andorra",
+          Easy: false,
+        },
+        {
+          Code: "AO",
+          Name: "Angola",
+          Easy: false,
+        },
+        {
+          Code: "AG",
+          Name: "Antigua and Barbuda",
+          Easy: false,
+        },
+        {
+          Code: "AR",
+          Name: "Argentina",
+          Easy: true,
+        },
+        {
+          Code: "AM",
+          Name: "Armenia",
+          Easy: false,
+        },
+        {
+          Code: "AU",
+          Name: "Australia",
+          Easy: true,
+        },
+        {
+          Code: "AT",
+          Name: "Austria",
+          Easy: false,
+        },
+        {
+          Code: "AZ",
+          Name: "Azerbaijan",
+          Easy: false,
+        },
+        {
+          Code: "BS",
+          Name: "Bahamas",
+          Easy: false,
+        },
+        {
+          Code: "BH",
+          Name: "Bahrain",
+          Easy: false,
+        },
+        {
+          Code: "BD",
+          Name: "Bangladesh",
+          Easy: false,
+        },
+        {
+          Code: "BB",
+          Name: "Barbados",
+          Easy: false,
+        },
+        {
+          Code: "BY",
+          Name: "Belarus",
+          Easy: false,
+        },
+        {
+          Code: "BE",
+          Name: "Belgium",
+          Easy: true,
+        },
+        {
+          Code: "BZ",
+          Name: "Belize",
+          Easy: false,
+        },
+        {
+          Code: "BJ",
+          Name: "Benin",
+          Easy: false,
+        },
+        {
+          Code: "BT",
+          Name: "Bhutan",
+          Easy: false,
+        },
+        {
+          Code: "BO",
+          Name: "Bolivia",
+          Easy: false,
+        },
+        {
+          Code: "BA",
+          Name: "Bosnia and Herzegovina",
+          Easy: false,
+        },
+        {
+          Code: "BW",
+          Name: "Botswana",
+          Easy: false,
+        },
+        {
+          Code: "BR",
+          Name: "Brazil",
+          Easy: true,
+        },
+        {
+          Code: "BN",
+          Name: "Brunei",
+          Easy: false,
+        },
+        {
+          Code: "BG",
+          Name: "Bulgaria",
+          Easy: true,
+        },
+        {
+          Code: "BF",
+          Name: "Burkina Faso",
+          Easy: false,
+        },
+        {
+          Code: "BI",
+          Name: "Burundi",
+          Easy: false,
+        },
+        {
+          Code: "KH",
+          Name: "Cambodia",
+          Easy: false,
+        },
+        {
+          Code: "CM",
+          Name: "Cameroon",
+          Easy: false,
+        },
+        {
+          Code: "CA",
+          Name: "Canada",
+          Easy: true,
+        },
+        {
+          Code: "CV",
+          Name: "Cape Verde",
+          Easy: false,
+        },
+        {
+          Code: "CF",
+          Name: "Central African Republic",
+          Easy: false,
+        },
+        {
+          Code: "TD",
+          Name: "Chad",
+          Easy: false,
+        },
+        {
+          Code: "CL",
+          Name: "Chile",
+          Easy: false,
+        },
+        {
+          Code: "CN",
+          Name: "China",
+          Easy: true,
+        },
+        {
+          Code: "CO",
+          Name: "Colombia",
+          Easy: false,
+        },
+        {
+          Code: "KM",
+          Name: "Comoros",
+          Easy: false,
+        },
+        {
+          Code: "CG",
+          Name: "Congo",
+          Easy: false,
+        },
+        {
+          Code: "CD",
+          Name: "Congo, the Democratic Republic of the",
+          Easy: false,
+        },
+        {
+          Code: "CR",
+          Name: "Costa Rica",
+          Easy: false,
+        },
+        {
+          Code: "CI",
+          Name: "Côte d'Ivoire",
+          Easy: false,
+        },
+        {
+          Code: "HR",
+          Name: "Croatia",
+          Easy: false,
+        },
+        {
+          Code: "CU",
+          Name: "Cuba",
+          Easy: false,
+        },
+        {
+          Code: "CY",
+          Name: "Cyprus",
+          Easy: true,
+        },
+        {
+          Code: "CZ",
+          Name: "Czech Republic",
+          Easy: true,
+        },
+        {
+          Code: "DK",
+          Name: "Denmark",
+          Easy: true,
+        },
+        {
+          Code: "DJ",
+          Name: "Djibouti",
+          Easy: false,
+        },
+        {
+          Code: "DM",
+          Name: "Dominica",
+          Easy: false,
+        },
+        {
+          Code: "DO",
+          Name: "Dominican Republic",
+          Easy: false,
+        },
+        {
+          Code: "EC",
+          Name: "Ecuador",
+          Easy: false,
+        },
+        {
+          Code: "EG",
+          Name: "Egypt",
+          Easy: true,
+        },
+        {
+          Code: "SV",
+          Name: "El Salvador",
+          Easy: false,
+        },
+        {
+          Code: "GQ",
+          Name: "Equatorial Guinea",
+          Easy: false,
+        },
+        {
+          Code: "ER",
+          Name: "Eritrea",
+          Easy: false,
+        },
+        {
+          Code: "EE",
+          Name: "Estonia",
+          Easy: false,
+        },
+        {
+          Code: "ET",
+          Name: "Ethiopia",
+          Easy: false,
+        },
+        {
+          Code: "FJ",
+          Name: "Fiji",
+          Easy: false,
+        },
+        {
+          Code: "FI",
+          Name: "Finland",
+          Easy: false,
+        },
+        {
+          Code: "FR",
+          Name: "France",
+          Easy: true,
+        },
+        {
+          Code: "GA",
+          Name: "Gabon",
+          Easy: false,
+        },
+        {
+          Code: "GM",
+          Name: "Gambia",
+          Easy: false,
+        },
+        {
+          Code: "GE",
+          Name: "Georgia",
+          Easy: false,
+        },
+        {
+          Code: "DE",
+          Name: "Germany",
+          Easy: true,
+        },
+        {
+          Code: "GH",
+          Name: "Ghana",
+          Easy: false,
+        },
+        {
+          Code: "GR",
+          Name: "Greece",
+          Easy: true,
+        },
+        {
+          Code: "GD",
+          Name: "Grenada",
+          Easy: false,
+        },
+        {
+          Code: "GT",
+          Name: "Guatemala",
+          Easy: false,
+        },
+        {
+          Code: "GN",
+          Name: "Guinea",
+          Easy: false,
+        },
+        {
+          Code: "GW",
+          Name: "Guinea-Bissau",
+          Easy: false,
+        },
+        {
+          Code: "GY",
+          Name: "Guyana",
+          Easy: false,
+        },
+        {
+          Code: "HT",
+          Name: "Haiti",
+          Easy: false,
+        },
+        {
+          Code: "HN",
+          Name: "Honduras",
+          Easy: false,
+        },
+        {
+          Code: "HK",
+          Name: "Hong Kong",
+          Easy: false,
+        },
+        {
+          Code: "HU",
+          Name: "Hungary",
+          Easy: false,
+        },
+        {
+          Code: "IS",
+          Name: "Iceland",
+          Easy: false,
+        },
+        {
+          Code: "IN",
+          Name: "India",
+          Easy: true,
+        },
+        {
+          Code: "ID",
+          Name: "Indonesia",
+          Easy: false,
+        },
+        {
+          Code: "IR",
+          Name: "Iran, Islamic Republic of",
+          Easy: false,
+        },
+        {
+          Code: "IQ",
+          Name: "Iraq",
+          Easy: false,
+        },
+        {
+          Code: "IE",
+          Name: "Ireland",
+          Easy: true,
+        },
+        {
+          Code: "IM",
+          Name: "Isle of Man",
+          Easy: false,
+        },
+        {
+          Code: "IL",
+          Name: "Israel",
+          Easy: false,
+        },
+        {
+          Code: "IT",
+          Name: "Italy",
+          Easy: true,
+        },
+        {
+          Code: "JM",
+          Name: "Jamaica",
+          Easy: false,
+        },
+        {
+          Code: "JP",
+          Name: "Japan",
+          Easy: true,
+        },
+        {
+          Code: "JO",
+          Name: "Jordan",
+          Easy: false,
+        },
+        {
+          Code: "KZ",
+          Name: "Kazakhstan",
+          Easy: false,
+        },
+        {
+          Code: "KE",
+          Name: "Kenya",
+          Easy: true,
+        },
+        {
+          Code: "KI",
+          Name: "Kiribati",
+          Easy: false,
+        },
+        {
+          Code: "KP",
+          Name: "North Korea",
+          Easy: true,
+        },
+        {
+          Code: "KR",
+          Name: "South Korea",
+          Easy: true,
+        },
+        {
+          Code: "KW",
+          Name: "Kuwait",
+          Easy: false,
+        },
+        {
+          Code: "KG",
+          Name: "Kyrgyzstan",
+          Easy: false,
+        },
+        {
+          Code: "LA",
+          Name: "Laos",
+          Easy: false,
+        },
+        {
+          Code: "LV",
+          Name: "Latvia",
+          Easy: false,
+        },
+        {
+          Code: "LB",
+          Name: "Lebanon",
+          Easy: false,
+        },
+        {
+          Code: "LS",
+          Name: "Lesotho",
+          Easy: false,
+        },
+        {
+          Code: "LR",
+          Name: "Liberia",
+          Easy: false,
+        },
+        {
+          Code: "LY",
+          Name: "Libya",
+          Easy: false,
+        },
+        {
+          Code: "LI",
+          Name: "Liechtenstein",
+          Easy: false,
+        },
+        {
+          Code: "LT",
+          Name: "Lithuania",
+          Easy: false,
+        },
+        {
+          Code: "LU",
+          Name: "Luxembourg",
+          Easy: false,
+        },
+        {
+          Code: "MK",
+          Name: "North Macedonia",
+          Easy: true,
+        },
+        {
+          Code: "MG",
+          Name: "Madagascar",
+          Easy: false,
+        },
+        {
+          Code: "MW",
+          Name: "Malawi",
+          Easy: false,
+        },
+        {
+          Code: "MY",
+          Name: "Malaysia",
+          Easy: false,
+        },
+        {
+          Code: "MV",
+          Name: "Maldives",
+          Easy: false,
+        },
+        {
+          Code: "ML",
+          Name: "Mali",
+          Easy: false,
+        },
+        {
+          Code: "MT",
+          Name: "Malta",
+          Easy: false,
+        },
+        {
+          Code: "MH",
+          Name: "Marshall Islands",
+          Easy: false,
+        },
+        {
+          Code: "MQ",
+          Name: "Martinique",
+          Easy: false,
+        },
+        {
+          Code: "MR",
+          Name: "Mauritania",
+          Easy: false,
+        },
+        {
+          Code: "MU",
+          Name: "Mauritius",
+          Easy: false,
+        },
+        {
+          Code: "YT",
+          Name: "Mayotte",
+          Easy: false,
+        },
+        {
+          Code: "MX",
+          Name: "Mexico",
+          Easy: true,
+        },
+        {
+          Code: "FM",
+          Name: "Micronesia",
+          Easy: false,
+        },
+        {
+          Code: "MD",
+          Name: "Moldova",
+          Easy: false,
+        },
+        {
+          Code: "MC",
+          Name: "Monaco",
+          Easy: false,
+        },
+        {
+          Code: "MN",
+          Name: "Mongolia",
+          Easy: false,
+        },
+        {
+          Code: "ME",
+          Name: "Montenegro",
+          Easy: false,
+        },
+        {
+          Code: "MA",
+          Name: "Morocco",
+          Easy: false,
+        },
+        {
+          Code: "MZ",
+          Name: "Mozambique",
+          Easy: false,
+        },
+        {
+          Code: "MM",
+          Name: "Myanmar",
+          Easy: false,
+        },
+        {
+          Code: "NA",
+          Name: "Namibia",
+          Easy: false,
+        },
+        {
+          Code: "NR",
+          Name: "Nauru",
+          Easy: false,
+        },
+        {
+          Code: "NP",
+          Name: "Nepal",
+          Easy: true,
+        },
+        {
+          Code: "NL",
+          Name: "Netherlands",
+          Easy: true,
+        },
+        {
+          Code: "NZ",
+          Name: "New Zealand",
+          Easy: true,
+        },
+        {
+          Code: "NI",
+          Name: "Nicaragua",
+          Easy: false,
+        },
+        {
+          Code: "NE",
+          Name: "Niger",
+          Easy: false,
+        },
+        {
+          Code: "NG",
+          Name: "Nigeria",
+          Easy: false,
+        },
+        {
+          Code: "NO",
+          Name: "Norway",
+          Easy: true,
+        },
+        {
+          Code: "OM",
+          Name: "Oman",
+          Easy: false,
+        },
+        {
+          Code: "PK",
+          Name: "Pakistan",
+          Easy: true,
+        },
+        {
+          Code: "PW",
+          Name: "Palau",
+          Easy: false,
+        },
+        {
+          Code: "PS",
+          Name: "Palestine",
+          Easy: false,
+        },
+        {
+          Code: "PA",
+          Name: "Panama",
+          Easy: false,
+        },
+        {
+          Code: "PG",
+          Name: "Papua New Guinea",
+          Easy: false,
+        },
+        {
+          Code: "PY",
+          Name: "Paraguay",
+          Easy: false,
+        },
+        {
+          Code: "PE",
+          Name: "Peru",
+          Easy: false,
+        },
+        {
+          Code: "PH",
+          Name: "Philippines",
+          Easy: false,
+        },
+        {
+          Code: "PL",
+          Name: "Poland",
+          Easy: true,
+        },
+        {
+          Code: "PT",
+          Name: "Portugal",
+          Easy: true,
+        },
+        {
+          Code: "QA",
+          Name: "Qatar",
+          Easy: false,
+        },
+        {
+          Code: "RO",
+          Name: "Romania",
+          Easy: false,
+        },
+        {
+          Code: "RU",
+          Name: "Russia",
+          Easy: true,
+        },
+        {
+          Code: "RW",
+          Name: "Rwanda",
+          Easy: false,
+        },
+        {
+          Code: "KN",
+          Name: "Saint Kitts and Nevis",
+          Easy: false,
+        },
+        {
+          Code: "LC",
+          Name: "Saint Lucia",
+          Easy: false,
+        },
+        {
+          Code: "VC",
+          Name: "Saint Vincent and the Grenadines",
+          Easy: false,
+        },
+        {
+          Code: "WS",
+          Name: "Samoa",
+          Easy: false,
+        },
+        {
+          Code: "SM",
+          Name: "San Marino",
+          Easy: false,
+        },
+        {
+          Code: "ST",
+          Name: "Sao Tome and Principe",
+          Easy: false,
+        },
+        {
+          Code: "SA",
+          Name: "Saudi Arabia",
+          Easy: false,
+        },
+        {
+          Code: "SN",
+          Name: "Senegal",
+          Easy: false,
+        },
+        {
+          Code: "RS",
+          Name: "Serbia",
+          Easy: false,
+        },
+        {
+          Code: "SC",
+          Name: "Seychelles",
+          Easy: false,
+        },
+        {
+          Code: "SL",
+          Name: "Sierra Leone",
+          Easy: false,
+        },
+        {
+          Code: "SG",
+          Name: "Singapore",
+          Easy: false,
+        },
+        {
+          Code: "SK",
+          Name: "Slovakia",
+          Easy: false,
+        },
+        {
+          Code: "SI",
+          Name: "Slovenia",
+          Easy: false,
+        },
+        {
+          Code: "SB",
+          Name: "Solomon Islands",
+          Easy: false,
+        },
+        {
+          Code: "SO",
+          Name: "Somalia",
+          Easy: false,
+        },
+        {
+          Code: "ZA",
+          Name: "South Africa",
+          Easy: true,
+        },
+        {
+          Code: "SS",
+          Name: "South Sudan",
+          Easy: false,
+        },
+        {
+          Code: "ES",
+          Name: "Spain",
+          Easy: true,
+        },
+        {
+          Code: "LK",
+          Name: "Sri Lanka",
+          Easy: false,
+        },
+        {
+          Code: "SD",
+          Name: "Sudan",
+          Easy: false,
+        },
+        {
+          Code: "SR",
+          Name: "Suriname",
+          Easy: false,
+        },
+        {
+          Code: "SE",
+          Name: "Sweden",
+          Easy: true,
+        },
+        {
+          Code: "CH",
+          Name: "Switzerland",
+          Easy: true,
+        },
+        {
+          Code: "SY",
+          Name: "Syria",
+          Easy: false,
+        },
+        {
+          Code: "TW",
+          Name: "Taiwan",
+          Easy: false,
+        },
+        {
+          Code: "TJ",
+          Name: "Tajikistan",
+          Easy: false,
+        },
+        {
+          Code: "TZ",
+          Name: "Tanzania",
+          Easy: false,
+        },
+        {
+          Code: "TH",
+          Name: "Thailand",
+          Easy: false,
+        },
+        {
+          Code: "TL",
+          Name: "Timor-Leste",
+          Easy: false,
+        },
+        {
+          Code: "TG",
+          Name: "Togo",
+          Easy: false,
+        },
+        {
+          Code: "TO",
+          Name: "Tonga",
+          Easy: false,
+        },
+        {
+          Code: "TT",
+          Name: "Trinidad and Tobago",
+          Easy: false,
+        },
+        {
+          Code: "TN",
+          Name: "Tunisia",
+          Easy: false,
+        },
+        {
+          Code: "TR",
+          Name: "Turkey",
+          Easy: true,
+        },
+        {
+          Code: "TM",
+          Name: "Turkmenistan",
+          Easy: false,
+        },
+        {
+          Code: "TC",
+          Name: "Turks and Caicos Islands",
+          Easy: false,
+        },
+        {
+          Code: "TV",
+          Name: "Tuvalu",
+          Easy: false,
+        },
+        {
+          Code: "UG",
+          Name: "Uganda",
+          Easy: false,
+        },
+        {
+          Code: "UA",
+          Name: "Ukraine",
+          Easy: true,
+        },
+        {
+          Code: "AE",
+          Name: "United Arab Emirates",
+          Easy: false,
+        },
+        {
+          Code: "GB",
+          Name: "United Kingdom",
+          Easy: true,
+        },
+        {
+          Code: "US",
+          Name: "United States of America",
+          Easy: true,
+        },
+        {
+          Code: "UY",
+          Name: "Uruguay",
+          Easy: false,
+        },
+        {
+          Code: "UZ",
+          Name: "Uzbekistan",
+          Easy: false,
+        },
+        {
+          Code: "VU",
+          Name: "Vanuatu",
+          Easy: false,
+        },
+        {
+          Code: "VE",
+          Name: "Venezuela",
+          Easy: false,
+        },
+        {
+          Code: "VN",
+          Name: "Vietnam",
+          Easy: false,
+        },
+        {
+          Code: "YE",
+          Name: "Yemen",
+          Easy: false,
+        },
+        {
+          Code: "ZM",
+          Name: "Zambia",
+          Easy: false,
+        },
+        {
+          Code: "ZW",
+          Name: "Zimbabwe",
+          Easy: false,
+        },
+      ];
+
+      justcountries = [];
+      for (i = 0; i < countries.length; i++) {
+        justcountries.push(countries[i].Name);
+      }
+      if (easy == "on") {
+        countries = countries.filter((el) => el.Easy === true);
+      }
+
+      let currentcountry = "";
+      function randomflagimg() {
+        var randomindex = Math.floor(Math.random() * countries.length);
+        currentcountry = countries[randomindex].Name;
+        return "/assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
+      }
+      let timesup = "";
+      function setimage(time) {
+        document.getElementById("flagimg").src = randomflagimg();
+        document.getElementById("messagebar").className = "";
+
+        timesup = window.setTimeout(() => {
+          document.getElementById("flagimg").src = "/assets/timesup.png";
+        }, time * 1000);
+      }
+      let score = 0;
+      function answer(box) {
+        window.clearTimeout(timesup);
+        countries = countries.filter((item) => item.Name !== currentcountry);
+        count++;
+        if (box.value == currentcountry) {
+          document.getElementById("messagebar").className = "correct";
+          document.getElementById("messagebar").innerText =
+            currentcountry + " was correct!";
+          score++;
+          if (mode == "q") {
+            document.getElementById("score").innerHTML =
+              "<h2>" + score + "/15</h2>";
+          }
+          if (mode == "s") {
+            if (easy == "on") {
+              localstreak = localStorage.easytop;
+            } else {
+              localstreak = localStorage.top;
+            }
+            document.getElementById("score").innerHTML =
+              "<h2>Current Streak:" +
+              score +
+              " - Top " +
+              infill +
+              "Streak: " +
+              localstreak +
+              "</h2></h2>";
+            if (score > localstreak) {
+              topstreak = score;
+              document.getElementById("score").innerHTML =
+              "<h2>Current Streak:" +
+              score +
+              " - <span style='background-color:#cbffcb; padding: 5px; border-radius: 5px;'>Top " +
+              infill +
+              "Streak: " +
+              localstreak +
+              "</span></h2></h2>";
+              
+            }
+          }
+        } else {
+          document.getElementById("messagebar").className = "incorrect";
+          document.getElementById("messagebar").innerText =
+            "Incorrect! The Answer was " + currentcountry;
+          if (mode == "s") {
+            document.getElementById("flagimg").style.display = "none";
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("messagebar").className = "incorrect";
+            document.getElementById("messagebar").innerHTML =
+              "Streak ended!<br><br>The Answer was " +
+              currentcountry +
+              "<br><br><a href='/' class='btn'>Back</a><br><br>";
+            if (easy == "on") {
+              localstreak = localStorage.easytop;
+            } else {
+              localstreak = localStorage.top;
+            }
+            if (topstreak > localstreak) {
+              if (easy == "on") {
+                localStorage.easytop = topstreak;
+              } else {
+                localStorage.top = topstreak;
+              }
+              document.getElementById("messagebar").className = "correct";
+              document.getElementById("messagebar").innerHTML =
+                "Streak ended!<br><br>The Answer was " +
+                currentcountry +
+                "<br><br><h3>You beat you top streak of " +
+                localstreak +
+                "!<br><br> <a href='/' class='btn'>Back</a><br><br>";
+            }
+            return;
+          }
+        }
+        if (count == 15) {
+          document.getElementById("flagimg").style.display = "none";
+          document.getElementById("myForm").style.display = "none";
+          document.getElementById("messagebar").className = "correct";
+          document.getElementById("messagebar").innerHTML =
+            "Game complete!<br><br><a href='/' class='btn'>Back</a><br><br>";
+          return;
+        }
+        document.getElementById("myInput").focus();
+        document.getElementById("myInput").value = "";
+        autocomplete(document.getElementById("myInput"), justcountries);
+        resetimage();
+        return false;
+      }
+      function resetimage() {
+        document.getElementById("flagimg").src = "/assets/getready.png";
+        window.setTimeout(() => {
+          setimage(time);
+        }, 2000);
+      }
+      console.log("hi");
+      var form = document.getElementById("myForm");
+      window.setTimeout(() => {
+        setimage(time);
+      }, 5000);
+      function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        var topresult;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+          var a,
+            b,
+            i,
+            val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) {
+            return false;
+          }
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+
+          var countofpos = 0;
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (
+              arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()
+            ) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML =
+                "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+
+              if (countofpos < 1) {
+                b.id = "topresult";
+              }
+              countofpos++;
+              b.addEventListener("click", function (e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+                answer(document.getElementById("myInput"));
+                /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+                closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) {
+            //up
+            /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+        });
+        function addActive(x) {
+          /*a function to classify an item as "active":*/
+          if (!x) return false;
+          /*start by removing the "active" class on all items:*/
+          removeActive(x);
+          if (currentFocus >= x.length) currentFocus = 0;
+          if (currentFocus < 0) currentFocus = x.length - 1;
+          /*add class "autocomplete-active":*/
+          x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+          /*a function to remove the "active" class from all autocomplete items:*/
+          for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+          }
+        }
+        function closeAllLists(elmnt) {
+          /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+          var x = document.getElementsByClassName("autocomplete-items");
+          for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+              x[i].parentNode.removeChild(x[i]);
+            }
+          }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+        });
+      }
+      autocomplete(document.getElementById("myInput"), justcountries);
+    </script>
+  </body>
+</html>

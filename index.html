@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>FlagZ - A game of flags, but harder.</title>
+  </head>
+  <body>
+    <div class="hero">
+      <div class="hero-content">
+        <h1>FlagZ</h1>
+        <h3>A game of flags, but with different game modes.</h3>
+      </div>
+    </div>
+    <main>
+      <form action="play">
+        <div class="options">
+          <div class="option">
+            <label>Easy Mode:</label>
+            <input
+              type="checkbox"
+              name="e"
+            />
+          </div>
+          <div class="option">
+            <label>Time Shown: <span id="timeshowndisplay"></span></label>
+            <input
+              value="10"
+              min="0.5"
+              max="30.5"
+              onload="timeshownadjust(this)"
+              oninput="timeshownadjust(this)"
+              type="range"
+              id="time shown"
+              name="t"
+            />
+            <script>
+              function timeshownadjust(box) {
+                var thevalue = parseInt(box.value);
+                if (thevalue == 0) thevalue = 0.5;
+                document.getElementById("timeshowndisplay").innerText =
+                  thevalue;
+              }
+              timeshownadjust(document.getElementById("time shown"));
+            </script>
+          </div>
+
+          <div class="option">
+            <label>Inverted Colours:</label>
+            <input
+              onload="invertedadjust(this)"
+              oninput="invertedadjust(this)"
+              type="checkbox"
+              id="inverted"
+              name="i"
+            />
+            <script>
+            </script>
+          </div>
+
+          <div class="option">
+            Gamemode: &nbsp;<br>
+            <input type="radio" name="m" value="q" required/> Quiz (/15)<br>
+            <input type="radio" name="m" value="s" required /> Streaks
+            <script>
+            </script>
+          </div>
+
+
+          <button type="submit">PLAY!</button>
+        </div>
+        
+      </form>
+    </main>
+  </body>
+</html>
