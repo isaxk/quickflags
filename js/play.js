@@ -75,7 +75,12 @@ function answer(box) {
     window.clearTimeout(timesup);
     countries = countries.filter((item) => item.Name !== currentcountry);
     count++;
-    if (box.value.toLowerCase() == currentcountry.toLowerCase()) {
+    if (box.value.toLowerCase() == currentcountry.toLowerCase() ||
+        (box.value.toLowerCase() == "uk" && currentcountry == "United Kingdom") ||
+        (box.value.toLowerCase() == "usa" && currentcountry == "United States of America") ||
+        (box.value.toLowerCase() == "us" && currentcountry == "United States of America") ||
+        (box.value.toLowerCase() == "uae" && currentcountry == "United Arab Emirates")
+     ) {
         document.getElementById("messagebar").className = "correct";
         document.getElementById("messagebar").innerText =
             currentcountry + " was correct!";
