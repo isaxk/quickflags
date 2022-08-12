@@ -994,4 +994,16 @@ var countries = [
         Name: "Zimbabwe",
         Easy: false,
     },
+    {
+        Name: "UK"
+    },
+    {
+        Name: "US"
+    },
+    {
+        Name: "USA"
+    },
+    {
+        Name: "UAE"
+    }
 ];

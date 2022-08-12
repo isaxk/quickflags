@@ -72,101 +72,110 @@ function answer(box) {
     let Keyboard = window.SimpleKeyboard.default;
     justanswered = true;
     window.clearTimeout(timesup);
-    countries = countries.filter((item) => item.Name !== currentcountry);
-    count++;
-    if (box.value.toLowerCase() == currentcountry.toLowerCase() ||
-        (box.value.toLowerCase() == "uk" && currentcountry == "United Kingdom") ||
-        (box.value.toLowerCase() == "usa" && currentcountry == "United States of America") ||
-        (box.value.toLowerCase() == "us" && currentcountry == "United States of America") ||
-        (box.value.toLowerCase() == "uae" && currentcountry == "United Arab Emirates")
-     ) {
-        document.getElementById("messagebar").className = "correct";
-        document.getElementById("messagebar").innerText =
-            currentcountry + " was correct!";
-        score++;
-        if (mode == "q") {
-            document.getElementById("score").innerHTML =
-                "<h2>" + score + "/15</h2>";
+    
+    var found = false;
+    for (var i = 0; i < countries.length; i++) {
+        if (countries[i].Name.toLowerCase() == box.value.toLowerCase()) {
+            found = true;
+            break;
         }
-        if (mode == "s") {
-            if (easy == "on") {
-                localstreak = localStorage.easytop;
-            } else {
-                localstreak = localStorage.top;
+    }
+    if (found) {
+        count++;
+        if (box.value.toLowerCase() == currentcountry.toLowerCase() ||
+            (box.value.toLowerCase() == "uk" && currentcountry == "United Kingdom") ||
+            (box.value.toLowerCase() == "usa" && currentcountry == "United States of America") ||
+            (box.value.toLowerCase() == "us" && currentcountry == "United States of America") ||
+            (box.value.toLowerCase() == "uae" && currentcountry == "United Arab Emirates")
+        ) {
+            document.getElementById("messagebar").className = "correct";
+            document.getElementById("messagebar").innerText =
+                currentcountry + " was correct!";
+            score++;
+            if (mode == "q") {
+                document.getElementById("score").innerHTML =
+                    "<h2>" + score + "/15</h2>";
             }
-            document.getElementById("score").innerHTML =
-                "<h2>Current Streak:" +
-                score +
-                " - Top " +
-                infill +
-                "Streak: " +
-                localstreak +
-                "</h2></h2>";
-            if (score > localstreak) {
-                topstreak = score;
+            if (mode == "s") {
+                if (easy == "on") {
+                    localstreak = localStorage.easytop;
+                } else {
+                    localstreak = localStorage.top;
+                }
                 document.getElementById("score").innerHTML =
                     "<h2>Current Streak:" +
                     score +
-                    " - <span style='background-color:#cbffcb; padding: 5px; border-radius: 5px;'>Top " +
+                    " - Top " +
                     infill +
                     "Streak: " +
                     localstreak +
-                    "</span></h2></h2>";
-            }
-        }
-    } else {
-        document.getElementById("messagebar").className = "incorrect";
-        document.getElementById("messagebar").innerText =
-            "Incorrect! The Answer was " + currentcountry;
-        if (mode == "s") {
-            document.getElementById("flagimg").style.display = "none";
-            document.getElementById("myForm").style.display = "none";
-            document.getElementById("myForm").style.display = "none";
-            document.getElementById("messagebar").className = "incorrect";
-            document.getElementById("messagebar").innerHTML =
-                "Streak ended!<br><br>The Answer was " +
-                currentcountry +
-                `<button class="btn" onclick="share()">Share with your friends!</button>` +
-                `<br><br><a href="/" class="btn">Back</a><br><br>`;
-            if (easy == "on") {
-                localstreak = localStorage.easytop;
-            } else {
-                localstreak = localStorage.top;
-            }
-            if (topstreak > localstreak) {
-                if (easy == "on") {
-                    localStorage.easytop = topstreak;
-                } else {
-                    localStorage.top = topstreak;
+                    "</h2></h2>";
+                if (score > localstreak) {
+                    topstreak = score;
+                    document.getElementById("score").innerHTML =
+                        "<h2>Current Streak:" +
+                        score +
+                        " - <span style='background-color:#cbffcb; padding: 5px; border-radius: 5px;'>Top " +
+                        infill +
+                        "Streak: " +
+                        localstreak +
+                        "</span></h2></h2>";
                 }
-                document.getElementById("messagebar").className = "correct";
+            }
+        } else {
+            document.getElementById("messagebar").className = "incorrect";
+            document.getElementById("messagebar").innerText =
+                "Incorrect! The Answer was " + currentcountry;
+            if (mode == "s") {
+                document.getElementById("flagimg").style.display = "none";
+                document.getElementById("myForm").style.display = "none";
+                document.getElementById("myForm").style.display = "none";
+                document.getElementById("messagebar").className = "incorrect";
                 document.getElementById("messagebar").innerHTML =
                     "Streak ended!<br><br>The Answer was " +
                     currentcountry +
-                    "<br><br><h3>You beat you top streak of " +
-                    localstreak +
-                    "!<br><br> <a href='/' class='btn'>Back</a><br><br>";
+                    `<button class="btn" onclick="share()">Share with your friends!</button>` +
+                    `<br><br><a href="/" class="btn">Back</a><br><br>`;
+                if (easy == "on") {
+                    localstreak = localStorage.easytop;
+                } else {
+                    localstreak = localStorage.top;
+                }
+                if (topstreak > localstreak) {
+                    if (easy == "on") {
+                        localStorage.easytop = topstreak;
+                    } else {
+                        localStorage.top = topstreak;
+                    }
+                    document.getElementById("messagebar").className = "correct";
+                    document.getElementById("messagebar").innerHTML =
+                        "Streak ended!<br><br>The Answer was " +
+                        currentcountry +
+                        "<br><br><h3>You beat you top streak of " +
+                        localstreak +
+                        '!<br><br> <button class="btn" onclick="share()">Share with your friends!</button><br><br><a href="/" class="btn">Back</a><br><br>';
+                }
+                while (id--) {
+                    window.clearTimeout(id); // will do nothing if no timeout with id is present
+                }
+                window.stop()
+                return;
             }
-            while (id--) {
-                window.clearTimeout(id); // will do nothing if no timeout with id is present
-            }
-            window.stop()
+        }
+        if (count == 15) {
+            document.getElementById("flagimg").style.display = "none";
+            document.getElementById("myForm").style.display = "none";
+            document.getElementById("messagebar").className = "correct";
+            document.getElementById("messagebar").innerHTML =
+                "Game complete!<br><br><a href='/' class='btn'>Back</a><br><br>";
             return;
         }
+        document.getElementById("myInput").value = "";
+        autocomplete(document.getElementById("myInput"), justcountries);
+        resetimage();
+        document.getElementById("myInput").value = "";
+        Keyboard = window.SimpleKeyboard.default;
     }
-    if (count == 15) {
-        document.getElementById("flagimg").style.display = "none";
-        document.getElementById("myForm").style.display = "none";
-        document.getElementById("messagebar").className = "correct";
-        document.getElementById("messagebar").innerHTML =
-            "Game complete!<br><br><a href='/' class='btn'>Back</a><br><br>";
-        return;
-    }
-    document.getElementById("myInput").value = "";
-    autocomplete(document.getElementById("myInput"), justcountries);
-    resetimage();
-    document.getElementById("myInput").value = "";
-    Keyboard = window.SimpleKeyboard.default;
     return false;
 }
 function resetimage() {
