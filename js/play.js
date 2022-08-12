@@ -25,7 +25,6 @@ if (mode == "s") {
             localStorage.easytop = 0;
             topstreak = 0;
         }
-        infill = "Easy Mode ";
     } else {
         if (localStorage.top) {
             topstreak = localStorage.top;

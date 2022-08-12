@@ -412,7 +412,7 @@ var countries = [
     {
         Code: "IL",
         Name: "Israel",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "IT",
@@ -422,7 +422,7 @@ var countries = [
     {
         Code: "JM",
         Name: "Jamaica",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "JP",
@@ -512,7 +512,7 @@ var countries = [
     {
         Code: "LU",
         Name: "Luxembourg",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "MK",
@@ -547,7 +547,7 @@ var countries = [
     {
         Code: "MT",
         Name: "Malta",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "MH",
@@ -682,7 +682,7 @@ var countries = [
     {
         Code: "PS",
         Name: "Palestine",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "PA",
@@ -722,7 +722,7 @@ var countries = [
     {
         Code: "QA",
         Name: "Qatar",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "RO",
@@ -762,7 +762,7 @@ var countries = [
     {
         Code: "SM",
         Name: "San Marino",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "ST",
@@ -772,7 +772,7 @@ var countries = [
     {
         Code: "SA",
         Name: "Saudi Arabia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "SN",
@@ -787,7 +787,7 @@ var countries = [
     {
         Code: "SC",
         Name: "Seychelles",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "SL",
@@ -797,12 +797,12 @@ var countries = [
     {
         Code: "SG",
         Name: "Singapore",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "SK",
         Name: "Slovakia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "SI",
@@ -837,7 +837,7 @@ var countries = [
     {
         Code: "LK",
         Name: "Sri Lanka",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "SD",
@@ -867,7 +867,7 @@ var countries = [
     {
         Code: "TW",
         Name: "Taiwan",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "TJ",
@@ -882,7 +882,7 @@ var countries = [
     {
         Code: "TH",
         Name: "Thailand",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "TL",
@@ -942,7 +942,7 @@ var countries = [
     {
         Code: "AE",
         Name: "United Arab Emirates",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "GB",

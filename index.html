@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="index.css" />
     <!-- Primary Meta Tags -->
 <title>FlagZ! :: Can you guess the flags? - What is the highest streak you can get?</title>
 <meta name="title" content="FlagZ! :: Can you guess the flags? - What is the highest streak you can get?">
@@ -23,74 +22,27 @@
 <meta property="twitter:title" content="FlagZ! :: Can you guess the flags? - What is the highest streak you can get?">
 <meta property="twitter:description" content="FlagZ! is a simple flag guessing game. You can set a difficulty, make them only show for half a second and even invert the colours! What is the highest streak you can get?">
 <meta property="twitter:image" content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png">
+<style>
+  body {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 4vw;
+  }
+  h1 {
+    text-align: center;
+  }
+  .blue {
+    color: rgb(105, 105, 255);
+  }
+</style>
   </head>
   <body>
-    <div class="hero">
-      <div class="hero-content">
-        <h1>FlagZ</h1>
-        <h3>A game of flags, but with different game modes.</h3>
-      </div>
-    </div>
-    <main>
-      <form action="play">
-        <div class="options">
-          <div class="option">
-            <label>Easy Mode:</label>
-            <input
-              type="checkbox"
-              name="e"
-              checked
-            />
-          </div>
-          <div class="option">
-            <label>Time Shown: <span id="timeshowndisplay"></span></label>
-            <input
-              value="10"
-              min="0.5"
-              max="30.5"
-              onload="timeshownadjust(this)"
-              oninput="timeshownadjust(this)"
-              type="range"
-              id="time shown"
-              name="t"
-            />
-            <script>
-              function timeshownadjust(box) {
-                var thevalue = parseInt(box.value);
-                if (thevalue == 0) thevalue = 0.5;
-                document.getElementById("timeshowndisplay").innerText =
-                  thevalue;
-              }
-              timeshownadjust(document.getElementById("time shown"));
-            </script>
-          </div>
-
-          <div class="option">
-            <label>Inverted Colours:</label>
-            <input
-              onload="invertedadjust(this)"
-              oninput="invertedadjust(this)"
-              type="checkbox"
-              id="inverted"
-              name="i"
-            />
-            <script>
-            </script>
-          </div>
-
-          <div class="option">
-            Gamemode: &nbsp;<br>
-            <input type="radio" name="m" value="q" required /> Quiz (/15)<br>
-            <input type="radio" name="m" value="s" required checked> Streaks
-            <script>
-            </script>
-          </div>
-
-
-          <button type="submit">PLAY!</button>
-        </div>
-        
-      </form>
-    </main>
+    <h1>Loading <span class="blue">FlagZ...</span></h1>
+    <noscript><h1>ENABLE JAVASCRIPT TO PLAY FLAGZ</h1></noscript>
   </body>
+  <script>
+    window.setTimeout(()=>{location="/play?e=on&t=10.5&m=s"},2000)
+  </script>
 </html>
