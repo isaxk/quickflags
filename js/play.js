@@ -38,7 +38,7 @@ if (mode == "s") {
         infill +
         "Streak: " +
         topstreak +
-        "</h2>";
+        "<h2>";
     count = 16;
 }
 
@@ -55,7 +55,7 @@ let currentcountry = "";
 function randomflagimg() {
     var randomindex = Math.floor(Math.random() * countries.length);
     currentcountry = countries[randomindex].Name;
-    return "/assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
+    return "assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
 }
 let timesup = "";
 function setimage(time) {
