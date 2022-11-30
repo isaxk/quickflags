@@ -55,7 +55,7 @@ let currentcountry = "";
 function randomflagimg() {
     var randomindex = Math.floor(Math.random() * countries.length);
     currentcountry = countries[randomindex].Name;
-    return "assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
+    return "/flagz/assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
 }
 let timesup = "";
 function setimage(time) {
@@ -63,7 +63,7 @@ function setimage(time) {
     document.getElementById("messagebar").className = "";
 
     timesup = window.setTimeout(() => {
-        document.getElementById("flagimg").src = "/assets/timesup.png";
+        document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
     }, time * 1000);
 }
 let score = 0;
@@ -179,7 +179,7 @@ function answer(box) {
     return false;
 }
 function resetimage() {
-    document.getElementById("flagimg").src = "/assets/getready.png";
+    document.getElementById("flagimg").src = "/flagz/assets/getready.png";
     window.setTimeout(() => {
         setimage(time);
     }, 2000);
