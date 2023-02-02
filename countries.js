@@ -67,7 +67,7 @@ var countries = [
     {
         Code: "BD",
         Name: "Bangladesh",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "BB",
@@ -77,7 +77,7 @@ var countries = [
     {
         Code: "BY",
         Name: "Belarus",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "BE",
@@ -107,7 +107,7 @@ var countries = [
     {
         Code: "BA",
         Name: "Bosnia and Herzegovina",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "BW",
@@ -142,7 +142,7 @@ var countries = [
     {
         Code: "KH",
         Name: "Cambodia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "CM",
@@ -292,7 +292,7 @@ var countries = [
     {
         Code: "FI",
         Name: "Finland",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "FR",
@@ -312,7 +312,7 @@ var countries = [
     {
         Code: "GE",
         Name: "Georgia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "DE",
@@ -367,7 +367,7 @@ var countries = [
     {
         Code: "HK",
         Name: "Hong Kong",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "HU",
@@ -377,7 +377,7 @@ var countries = [
     {
         Code: "IS",
         Name: "Iceland",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "IN",
@@ -387,7 +387,7 @@ var countries = [
     {
         Code: "ID",
         Name: "Indonesia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "IR",
@@ -607,7 +607,7 @@ var countries = [
     {
         Code: "MA",
         Name: "Morocco",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "MZ",
@@ -657,7 +657,7 @@ var countries = [
     {
         Code: "NG",
         Name: "Nigeria",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "NO",
@@ -692,7 +692,7 @@ var countries = [
     {
         Code: "PG",
         Name: "Papua New Guinea",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "PY",
@@ -747,7 +747,7 @@ var countries = [
     {
         Code: "LC",
         Name: "Saint Lucia",
-        Easy: false,
+        Easy: true,
     },
     {
         Code: "VC",

@@ -134,8 +134,8 @@ function answer(box) {
                 document.getElementById("messagebar").innerHTML =
                     "Streak ended!<br><br>The Answer was " +
                     currentcountry +
-                    `<button class="btn" onclick="share()">Share with your friends!</button>` +
-                    `<br><br><a href="/" class="btn">Back</a><br><br>`;
+                    `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
+                    `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>`;
                 if (easy == "on") {
                     localstreak = localStorage.easytop;
                 } else {
@@ -153,7 +153,7 @@ function answer(box) {
                         currentcountry +
                         "<br><br><h3>You beat you top streak of " +
                         localstreak +
-                        '!<br><br> <button class="btn" onclick="share()">Share with your friends!</button><br><br><a href="/" class="btn">Back</a><br><br>';
+                        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>';
                 }
                 while (id--) {
                     window.clearTimeout(id); // will do nothing if no timeout with id is present
