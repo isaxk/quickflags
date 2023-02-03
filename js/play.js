@@ -1,219 +1,23 @@
-function preloadImages(path) {
-        var img = new Image();
-        img.src = path;
-}
 
 
+// Variables
 
 let Keyboard = "";
-const queryString = window.location.search;
-const u = new URLSearchParams(queryString);
-const time = 100
-const inverted = false
-const mode = 's'
-const easy = 'on'
-let count;
-if (inverted == "on") {
-    document.getElementById("flagimg").style.filter = "invert()";
-}
-if (mode == "q") {
-    document.getElementById("score").innerHTML = "<h2>0/15 </h2>";
-    count = 0;
-}
-let infill;
+let time = 100
+let inverted = false
+let mode = 's'
+let easy = 'on'
 let topstreak;
-if (mode == "s") {
-    infill = "";
-    if (easy == "on") {
-        if (localStorage.easytop) {
-            topstreak = localStorage.easytop;
-        } else {
-            localStorage.easytop = 0;
-            topstreak = 0;
-        }
-    } else {
-        if (localStorage.top) {
-            topstreak = localStorage.top;
-        } else {
-            localStorage.top = 0;
-            topstreak = 0;
-        }
-    }
-    document.getElementById("score").innerHTML =
-        "<h2>Current Streak: 0 - Top " +
-        infill +
-        "Streak: " +
-        topstreak +
-        "<h2>";
-    count = 16;
-}
-
-let topresult = "";
-justcountries = [];
-console.log(countries)
-for (i = 0; i < countries.length; i++) {
-    justcountries.push(countries[i].Name);
-    var path = "/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg";
-    console.log(path)
-    preloadImages(path);
-}
-// if (easy == "on") {
-//     countries = countries.filter((el) => el.Easy === true);
-// }
-
-let currentcountry = "";
-var tochoosecountries = countries;
-function randomflagimg() {
-    var tochoosecountries = countries.filter((el) => el.Easy < (score+1));
-    console.log(tochoosecountries)
-    var randomindex = Math.floor(Math.random() * tochoosecountries.length);
-    tochoosecountries[randomindex].Easy = 1000;
-    currentcountry = tochoosecountries[randomindex].Name;
-    return "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
-}
 let timesup = "";
-function setimage(time) {
-    document.getElementById("flagimg").src = randomflagimg();
-    document.getElementById("messagebar").className = "";
-
-    timesup = window.setTimeout(() => {
-        document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
-    }, time * 1000);
-}
+let currentcountry = "";
+let tochoosecountries = countries;
 let score = 0;
-function answer(box) {
-    keyboard.clearInput();
-    let Keyboard = window.SimpleKeyboard.default;
 
-    justanswered = true;
-    window.clearTimeout(timesup);
-    
-    if (box.value.toLowerCase() == "usa") box.value = "United States of America";
-    if (box.value.toLowerCase() == "uk") box.value = "United Kingdom";
-    if (box.value.toLowerCase() == "uae") box.value = "United Arab Emirates";
 
-    var found = false;
-    for (var i = 0; i < countries.length; i++) {
-        if (countries[i].Name.toLowerCase().replace(/\s+/g, '') == box.value.toLowerCase().replace(/\s+/g, '')) {
-            found = true;
-            break;
-        }
-    }
-    if (found) {
-        count++;
-        if (
-            box.value.toLowerCase().replace(/\s+/g, '') 
-            == currentcountry.toLowerCase().replace(/\s+/g, '') 
-        ) {
-            document.getElementById("messagebar").className = "correct";
-            document.getElementById("mbcontent").innerText =
-                currentcountry + " was correct!";
-            score++;
-            if (mode == "q") {
-                document.getElementById("score").innerHTML =
-                    "<h2>" + score + "/15</h2>";
-            }
-            if (mode == "s") {
-                if (easy == "on") {
-                    localstreak = localStorage.easytop;
-                } else {
-                    localstreak = localStorage.top;
-                }
-                document.getElementById("score").innerHTML =
-                    "<h2>Current Streak:" +
-                    score +
-                    " - Top " +
-                    infill +
-                    "Streak: " +
-                    localstreak +
-                    "</h2></h2>";
-                if (score > localstreak) {
-                    topstreak = score;
-                    document.getElementById("score").innerHTML =
-                        "<h2>Current Streak:" +
-                        score +
-                        " - <span style='background-color:#cbffcb; padding: 5px; border-radius: 5px;'>Top " +
-                        infill +
-                        "Streak: " +
-                        localstreak +
-                        "</span></h2></h2>";
-                }
-            }
-        } else {
-            document.getElementById("messagebar").classList = "incorrect end";
-            document.getElementById("mbcontent").innerText =
-                "Incorrect! The Answer was " + currentcountry;
-            if (mode == "s") {
-                document.getElementById("flagimg").style.display = "none";
-                document.getElementById("myForm").style.display = "none";
-                document.getElementById("myForm").style.display = "none";
-                document.getElementById("messagebar").classList = "incorrect end";
-                document.getElementById("mbcontent").innerHTML =
-                    "Streak ended!<br><br>The Answer was " +
-                    currentcountry +
-                    `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
-                    `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>`;
-                if (easy == "on") {
-                    localstreak = localStorage.easytop;
-                } else {
-                    localstreak = localStorage.top;
-                }
-                if (topstreak > localstreak) {
-                    if (easy == "on") {
-                        localStorage.easytop = topstreak;
-                    } else {
-                        localStorage.top = topstreak;
-                    }
-                    document.getElementById("messagebar").classList = "correct end";
-                    document.getElementById("mbcontent").innerHTML =
-                        "Streak ended!<br><br>The Answer was " +
-                        currentcountry +
-                        "<br><br><h3>You beat you top streak of " +
-                        localstreak +
-                        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>';
-                }
-                while (id--) {
-                    window.clearTimeout(id); // will do nothing if no timeout with id is present
-                }
-                window.stop()
-                return;
-            }
-        }
-        if (count == 15) {
-            document.getElementById("flagimg").style.display = "none";
-            document.getElementById("myForm").style.display = "none";
-            document.getElementById("messagebar").classList = "correct end";
-            document.getElementById("mbcontent").innerHTML =
-                "Game complete!<br><br><a href='/' class='btn'>Back</a><br><br>";
-            return;
-        }
-        document.getElementById("myInput").value = "";
-        autocomplete(document.getElementById("myInput"), justcountries);
-        resetimage();
-        document.getElementById("myInput").value = "";
-        Keyboard = window.SimpleKeyboard.default;
-    }
-    return false;
-}
-function resetimage() {
-    document.getElementById("flagimg").src = "/flagz/assets/getready.png";
-    window.setTimeout(() => {
-        setimage(time);
-    }, 2000);
-}
-console.log("hi");
-var form = document.getElementById("myForm");
-window.setTimeout(() => {
-    setimage(time);
-}, 5000);
-function autocomplete() {
-
-}
-autocomplete(document.querySelector("#myInput"), justcountries);
 async function share() {
     const shareData = {
         title: "Can you beat my streak on FlagZ?",
-        text: "I just got a streak of: " + score + " on FlagZ! " + infill,
+        text: "I just got a streak of: " + score + " on FlagZ! ",
         url: "https://www.isaacboor.me/flagz/",
     };
 
@@ -225,29 +29,221 @@ async function share() {
     }
     ;
 };
-function scrollTick() {
-    document.body.scrollTop
-}
-window.setInterval(100, scrollTick)
 
-function toArray(collection) {
-    return Array.prototype.slice.call(collection);
-}
 
-function noScroll(event) {
-    if (event.type === 'focus') {
-        document.body.classList.add('no-scroll');
-    }
-
-    else if (event.type === 'blur') {
-        document.body.classList.remove('no-scroll');
+function initialiseLocalStorage() {
+    if (localStorage.top) {
+        localstreak = localStorage.top;
+        topstreak = localStorage.top;
+    } else {
+        localstreak = localStorage.top;
+        localStorage.top = 0;
+        topstreak = 0;
     }
 }
 
-var inputs = toArray(document.querySelectorAll('input'));
 
 
-inputs.forEach(function (input) {
-    input.addEventListener('focus', noScroll, false);
-    input.addEventListener('blur', noScroll, false);
-});
+
+function setScoreBoard() {
+    document.getElementById("score").innerHTML =
+        "<h2>Current Streak:" +
+        score +
+        " - Top " +
+        "Streak: " +
+        localstreak +
+        "</h2></h2>";
+    if (score > localstreak) {
+        topstreak = score;
+        document.getElementById("score").innerHTML =
+            "<h2>Current Streak:" +
+            score +
+            " - <span style='background-color:#cbffcb; padding: 5px; border-radius: 5px;'>Top " +
+            "Streak: " +
+            localstreak +
+            "</span></h2></h2>";
+    }
+}
+
+String.prototype.noSpace = function() {
+    return this.replace(/\s+/g, '')
+}
+
+
+
+function initialScoreBoard() {
+    setScoreBoard(
+        "<h2>Current Streak: 0 - Top " +
+        "Streak: " +
+        topstreak +
+        "<h2>"
+    );
+}
+
+
+
+
+function cacheImages() {
+    for (i = 0; i < countries.length; i++) {
+        var path = "/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg";
+        var img = new Image();
+        img.src = path;
+    }
+}
+
+
+
+
+function randomFlagImg() {
+    var tochoosecountries = countries.filter((el) => el.Easy < (score + 1));
+    console.log(tochoosecountries)
+    var randomindex = Math.floor(Math.random() * tochoosecountries.length);
+    tochoosecountries[randomindex].Easy = 1000;
+    currentcountry = tochoosecountries[randomindex].Name;
+    return "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
+}
+
+
+
+function setImage(time) {
+    document.getElementById("flagimg").src = randomFlagImg();
+    document.getElementById("messagebar").className = "";
+
+    timesup = window.setTimeout(() => {
+        document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
+    }, time * 1000);
+}
+
+
+function resetImage() {
+    document.getElementById("flagimg").src = "/flagz/assets/getready.png";
+    window.setTimeout(() => {
+        setImage(time);
+    }, 2000);
+}
+
+
+function applySubs(input) {
+    if (input.toLowerCase() == "usa") return "United States of America";
+    if (input.toLowerCase() == "uk") return "United Kingdom";
+    if (input.toLowerCase() == "uae") return "United Arab Emirates";
+    return input;
+}
+
+
+
+function setMessageBar(content, style) {
+    document.getElementById("mbcontent").innerHTML = content;
+    document.getElementById("messagebar").classList = style;
+}
+
+
+
+function hideAll() {
+    document.getElementById("flagimg").style.display = "none";
+    document.getElementById("myForm").style.display = "none";
+    document.getElementsByClassName("simple-keyboard")[0].style.display = "none";
+}
+
+
+function clearInput() {
+    document.getElementById("myInput").value = "";
+    keyboard.clearInput();
+}
+
+function correctAnswer() {
+    clearInput();
+    setMessageBar(currentcountry + " was correct!", "correct")
+    score++;
+    localstreak = localStorage.top;
+    setScoreBoard();
+    resetImage();
+    
+}
+
+function incorrectBeatStreak() {
+    hideAll();
+    
+    localStorage.top = topstreak;
+    setMessageBar(
+        "Streak ended!<br><br>The Answer was " +
+        currentcountry +
+        "<br><br><h3>You beat you top streak of " +
+        localstreak +
+        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>'
+        , "correct end")
+}
+
+function incorrectAnswer() {
+    hideAll();
+
+    setMessageBar(
+        "Streak ended!<br><br>The Answer was " +
+        currentcountry +
+        `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
+        `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>`
+        , 'incorrect end');
+
+    localstreak = localStorage.top;
+}
+
+
+
+function answerQuestion(box) {
+
+
+    justanswered = true;
+    window.clearTimeout(timesup);
+    var submittedAnswer = box.value.toLowerCase();
+    submittedAnswer = applySubs(submittedAnswer).toLowerCase();
+    var validAnswer = false;
+
+    // check if valid
+    for (var i = 0; i < countries.length; i++) {
+        if (countries[i].Name.toLowerCase().noSpace() == submittedAnswer.noSpace()) {
+            isValidAnswer = true;
+            break;
+        }
+    }
+
+    // check if correct
+    if (
+        submittedAnswer.noSpace()
+        == currentcountry.toLowerCase().noSpace()
+    ) isCorrectAnswer = true;
+    else {
+        isCorrectAnswer = false
+    }
+
+    if (isValidAnswer == true) {
+        if (isCorrectAnswer == true) {
+            correctAnswer();
+        } else {
+            if (topstreak > localstreak) {
+                incorrectBeatStreak();
+            }
+            else {
+                incorrectAnswer();
+            }
+        }
+        keyboard.clearInput();
+        let Keyboard = window.SimpleKeyboard.default;
+        return;
+    }
+    return;
+}
+
+function startGame() {
+    window.setTimeout(() => {
+        setImage(time);
+    }, 5000);
+}
+
+function initialiseGame() {
+    cacheImages();
+    initialiseLocalStorage();
+    initialScoreBoard();
+    startGame();
+}
+
+initialiseGame();

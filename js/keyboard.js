@@ -49,6 +49,8 @@ document.querySelector("#myInput").addEventListener("input", event => {
 
 console.log(keyboard);
 
+onsubmit
+
 function onChange(input) {
     document.querySelector("#myInput").value = input;
     console.log("Input changed", input);
@@ -62,7 +64,7 @@ function onKeyPress(button) {
      */
     if (button === "{shift}" || button === "{lock}") handleShift();
     if (button === "{numbers}" || button === "{abc}") handleNumbers();
-    if (button === "{ent}") answer(document.getElementById("myInput"))
+    if (button === "{ent}") answerQuestion(document.getElementById("myInput"))
 }
 
 function handleShift() {
