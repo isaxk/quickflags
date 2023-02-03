@@ -67,7 +67,7 @@ var countries = [
     {
         Code: "BD",
         Name: "Bangladesh",
-        Easy: 0,
+        Easy: 5,
     },
     {
         Code: "BB",
@@ -227,12 +227,12 @@ var countries = [
     {
         Code: "CZ",
         Name: "Czech Republic",
-        Easy: 0,
+        Easy: 12,
     },
     {
         Code: "DK",
         Name: "Denmark",
-        Easy: 0,
+        Easy: 5,
     },
     {
         Code: "DJ",
@@ -257,7 +257,7 @@ var countries = [
     {
         Code: "EG",
         Name: "Egypt",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "SV",
@@ -292,7 +292,7 @@ var countries = [
     {
         Code: "FI",
         Name: "Finland",
-        Easy: 0,
+        Easy: 7,
     },
     {
         Code: "FR",
@@ -607,7 +607,7 @@ var countries = [
     {
         Code: "MA",
         Name: "Morocco",
-        Easy: 0,
+        Easy: 9,
     },
     {
         Code: "MZ",
@@ -632,7 +632,7 @@ var countries = [
     {
         Code: "NP",
         Name: "Nepal",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "NL",
@@ -642,7 +642,7 @@ var countries = [
     {
         Code: "NZ",
         Name: "New Zealand",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "NI",
@@ -657,7 +657,7 @@ var countries = [
     {
         Code: "NG",
         Name: "Nigeria",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "NO",
@@ -682,7 +682,7 @@ var countries = [
     {
         Code: "PS",
         Name: "Palestine",
-        Easy: 0,
+        Easy: 17,
     },
     {
         Code: "PA",
@@ -692,7 +692,7 @@ var countries = [
     {
         Code: "PG",
         Name: "Papua New Guinea",
-        Easy: 0,
+        Easy: 18,
     },
     {
         Code: "PY",
@@ -747,7 +747,7 @@ var countries = [
     {
         Code: "LC",
         Name: "Saint Lucia",
-        Easy: 0,
+        Easy: 15,
     },
     {
         Code: "VC",
@@ -762,7 +762,7 @@ var countries = [
     {
         Code: "SM",
         Name: "San Marino",
-        Easy: 0,
+        Easy: 20,
     },
     {
         Code: "ST",
@@ -772,7 +772,7 @@ var countries = [
     {
         Code: "SA",
         Name: "Saudi Arabia",
-        Easy: 0,
+        Easy: 16,
     },
     {
         Code: "SN",
@@ -787,7 +787,7 @@ var countries = [
     {
         Code: "SC",
         Name: "Seychelles",
-        Easy: 0,
+        Easy: 13,
     },
     {
         Code: "SL",
@@ -797,12 +797,12 @@ var countries = [
     {
         Code: "SG",
         Name: "Singapore",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "SK",
         Name: "Slovakia",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "SI",
@@ -867,7 +867,7 @@ var countries = [
     {
         Code: "TW",
         Name: "Taiwan",
-        Easy: 0,
+        Easy: 11,
     },
     {
         Code: "TJ",
@@ -942,7 +942,7 @@ var countries = [
     {
         Code: "AE",
         Name: "United Arab Emirates",
-        Easy: 0,
+        Easy: 10,
     },
     {
         Code: "GB",
