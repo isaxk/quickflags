@@ -133,6 +133,7 @@ input[type="submit"] {
         position: fixed;
         top: 50%;
         left: 50%;
+        z-index: 0;
         transform: translate(-50%, -50%);
     }
 }
