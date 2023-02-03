@@ -148,7 +148,7 @@ input[type="submit"] {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 100%;
+        width: 80%;
         z-index: 0;
         transform: translate(-50%, -50%);
     }
@@ -198,6 +198,6 @@ input[type="submit"] {
     }
 
     body {
-        height: 425px;
+        height: 350px;
     }
 }
