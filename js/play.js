@@ -1,21 +1,6 @@
-function preloadImages(array) {
-    if (!preloadImages.list) {
-        preloadImages.list = [];
-    }
-    var list = preloadImages.list;
-    for (var i = 0; i < array.length; i++) {
+function preloadImages(path) {
         var img = new Image();
-        img.onload = function () {
-            var index = list.indexOf(this);
-            if (index !== -1) {
-                // remove image from the array once it's loaded
-                // for memory consumption reasons
-                list.splice(index, 1);
-            }
-        }
-        list.push(img);
-        img.src = array[i];
-    }
+        img.src = path;
 }
 
 
@@ -65,9 +50,12 @@ if (mode == "s") {
 
 let topresult = "";
 justcountries = [];
+console.log(countries)
 for (i = 0; i < countries.length; i++) {
     justcountries.push(countries[i].Name);
-    preloadImages(["/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg"]);
+    var path = "/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg";
+    console.log(path)
+    preloadImages(path);
 }
 // if (easy == "on") {
 //     countries = countries.filter((el) => el.Easy === true);
@@ -224,7 +212,7 @@ async function share() {
     const shareData = {
         title: "Can you beat my streak on FlagZ?",
         text: "I just got a streak of: " + score + " on FlagZ! " + infill,
-        url: "https://flagz.isaacdoescodes.com",
+        url: "https://www.isaacboor.me/flagz/",
     };
 
     try {
