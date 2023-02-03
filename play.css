@@ -107,3 +107,32 @@ input[type="submit"] {
     margin: 10px;
     color: black;
 }
+
+@media screen and (max-width: 500px) {
+    input {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        margin: 0px auto;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    #top {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        margin: 0px auto;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0.522);
+        height: 135px;
+    }
+    
+    #flagimg {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

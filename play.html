@@ -21,22 +21,23 @@
 
 <body>
 	<main>
-		<h1>Flagz</h1>
-		<div id="score"></div>
-		<img id="flagimg" src="/flagz/assets/getready.png" />
-		<div id="messagebar">Height Filler</div>
-		<form autocomplete="off" id="myForm">
+		<div id="top">
+			<h1>Flagz</h1>
+			<div id="score"></div>
+		</div>
+			<img id="flagimg" src="/flagz/assets/getready.png" />
+			<div id="messagebar">Height Filler</div>
+			<form autocomplete="off" id="myForm">
 
-			<input spellcheck="on" id="myInput" type="text" name="myCountry" placeholder="Enter Country..." autofocus
-				autocomplete="off" />
-			<input onclick="event.preventDefault(); answer(document.getElementById('myInput'))" type="submit" value="Go"
-				style="display: none" />
-		</form>
-		<div class="simple-keyboard"></div>
+				<input spellcheck="true" id="myInput" type="text" name="myCountry" placeholder="Enter Country..."
+					autofocus autocomplete="off" />
+				<input onclick="event.preventDefault(); answer(document.getElementById('myInput'))" type="submit"
+					value="Go" style="display: none" />
+			</form>
+		
 	</main>
-	<script src="/flagz/js/keyboard.js"></script>
 	<script src="/flagz/js/play.js"></script>
-	
+
 </body>
 
 </html>

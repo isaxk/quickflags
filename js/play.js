@@ -47,15 +47,17 @@ justcountries = [];
 for (i = 0; i < countries.length; i++) {
     justcountries.push(countries[i].Name);
 }
-if (easy == "on") {
-    countries = countries.filter((el) => el.Easy === true);
-}
+// if (easy == "on") {
+//     countries = countries.filter((el) => el.Easy === true);
+// }
 
 let currentcountry = "";
 function randomflagimg() {
-    var randomindex = Math.floor(Math.random() * countries.length);
-    currentcountry = countries[randomindex].Name;
-    return "/flagz/assets/" + countries[randomindex].Code.toLowerCase() + ".svg";
+    var tochoosecountries = countries.filter((el) => el.Easy < (score+1));
+    console.log(tochoosecountries)
+    var randomindex = Math.floor(Math.random() * tochoosecountries.length);
+    currentcountry = tochoosecountries[randomindex].Name;
+    return "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
 }
 let timesup = "";
 function setimage(time) {
@@ -73,6 +75,7 @@ function answer(box) {
     justanswered = true;
     window.clearTimeout(timesup);
     
+
     var found = false;
     for (var i = 0; i < countries.length; i++) {
         if (countries[i].Name.toLowerCase() == box.value.toLowerCase()) {
