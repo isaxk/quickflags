@@ -65,7 +65,7 @@ function setScoreBoard() {
     }
 }
 
-String.prototype.noSpace = function() {
+String.prototype.noSpace = function () {
     return this.replace(/\s+/g, '')
 }
 
@@ -158,12 +158,12 @@ function correctAnswer() {
     localstreak = localStorage.top;
     setScoreBoard();
     resetImage();
-    
+
 }
 
 function incorrectBeatStreak() {
     hideAll();
-    
+
     localStorage.top = topstreak;
     setMessageBar(
         "Streak ended!<br><br>The Answer was " +
@@ -196,7 +196,7 @@ function answerQuestion(box) {
     window.clearTimeout(timesup);
     var submittedAnswer = box.value.toLowerCase();
     submittedAnswer = applySubs(submittedAnswer).toLowerCase();
-    var validAnswer = false;
+    var isValidAnswer = false;
 
     // check if valid
     for (var i = 0; i < countries.length; i++) {
@@ -205,6 +205,10 @@ function answerQuestion(box) {
             break;
         }
     }
+    if(!isValidAnswer) {
+        return false;
+    }
+    console.log(submittedAnswer.noSpace())
 
     // check if correct
     if (
@@ -215,21 +219,18 @@ function answerQuestion(box) {
         isCorrectAnswer = false
     }
 
-    if (isValidAnswer == true) {
-        if (isCorrectAnswer == true) {
-            correctAnswer();
-        } else {
-            if (topstreak > localstreak) {
-                incorrectBeatStreak();
-            }
-            else {
-                incorrectAnswer();
-            }
+    if (isCorrectAnswer == true) {
+        correctAnswer();
+    } else {
+        if (topstreak > localstreak) {
+            incorrectBeatStreak();
         }
-        keyboard.clearInput();
-        let Keyboard = window.SimpleKeyboard.default;
-        return;
+        else {
+            incorrectAnswer();
+        }
     }
+    keyboard.clearInput();
+    let Keyboard = window.SimpleKeyboard.default;
     return;
 }
 
