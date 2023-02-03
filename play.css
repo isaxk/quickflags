@@ -147,7 +147,14 @@ input[type="submit"] {
         z-index: 0;
         transform: translate(-50%, -50%);
     }
-
+    #messagebar {
+        position: absolute;
+        bottom: 40px;
+        left: 0px;
+        margin: auto;
+        width: 100%;
+        border-radius: 0px;
+    }
     body {
         height: 60vh;
         min-height: 380px;
