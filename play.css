@@ -88,8 +88,9 @@ input[type="submit"] {
     display: grid;
     place-items: center;
 }
-#messagebar .content {
-}
+
+#messagebar .content {}
+
 .correct {
     background-color: #ebffeb;
     color: darkgreen;
@@ -199,6 +200,9 @@ input[type="submit"] {
 
     body {
         height: 350px;
-        transform: scale(0.8);
     }
+}
+
+.no-scroll {
+    overflow: hidden;
 }
