@@ -113,14 +113,19 @@ input[type="submit"] {
     color: black;
 }
 
+.simple-keyboard {
+    display: none;
+}
+
 @media screen and (max-width: 500px) {
     input {
-        position: absolute;
-        bottom: 0px;
+        position: fixed;
+        bottom: 184px;
         left: 0px;
         margin: 0px auto;
         width: 100%;
         z-index: 1000;
+        pointer-events: none;
     }
 
     #top {
@@ -149,14 +154,14 @@ input[type="submit"] {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 80%;
+        width: 100%;
         z-index: 0;
         transform: translate(-50%, -50%);
     }
 
     #messagebar {
-        position: absolute;
-        bottom: 0px;
+        position: fixed;
+        bottom: 184px;
         left: 0px;
         margin: auto;
         width: 100%;
@@ -198,11 +203,40 @@ input[type="submit"] {
         }
     }
 
-    body {
-        height: 350px;
+    main {
+        height: 450px;
+        overflow: hidden;
+    }
+
+    .hg-button-space {
+        color: white;
+    }
+
+    .simple-keyboard {
+        display: block;
+        position: fixed;
+        bottom: 0px;
+        margin: 0px auto;
+        margin-left: -9px;
     }
 }
 
-.no-scroll {
-    overflow: hidden;
+@media (hover: none) {
+    .simple-keyboard {
+        display: block;
+        position: fixed;
+        bottom: 0px;
+        margin: 0px auto;
+        margin-left: -9px;
+    }
+
+    input {
+        position: fixed;
+        bottom: 184px;
+        left: 0px;
+        margin: 0px auto;
+        width: 100%;
+        z-index: 1000;
+        pointer-events: none;
+    }
 }

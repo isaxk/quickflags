@@ -26,16 +26,17 @@
 			<div id="score"></div>
 		</div>
 			<img id="flagimg" src="/flagz/assets/getready.png" />
-			<div id="messagebar"><div id="mbcontent">Height Filler</div></div>
+			<div id="messagebar"><div id="mbcontent"></div></div>
 			<form autocomplete="off" id="myForm">
-
-				<input spellcheck="true" id="myInput" type="text" name="myCountry" placeholder="Enter Country..."
-					autofocus autocomplete="off" />
-				<input onclick="event.preventDefault(); answer(document.getElementById('myInput'))" type="submit"
-					value="Go" style="display: none" />
+			
+				<input spellcheck="true" id="myInput" type="text" name="myCountry" placeholder="Enter Country..." autofocus
+					autocomplete="off" />
+				<input onclick="event.preventDefault(); answer(document.getElementById('myInput'))" type="submit" value="Go"
+					style="display: none" />
 			</form>
-		
 	</main>
+	<div class="simple-keyboard"></div>
+	<script src="/flagz/js/keyboard.js"></script>
 	<script src="/flagz/js/play.js"></script>
 
 </body>

@@ -1,4 +1,4 @@
-
+let Keyboard = "";
 const queryString = window.location.search;
 const u = new URLSearchParams(queryString);
 const time = u.get("t");
@@ -69,6 +69,9 @@ function setimage(time) {
 }
 let score = 0;
 function answer(box) {
+    keyboard.clearInput();
+    let Keyboard = window.SimpleKeyboard.default;
+
     justanswered = true;
     window.clearTimeout(timesup);
     
@@ -175,6 +178,7 @@ function answer(box) {
         autocomplete(document.getElementById("myInput"), justcountries);
         resetimage();
         document.getElementById("myInput").value = "";
+        Keyboard = window.SimpleKeyboard.default;
     }
     return false;
 }
