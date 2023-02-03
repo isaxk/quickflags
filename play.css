@@ -156,7 +156,6 @@ input[type="submit"] {
         border-radius: 0px;
     }
     body {
-        height: 60vh;
-        min-height: 380px;
+        height: 380px;
     }
 }
