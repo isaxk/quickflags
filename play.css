@@ -11,6 +11,7 @@ body {
     max-width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
 }
 
 #flagimg {
@@ -110,7 +111,7 @@ input[type="submit"] {
 
 @media screen and (max-width: 500px) {
     input {
-        position: fixed;
+        position: absolute;
         bottom: 0px;
         left: 0px;
         margin: 0px auto;
@@ -119,21 +120,36 @@ input[type="submit"] {
     }
 
     #top {
-        position: fixed;
+        position: absolute;
         left: 0px;
         top: 0px;
         margin: 0px auto;
         width: 100%;
         z-index: 1000;
         background-color: rgba(255, 255, 255, 0.522);
-        height: 135px;
+        height: 30px;
+        padding: 0px;
+
     }
-    
+
+    #top h1 {
+        display: none;
+    }
+    #top h2 {
+        margin-top: -1px;
+    }
     #flagimg {
-        position: fixed;
+        box-shadow: none;
+        position: absolute;
         top: 50%;
         left: 50%;
+        width: 80%;
         z-index: 0;
         transform: translate(-50%, -50%);
+    }
+
+    body {
+        height: 60vh;
+        min-height: 380px;
     }
 }
