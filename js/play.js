@@ -208,3 +208,7 @@ async function share() {
     }
     ;
 };
+function scrollTick() {
+    document.body.scrollTop
+}
+window.setInterval(100, scrollTick)
