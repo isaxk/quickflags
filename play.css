@@ -194,12 +194,12 @@ input[type="submit"] {
 
     @keyframes endin {
         0% {
-            transform: translateY(-100px) translateX(-100%);
+            transform: translateY(-200px) translateX(-100%);
             height: 400px;
         }
 
         100% {
-            transform: translateY(-100px) translateX(0%);
+            transform: translateY(-200px) translateX(0%);
             height: 400px;
         }
     }
