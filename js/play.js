@@ -1,10 +1,32 @@
+function preloadImages(array) {
+    if (!preloadImages.list) {
+        preloadImages.list = [];
+    }
+    var list = preloadImages.list;
+    for (var i = 0; i < array.length; i++) {
+        var img = new Image();
+        img.onload = function () {
+            var index = list.indexOf(this);
+            if (index !== -1) {
+                // remove image from the array once it's loaded
+                // for memory consumption reasons
+                list.splice(index, 1);
+            }
+        }
+        list.push(img);
+        img.src = array[i];
+    }
+}
+
+
+
 let Keyboard = "";
 const queryString = window.location.search;
 const u = new URLSearchParams(queryString);
-const time = u.get("t");
-const inverted = u.get("i");
-const mode = u.get("m");
-const easy = u.get("e");
+const time = 10.5
+const inverted = false
+const mode = 's'
+const easy = 'on'
 let count;
 if (inverted == "on") {
     document.getElementById("flagimg").style.filter = "invert()";
@@ -45,6 +67,7 @@ let topresult = "";
 justcountries = [];
 for (i = 0; i < countries.length; i++) {
     justcountries.push(countries[i].Name);
+    preloadImages(["/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg"]);
 }
 // if (easy == "on") {
 //     countries = countries.filter((el) => el.Easy === true);
