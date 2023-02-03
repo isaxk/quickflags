@@ -5,6 +5,7 @@ let keyboard = new Keyboard({
     onKeyPress: button => onKeyPress(button),
     mergeDisplay: true,
     layoutName: "default",
+    physicalKeyboardHighlight: true,
     layout: {
         default: [
             "q w e r t y u i o p",

@@ -120,7 +120,7 @@ input[type="submit"] {
 @media screen and (max-width: 500px) {
     input {
         position: fixed;
-        bottom: 184px;
+        bottom: 265px;
         left: 0px;
         margin: 0px auto;
         width: 100%;
@@ -161,7 +161,7 @@ input[type="submit"] {
 
     #messagebar {
         position: fixed;
-        bottom: 184px;
+        bottom: 265px;
         left: 0px;
         margin: auto;
         width: 100%;
@@ -186,20 +186,21 @@ input[type="submit"] {
 
     #messagebar.end {
         border-radius: 10px;
-        height: 100%;
-        transform: translateY(60px);
+        height: 400px;
+        transform: translateY(-100px);
         transition: 0s;
         animation: endin 0.5s both;
     }
 
     @keyframes endin {
         0% {
-            transform: translateY(70px) translateX(-100%);
-            height: 100%;
+            transform: translateY(-100px) translateX(-100%);
+            height: 400px;
         }
 
         100% {
-            transform: translateY(70px) translateX(0%);
+            transform: translateY(-100px) translateX(0%);
+            height: 400px;
         }
     }
 
@@ -232,11 +233,15 @@ input[type="submit"] {
 
     input {
         position: fixed;
-        bottom: 184px;
+        bottom: 265px;
         left: 0px;
         margin: 0px auto;
         width: 100%;
         z-index: 1000;
         pointer-events: none;
     }
+}
+
+.hg-button {
+    height: 60px !important;
 }

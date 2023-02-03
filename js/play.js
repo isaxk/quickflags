@@ -8,7 +8,7 @@ function preloadImages(path) {
 let Keyboard = "";
 const queryString = window.location.search;
 const u = new URLSearchParams(queryString);
-const time = 10.5
+const time = 100
 const inverted = false
 const mode = 's'
 const easy = 'on'
@@ -62,10 +62,12 @@ for (i = 0; i < countries.length; i++) {
 // }
 
 let currentcountry = "";
+var tochoosecountries = countries;
 function randomflagimg() {
     var tochoosecountries = countries.filter((el) => el.Easy < (score+1));
     console.log(tochoosecountries)
     var randomindex = Math.floor(Math.random() * tochoosecountries.length);
+    tochoosecountries[randomindex].Easy = 1000;
     currentcountry = tochoosecountries[randomindex].Name;
     return "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
 }
