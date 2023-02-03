@@ -244,4 +244,9 @@ input[type="submit"] {
 
 .hg-button {
     height: 60px !important;
+    margin: 1px !important;
+    border-radius: 3px !important;
+}
+.hg-row {
+    margin: 0px !important
 }
