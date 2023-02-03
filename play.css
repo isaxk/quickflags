@@ -85,8 +85,11 @@ input[type="submit"] {
     padding: 10px;
     border-radius: 10px;
     margin: 20px;
+    display: grid;
+    place-items: center;
 }
-
+#messagebar .content {
+}
 .correct {
     background-color: #ebffeb;
     color: darkgreen;
@@ -135,27 +138,66 @@ input[type="submit"] {
     #top h1 {
         display: none;
     }
+
     #top h2 {
         margin-top: -1px;
     }
+
     #flagimg {
         box-shadow: none;
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 80%;
+        width: 100%;
         z-index: 0;
         transform: translate(-50%, -50%);
     }
+
     #messagebar {
         position: absolute;
-        bottom: 40px;
+        bottom: 0px;
         left: 0px;
         margin: auto;
         width: 100%;
         border-radius: 0px;
+        transform: translateX(-100%);
+        transition: 0.5s;
+        z-index: 2000;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        opacity: 1;
     }
+
+    #messagebar.correct {
+        transform: translateX(0%);
+        transition: 0.5s;
+    }
+
+    #messagebar.incorrect {
+        transform: translateX(0%);
+        transition: 0.5s;
+    }
+
+    #messagebar.end {
+        border-radius: 10px;
+        height: 100%;
+        transform: translateY(60px);
+        transition: 0s;
+        animation: endin 0.5s both;
+    }
+
+    @keyframes endin {
+        0% {
+            transform: translateY(70px) translateX(-100%);
+            height: 100%;
+        }
+
+        100% {
+            transform: translateY(70px) translateX(0%);
+        }
+    }
+
     body {
-        height: 380px;
+        height: 425px;
     }
 }

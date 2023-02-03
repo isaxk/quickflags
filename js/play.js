@@ -72,24 +72,25 @@ function answer(box) {
     justanswered = true;
     window.clearTimeout(timesup);
     
+    if (box.value.toLowerCase() == "usa") box.value = "United States of America";
+    if (box.value.toLowerCase() == "uk") box.value = "United Kingdom";
+    if (box.value.toLowerCase() == "uae") box.value = "United Arab Emirates";
 
     var found = false;
     for (var i = 0; i < countries.length; i++) {
-        if (countries[i].Name.toLowerCase() == box.value.toLowerCase()) {
+        if (countries[i].Name.toLowerCase().replace(/\s+/g, '') == box.value.toLowerCase().replace(/\s+/g, '')) {
             found = true;
             break;
         }
     }
     if (found) {
         count++;
-        if (box.value.toLowerCase() == currentcountry.toLowerCase() ||
-            (box.value.toLowerCase() == "uk" && currentcountry == "United Kingdom") ||
-            (box.value.toLowerCase() == "usa" && currentcountry == "United States of America") ||
-            (box.value.toLowerCase() == "us" && currentcountry == "United States of America") ||
-            (box.value.toLowerCase() == "uae" && currentcountry == "United Arab Emirates")
+        if (
+            box.value.toLowerCase().replace(/\s+/g, '') 
+            == currentcountry.toLowerCase().replace(/\s+/g, '') 
         ) {
             document.getElementById("messagebar").className = "correct";
-            document.getElementById("messagebar").innerText =
+            document.getElementById("mbcontent").innerText =
                 currentcountry + " was correct!";
             score++;
             if (mode == "q") {
@@ -123,15 +124,15 @@ function answer(box) {
                 }
             }
         } else {
-            document.getElementById("messagebar").className = "incorrect";
-            document.getElementById("messagebar").innerText =
+            document.getElementById("messagebar").classList = "incorrect end";
+            document.getElementById("mbcontent").innerText =
                 "Incorrect! The Answer was " + currentcountry;
             if (mode == "s") {
                 document.getElementById("flagimg").style.display = "none";
                 document.getElementById("myForm").style.display = "none";
                 document.getElementById("myForm").style.display = "none";
-                document.getElementById("messagebar").className = "incorrect";
-                document.getElementById("messagebar").innerHTML =
+                document.getElementById("messagebar").classList = "incorrect end";
+                document.getElementById("mbcontent").innerHTML =
                     "Streak ended!<br><br>The Answer was " +
                     currentcountry +
                     `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
@@ -147,8 +148,8 @@ function answer(box) {
                     } else {
                         localStorage.top = topstreak;
                     }
-                    document.getElementById("messagebar").className = "correct";
-                    document.getElementById("messagebar").innerHTML =
+                    document.getElementById("messagebar").classList = "correct end";
+                    document.getElementById("mbcontent").innerHTML =
                         "Streak ended!<br><br>The Answer was " +
                         currentcountry +
                         "<br><br><h3>You beat you top streak of " +
@@ -165,8 +166,8 @@ function answer(box) {
         if (count == 15) {
             document.getElementById("flagimg").style.display = "none";
             document.getElementById("myForm").style.display = "none";
-            document.getElementById("messagebar").className = "correct";
-            document.getElementById("messagebar").innerHTML =
+            document.getElementById("messagebar").classList = "correct end";
+            document.getElementById("mbcontent").innerHTML =
                 "Game complete!<br><br><a href='/' class='btn'>Back</a><br><br>";
             return;
         }
