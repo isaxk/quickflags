@@ -170,7 +170,9 @@ function incorrectBeatStreak() {
         currentcountry +
         "<br><br><h3>You beat you top streak of " +
         localstreak +
-        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>'
+        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>'+
+        '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>'+
+        '<a href="https://www.isaacboor.me/">Check out the person who made this</a>'
         , "correct end")
 }
 
@@ -181,7 +183,9 @@ function incorrectAnswer() {
         "Streak ended!<br><br>The Answer was " +
         currentcountry +
         `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
-        `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>`
+        `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>` +
+        '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>' +
+        '<a href="https://www.isaacboor.me/">Check out the person who made this</a>'
         , 'incorrect end');
 
     localstreak = localStorage.top;
