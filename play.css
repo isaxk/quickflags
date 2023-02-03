@@ -187,19 +187,19 @@ input[type="submit"] {
     #messagebar.end {
         border-radius: 10px;
         height: 400px;
-        transform: translateY(-100px);
+        transform: translateY(-50px);
         transition: 0s;
         animation: endin 0.5s both;
     }
 
     @keyframes endin {
         0% {
-            transform: translateY(-200px) translateX(-100%);
+            transform: translateY(-50px) translateX(-100%);
             height: 400px;
         }
 
         100% {
-            transform: translateY(-200px) translateX(0%);
+            transform: translateY(-50px) translateX(0%);
             height: 400px;
         }
     }
