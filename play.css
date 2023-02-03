@@ -199,6 +199,6 @@ input[type="submit"] {
 
     body {
         height: 350px;
-        zoom: 0.8;
+        transform: scale(0.8);
     }
 }
