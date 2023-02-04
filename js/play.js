@@ -13,6 +13,13 @@ let currentcountry = "";
 let tochoosecountries = countries;
 let score = 0;
 
+function cacheImage(cCode) {
+    var path = cCode;
+    var img = new Image();
+    img.src = path;
+    console.log(path)
+}
+
 
 async function share() {
     const shareData = {
@@ -36,8 +43,8 @@ function initialiseLocalStorage() {
         localstreak = localStorage.top;
         topstreak = localStorage.top;
     } else {
-        localstreak = localStorage.top;
         localStorage.top = 0;
+        localstreak = localStorage.top;
         topstreak = 0;
     }
 }
@@ -83,14 +90,6 @@ function initialScoreBoard() {
 
 
 
-function cacheImages() {
-    for (i = 0; i < countries.length; i++) {
-        var path = "/flagz/assets/" + countries[i].Code.toLowerCase() + ".svg";
-        var img = new Image();
-        img.src = path;
-    }
-}
-
 
 
 
@@ -100,15 +99,16 @@ function randomFlagImg() {
     var randomindex = Math.floor(Math.random() * tochoosecountries.length);
     tochoosecountries[randomindex].Easy = 1000;
     currentcountry = tochoosecountries[randomindex].Name;
-    return "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
+    var currentPath = "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
+    cacheImage(currentPath)
+    return currentPath;
 }
 
 
 
-function setImage(time) {
-    document.getElementById("flagimg").src = randomFlagImg();
-    document.getElementById("messagebar").className = "";
-
+function setImage(time, imgPath) {
+    document.getElementById("flagimg").src = imgPath;
+    setMessageBar("","")
     timesup = window.setTimeout(() => {
         document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
     }, time * 1000);
@@ -116,9 +116,9 @@ function setImage(time) {
 
 
 function resetImage() {
-    document.getElementById("flagimg").src = "/flagz/assets/getready.png";
+    document.getElementById("flagimg").src = "/flagz/assets/getready.svg";
     window.setTimeout(() => {
-        setImage(time);
+        setImage(time, randomFlagImg());
     }, 2000);
 }
 
@@ -170,8 +170,8 @@ function incorrectBeatStreak() {
         currentcountry +
         "<br><br><h3>You beat you top streak of " +
         localstreak +
-        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>'+
-        '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>'+
+        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>' +
+        '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>' +
         '<a href="https://www.isaacboor.me/">Check out the person who made this</a>'
         , "correct end")
 }
@@ -209,7 +209,7 @@ function answerQuestion(box) {
             break;
         }
     }
-    if(!isValidAnswer) {
+    if (!isValidAnswer) {
         return false;
     }
     console.log(submittedAnswer.noSpace())
@@ -239,13 +239,13 @@ function answerQuestion(box) {
 }
 
 function startGame() {
+    console.log("starting")
     window.setTimeout(() => {
-        setImage(time);
+        setImage(time, randomFlagImg());
     }, 5000);
 }
 
 function initialiseGame() {
-    cacheImages();
     initialiseLocalStorage();
     initialScoreBoard();
     startGame();
