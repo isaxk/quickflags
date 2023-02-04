@@ -185,9 +185,11 @@ input[type="submit"] {
     }
 
     #messagebar.end {
-        border-radius: 10px;
-        height: 400px;
-        transform: translateY(-50px);
+        border-radius: 0px;
+        width: 100%;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
         transition: 0s;
         animation: endin 0.5s both;
     }
