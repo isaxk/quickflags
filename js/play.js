@@ -108,6 +108,7 @@ function randomFlagImg() {
 
 function setImage(time, imgPath) {
     document.getElementById("flagimg").src = imgPath;
+    cacheImage("/flagz/assets/getready.svg");
     setMessageBar("","")
     timesup = window.setTimeout(() => {
         document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
@@ -194,7 +195,6 @@ function incorrectAnswer() {
 
 
 function answerQuestion(box) {
-
 
     justanswered = true;
     window.clearTimeout(timesup);
