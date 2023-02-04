@@ -109,7 +109,7 @@ function randomFlagImg() {
 function setImage(time, imgPath) {
     document.getElementById("flagimg").src = imgPath;
     cacheImage("/flagz/assets/getready.svg");
-    setMessageBar("","")
+    setMessageBar(false,"")
     timesup = window.setTimeout(() => {
         document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
     }, time * 1000);
@@ -134,7 +134,9 @@ function applySubs(input) {
 
 
 function setMessageBar(content, style) {
-    document.getElementById("mbcontent").innerHTML = content;
+    if(content != false) {
+        document.getElementById("mbcontent").innerHTML = content;
+    }
     document.getElementById("messagebar").classList = style;
 }
 
