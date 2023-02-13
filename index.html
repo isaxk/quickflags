@@ -2,59 +2,45 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Primary Meta Tags -->
-  <title>FlagZ! :: Can you guess the flags? - What is the highest streak you can get?</title>
-  <meta name="title" content="FlagZ! :: Can you guess the flags? - What is the highest streak you can get?">
-  <meta name="description"
-    content="FlagZ! is a simple flag guessing game. You can set a difficulty, make them only show for half a second and even invert the colours! What is the highest streak you can get?">
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=
+    , initial-scale=1.0" />
+	<title>FlagZ</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
+	<script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
+	<script src="/js/countries.js"></script>
+	<link rel="stylesheet" href="/css/play.css">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.isaacboor.me/flagz">
-  <meta property="og:title" content="FlagZ! : The simple and fun flag guessing game.">
-  <meta property="og:description"
-    content="Go the longest without making any mistakes, and the flags get more obscure the higher your score. Can you beat your friends?">
-  <meta property="og:image" content="https://www.isaacboor.me/flagz/assets/ogmeta.png">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://www.isaacboor.me/flagz">
-  <meta property="twitter:title" content="FlagZ! : The simple and fun flag guessing game.">
-  <meta property="twitter:description"
-    content="Go the longest without making any mistakes, and the flags get more obscure the higher your score. Can you beat your friends?">
-  <meta property="twitter:image" content="https://www.isaacboor.me/flagz/assets/ogmeta.png">
-  <style>
-    body {
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: 4vw;
-    }
-
-    h1 {
-      text-align: center;
-    }
-
-    .blue {
-      color: rgb(105, 105, 255);
-    }
-  </style>
-  <script src="countries.js"></script>
-  <link rel='prefetch' href='/flagz/play' />
 </head>
 
 <body>
-  <h1>Loading <span class="blue">FlagZ...</span></h1>
-  <noscript>
-    <h1>ENABLE JAVASCRIPT TO PLAY FLAGZ</h1>
-  </noscript>
+	<main>
+		<div id="top">
+			<h1>Flagz</h1>
+			<div id="score"></div>
+		</div>
+		<img id="flagimg" src="/assets/getready.svg" />
+		<div id="messagebar">
+			<div id="mbcontent">Height Filler</div>
+		</div>
+		<form autocomplete="off" id="myForm">
+
+			<input spellcheck="true" id="myInput" type="text" name="myCountry" placeholder="Enter Country..." autofocus
+				autocomplete="off" />
+			<input onclick="event.preventDefault(); answerQuestion(document.getElementById('myInput'))" type="submit"
+				value="Go" style="display: none" />
+		</form>
+	</main>
+	<div class="simple-keyboard"></div>
+	<script src="/js/keyboard.js" async></script>
+	<script src="/js/play.js" async></script>
+	
+	
+
 </body>
- <script defer>
-  window.setTimeout(() => { location = "play" }, 2000)
-</script>
 
 </html>
