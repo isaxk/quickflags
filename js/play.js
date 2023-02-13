@@ -25,7 +25,7 @@ async function share() {
     const shareData = {
         title: "Can you beat my streak on FlagZ?",
         text: "I just got a streak of: " + score + " on FlagZ! ",
-        url: "https://www.isaacboor.me/flagz/",
+        url: "https://flagz.isaacboor.me/",
     };
 
     try {
@@ -99,7 +99,7 @@ function randomFlagImg() {
     var randomindex = Math.floor(Math.random() * tochoosecountries.length);
     tochoosecountries[randomindex].Easy = 1000;
     currentcountry = tochoosecountries[randomindex].Name;
-    var currentPath = "/flagz/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
+    var currentPath = "/assets/" + tochoosecountries[randomindex].Code.toLowerCase() + ".svg";
     cacheImage(currentPath)
     return currentPath;
 }
@@ -108,16 +108,16 @@ function randomFlagImg() {
 
 function setImage(time, imgPath) {
     document.getElementById("flagimg").src = imgPath;
-    cacheImage("/flagz/assets/getready.svg");
+    cacheImage("/assets/getready.svg");
     setMessageBar(false,"")
     timesup = window.setTimeout(() => {
-        document.getElementById("flagimg").src = "/flagz/assets/timesup.png";
+        document.getElementById("flagimg").src = "/assets/timesup.png";
     }, time * 1000);
 }
 
 
 function resetImage() {
-    document.getElementById("flagimg").src = "/flagz/assets/getready.svg";
+    document.getElementById("flagimg").src = "/assets/getready.svg";
     window.setTimeout(() => {
         setImage(time, randomFlagImg());
     }, 2000);
@@ -173,7 +173,7 @@ function incorrectBeatStreak() {
         currentcountry +
         "<br><br><h3>You beat you top streak of " +
         localstreak +
-        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/flagz/" class="btn">Play Again</a><br><br>' +
+        '!<br><br> <button class="btn" onclick="share()">Share with friends!</button><br><br><a href="/" class="btn">Play Again</a><br><br>' +
         '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>' +
         '<a href="https://www.isaacboor.me/">Check out the person who made this</a>'
         , "correct end")
@@ -186,7 +186,7 @@ function incorrectAnswer() {
         "Streak ended!<br><br>The Answer was " +
         currentcountry +
         `<br><br><button class="btn" onclick="share()">Share with friends!</button>` +
-        `<br><br><a href="/flagz/" class="btn">Play Again</a><br><br>` +
+        `<br><br><a href="/" class="btn">Play Again</a><br><br>` +
         '<br><br><a href="https://www.github.com/isaacboor/flagz">View the code on Github</a><br>' +
         '<a href="https://www.isaacboor.me/">Check out the person who made this</a>'
         , 'incorrect end');
