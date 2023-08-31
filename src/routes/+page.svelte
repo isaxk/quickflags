@@ -109,7 +109,7 @@
 		<div class="home" transition:fade>
 			<div class="header">
 				<div class="title">
-					FlameFlags<span class="beta">BETA</span>
+					FlameFlags
 				</div>
 				<div class="acc" />
 				<div class="acc">
