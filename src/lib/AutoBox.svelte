@@ -26,7 +26,6 @@
             currentVal = "";
         }
     }
-    window.setTimeout(() => document.q);
 </script>
 
 <div class="container">

@@ -26,13 +26,6 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const apiKey: string;
-	export const authDomain: string;
-	export const projectId: string;
-	export const storageBucket: string;
-	export const messagingSenderId: string;
-	export const appId: string;
-	export const measurementId: string;
 	export const MANPATH: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -111,7 +104,7 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	
+	export const PUBLIC_APIKEY: string;
 }
 
 /**
@@ -128,13 +121,6 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		apiKey: string;
-		authDomain: string;
-		projectId: string;
-		storageBucket: string;
-		messagingSenderId: string;
-		appId: string;
-		measurementId: string;
 		MANPATH: string;
 		TERM_PROGRAM: string;
 		NODE: string;
@@ -218,6 +204,7 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
+		PUBLIC_APIKEY: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }
