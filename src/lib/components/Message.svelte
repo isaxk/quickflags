@@ -6,9 +6,9 @@
 
 <div class="message">
 	{#key messageContent}
-		<p in:fly={{ y: 40, duration: 350 }} out:fly={{ y: -40, duration: 300 }}>
+		<div in:fly={{ y: 40, duration: 350, delay: 300 }} out:fly={{ y: -40, duration: 300 }}>
 			{messageContent}
-		</p>
+		</div>
 	{/key}
 </div>
 
@@ -17,5 +17,6 @@
 		height: 20px;
 		display: grid;
 		place-items: center;
+		padding-top: 10px;
 	}
 </style>

@@ -4,7 +4,23 @@
 	import CountryInput from '$lib/components/CountryInput.svelte';
 	import countries from '$lib/countries';
 	import Message from '$lib/components/Message.svelte';
+	import { slide } from 'svelte/transition';
 
+	import { initializeApp } from 'firebase/app';
+	import {
+		getAuth,
+		GoogleAuthProvider,
+		signInWithPopup,
+		onAuthStateChanged,
+		signOut
+	} from 'firebase/auth';
+	import { firebaseConfig } from '$lib/firebase';
+	const app = initializeApp(firebaseConfig);
+	const auth = getAuth(app);
+	const provider = new GoogleAuthProvider();
+
+	let signedIn = false;
+    let profileImageURL = null;
 	let selectedCountry = null;
 	let gameScore = 0;
 	let timeRemaining = 45.0;
@@ -15,6 +31,15 @@
 	let startTimeStamp = 0;
 	let endTimeStamp = 0;
 	let timer;
+
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			signedIn = true;
+            profileImageURL = user.photoURL;
+		} else {
+			signedIn = false;
+		}
+	});
 
 	function getRandomCounty() {
 		var randomIndex = Math.floor(Math.random() * countries.length);
@@ -79,14 +104,16 @@
 	$: handleSelectedCounty(selectedCountry);
 </script>
 
-<GameHeader {gameScore} {timeRemaining} />
+<GameHeader {timeRemaining} {gameScore} {profileImageURL} />
 
-<main>
-	{#if gameEnded}
-		<h3>Game Over</h3>
-	{:else}
-		<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
-		<Message {messageContent} />
-		<CountryInput bind:selectedCountry />
-	{/if}
-</main>
+{#key gameEnded}
+	<main in:slide={{ y: 40, duration: 350 }} out:slide={{ y: 40, duration: 300 }}>
+		{#if gameEnded}
+			<h3>Game Over</h3>
+		{:else}
+			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
+			<Message {messageContent} />
+			<CountryInput bind:selectedCountry />
+		{/if}
+	</main>
+{/key}
