@@ -3,6 +3,7 @@
 	import FlagImage from '$lib/components/FlagImage.svelte';
 	import CountryInput from '$lib/components/CountryInput.svelte';
 	import countries from '$lib/countries';
+    import { clean } from "$lib/text";
 	import Message from '$lib/components/Message.svelte';
 	import { slide } from 'svelte/transition';
 
@@ -95,8 +96,8 @@
 		if (e) {
             var correct=false;
 			if (
-				e.toLowerCase() == currentCountyData.name.toLowerCase() ||
-				e.toLowerCase() == currentCountyData.short.toLowerCase()
+				clean(e) == clean(currentCountyData.name) ||
+				clean(e) == clean(currentCountyData.short)
 			) {
 				sendMessage(currentCountyData.name + ' was correct!');
 				gameScore += 4000;

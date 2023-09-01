@@ -1,6 +1,7 @@
 <script>
 	import countries from '$lib/countries';
 	import throttle from "lodash/throttle";
+	import { clean } from "$lib/text";
 
 	export let selectedCountry = null;
 	let enteredCountry = '';
@@ -8,22 +9,23 @@
 
 	const handleSubmit = throttle(() => {
 		const searchResult = countries.find(
-			(e) => e.name.toLowerCase() == enteredCountry.toLowerCase()
+			(e) => clean(e.name) == clean(enteredCountry)
 		);
 		const shortHandSearchResult = countries.find(
-			(e) => e.short.toLowerCase() == enteredCountry.toLowerCase()
+			(e) => clean(e.short) == clean(enteredCountry)
 		);
 		if(enteredCountry == "") {
-			selectedCountry = "Skipped!"
+			selectedCountry = "Skipped!";
+			enteredCountry = "";
 			return;
 		}
 		if (searchResult || shortHandSearchResult) {
 			selectedCountry = enteredCountry;
+			enteredCountry = "";
 			countryInvalid = null;
 		} else {
 			countryInvalid = true;
 		}
-		enteredCountry = "";
 	}, 700)
 
     function handleInputChange() {

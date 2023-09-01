@@ -19,4 +19,9 @@
 		place-items: center;
 		padding-top: 10px;
 	}
+	@media screen and (max-width: 570px) {
+        .message {
+			height: 10px;
+		}
+    }
 </style>

@@ -32,6 +32,7 @@
     header {
         display: grid;
         grid-template-columns: 1fr max-content;
+        align-items: center;
     }
     .data {
         display: grid;
@@ -49,5 +50,8 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
+    }
+    h3 {
+        margin: 0px;
     }
 </style>
