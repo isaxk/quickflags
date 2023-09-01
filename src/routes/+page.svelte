@@ -70,15 +70,6 @@
 		gameLoadedLocal = value;
 	});
 
-	function changeUsername() {
-		var newname = prompt("Enter new username: ");
-		if (newname == null || newname == "" || newname == undefined) return;
-		getDoc(doc(db, "username", currentUser.uid)).then(async (docSnap) => {
-			await setDoc(doc(db, "username", currentUser.uid), {
-				username: newname,
-			});
-		});
-	}
 
 	function guest() {
 		if (
@@ -108,22 +99,15 @@
 				<div class="acc" />
 				<div class="acc">
 					{#if loggedin}
-						<!-- svelte-ignore missing-declaration -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						<span class="settingsbtn" on:click={changeUsername}
-							><i class="fa-solid fa-gear" /></span
-						>
 
-						<!-- svelte-ignore a11y-interactive-supports-focus -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<span
+						<a
+							href="#"
 							role="button"
 							transition:fade
-							class="secondary signout"
+							class="secondary outline signout"
 							on:click={() => {
 								auth.signOut();
-							}}>Sign Out</span
+							}}>Sign Out</a
 						>
 					{/if}
 				</div>
@@ -144,7 +128,7 @@
 					<a href="play"
 						role="button"
 						transition:fade
-						class="primary">Play as {username}</a
+						class="primary play">Play</a
 					>
 				{/if}
 			</div>
@@ -201,7 +185,7 @@
 	}
 	.signout {
 		padding: 10px 20px;
-		width: fit-content;
+		width: max-content;
 	}
 	.stats {
 		margin-top: 70px;
