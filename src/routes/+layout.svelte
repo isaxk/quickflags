@@ -9,7 +9,7 @@
 {#key data.url}
 	<div
 		class="app"
-		in:fly={{ x: -200, duration: 300, delay: 300 }}
+		in:fly={{ x: -200, duration: 300, delay: 350 }}
 		out:fly={{ x: 200, duration: 300 }}
 	>
 		<slot />

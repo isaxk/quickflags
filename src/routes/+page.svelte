@@ -34,6 +34,9 @@
 	<h3>FlameFlags</h3>
     <div class="right">
         {#if signedIn}
+        <a href="#" on:click={()=>signOut(auth)} class="play-button secondary outline" role="button"
+            >Sign Out</a
+        >
         <div class="profile-image"><img src={profileImageURL} alt="Signed In"></div>
         {/if}
     </div>
@@ -44,9 +47,7 @@
 		<div class="buttons">
 			{#if signedIn}
 				<a href="play" class="play-button" role="button">Play</a>
-				<a href="#" on:click={()=>signOut(auth)} class="play-button secondary outline" role="button"
-					>Sign Out</a
-				>
+				
 			{:else}
 				<a href="#" on:click={signIn} class="play-button" role="button">Sign In</a>
 				<a href="play" class="play-button secondary outline" role="button">Play as Guest</a>
@@ -73,5 +74,16 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
+    }
+    .profile-image {
+        padding-top: 2.5px;
+    }
+    .right {
+        display: grid;
+        grid-template-columns: 1fr max-content;
+        gap: 1rem;
+    }
+    .right a {
+        height: 50px;
     }
 </style>

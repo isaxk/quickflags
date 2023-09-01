@@ -24,7 +24,7 @@
 			countryInvalid = true;
 		}
 		enteredCountry = "";
-	}, 300)
+	}, 700)
 
     function handleInputChange() {
         if(enteredCountry == "") {

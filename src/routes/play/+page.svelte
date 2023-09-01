@@ -20,7 +20,7 @@
 	const provider = new GoogleAuthProvider();
 
 	let signedIn = false;
-    let profileImageURL = null;
+	let profileImageURL = null;
 	let selectedCountry = null;
 	let gameScore = 0;
 	let timeRemaining = 45.0;
@@ -31,11 +31,12 @@
 	let startTimeStamp = 0;
 	let endTimeStamp = 0;
 	let timer;
+    let questionHistory = [];
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
 			signedIn = true;
-            profileImageURL = user.photoURL;
+			profileImageURL = user.photoURL;
 		} else {
 			signedIn = false;
 		}
@@ -63,8 +64,17 @@
 
 	function endGame() {
 		gameEnded = true;
+        console.log(questionHistory);
 		clearInterval(timer);
 	}
+
+    function restartGame() {
+        gameEnded = false;
+        gameScore=0;
+        questionHistory=[];
+        nextCounty();
+        startTimer();
+    }
 
 	function startTimer() {
 		startTimeStamp = Date.now();
@@ -83,17 +93,22 @@
 
 	function handleSelectedCounty(e) {
 		if (e) {
+            var correct=false;
 			if (
 				e.toLowerCase() == currentCountyData.name.toLowerCase() ||
 				e.toLowerCase() == currentCountyData.short.toLowerCase()
 			) {
 				sendMessage(currentCountyData.name + ' was correct!');
 				gameScore += 4000;
+                correct=true;
 			} else if (e == 'Skipped') {
 				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
 			} else {
 				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
 			}
+            currentCountyData.isCorrect=correct;
+            currentCountyData.answered=e;
+            questionHistory.push(currentCountyData);
 			selectedCountry = null;
 			nextCounty();
 		}
@@ -109,7 +124,15 @@
 {#key gameEnded}
 	<main in:slide={{ y: 40, duration: 350 }} out:slide={{ y: 40, duration: 300 }}>
 		{#if gameEnded}
-			<h3>Game Over</h3>
+			<div class="endScreen">
+				<h2>Game Over</h2>
+                You scored: {gameScore}
+                <div class="buttons">
+                    <a href="#" on:click={restartGame} role="button">Play again</a>
+                    <a href="/" role="button" class="outline">Back to home</a>
+                </div>
+                
+			</div>
 		{:else}
 			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
 			<Message {messageContent} />
@@ -117,3 +140,12 @@
 		{/if}
 	</main>
 {/key}
+
+<style>
+    .endScreen {
+        text-align: center;
+    }
+    .buttons {
+        padding: 40px 0px;
+    }
+</style>
