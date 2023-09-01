@@ -15,7 +15,7 @@
 			(e) => clean(e.short) == clean(enteredCountry)
 		);
 		if(enteredCountry == "") {
-			selectedCountry = "Skipped!";
+			selectedCountry = "Pass";
 			enteredCountry = "";
 			return;
 		}

@@ -69,6 +69,7 @@
     header {
         display: grid;
         grid-template-columns: 1fr max-content;
+		align-items: center;
     }
     .profile-image img {
         width: 40px;
@@ -84,6 +85,7 @@
         gap: 1rem;
     }
     .right a {
-        height: 50px;
+		height: 50px;
+		padding: 10px 10px;
     }
 </style>

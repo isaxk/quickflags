@@ -12,3 +12,7 @@ header {
     padding: 20px 0px;
     margin-bottom: 45px;
 }
+
+header h3 {
+    margin: 0px;
+}

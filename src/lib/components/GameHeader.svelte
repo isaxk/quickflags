@@ -51,7 +51,5 @@
         height: 40px;
         border-radius: 50%;
     }
-    h3 {
-        margin: 0px;
-    }
+
 </style>

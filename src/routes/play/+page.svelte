@@ -2,6 +2,7 @@
 	import GameHeader from '$lib/components/GameHeader.svelte';
 	import FlagImage from '$lib/components/FlagImage.svelte';
 	import CountryInput from '$lib/components/CountryInput.svelte';
+	import EndTable from '$lib/components/EndTable.svelte';
 	import countries from '$lib/countries';
     import { clean } from "$lib/text";
 	import Message from '$lib/components/Message.svelte';
@@ -102,7 +103,7 @@
 				sendMessage(currentCountyData.name + ' was correct!');
 				gameScore += 4000;
                 correct=true;
-			} else if (e == 'Skipped') {
+			} else if (e == "Pass") {
 				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
 			} else {
 				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
@@ -132,6 +133,8 @@
                     <a href="#" on:click={restartGame} role="button">Play again</a>
                     <a href="/" role="button" class="outline">Back to home</a>
                 </div>
+
+				<EndTable tableData={questionHistory} />
                 
 			</div>
 		{:else}
