@@ -12,9 +12,9 @@
 	let messageContent = '';
 	let currentMessageTimeout;
 	let gameEnded = false;
-    let startTimeStamp = 0;
-    let endTimeStamp = 0;
-    let timer;
+	let startTimeStamp = 0;
+	let endTimeStamp = 0;
+	let timer;
 
 	function getRandomCounty() {
 		var randomIndex = Math.floor(Math.random() * countries.length);
@@ -36,13 +36,13 @@
 		console.log(currentCountyData);
 	}
 
-    function endGame() {
-        gameEnded = true;
-        clearInterval(timer);
-    }
+	function endGame() {
+		gameEnded = true;
+		clearInterval(timer);
+	}
 
-    function startTimer() {
-        startTimeStamp = Date.now();
+	function startTimer() {
+		startTimeStamp = Date.now();
 		endTimeStamp = startTimeStamp + 45000;
 		timer = setInterval(() => {
 			if (Date.now() >= endTimeStamp + 100) return;
@@ -54,11 +54,14 @@
 				timeRemaining = (endTimeStamp - Date.now()) / 1000;
 			}
 		}, 10);
-    }
+	}
 
 	function handleSelectedCounty(e) {
 		if (e) {
-			if (e.toLowerCase() == currentCountyData.name.toLowerCase()) {
+			if (
+				e.toLowerCase() == currentCountyData.name.toLowerCase() ||
+				e.toLowerCase() == currentCountyData.short.toLowerCase()
+			) {
 				sendMessage(currentCountyData.name + ' was correct!');
 				gameScore += 4000;
 			} else if (e == 'Skipped') {
@@ -71,7 +74,7 @@
 		}
 	}
 
-    startTimer();
+	startTimer();
 
 	$: handleSelectedCounty(selectedCountry);
 </script>
@@ -80,8 +83,8 @@
 
 <main>
 	{#if gameEnded}
-        <h3>Game Over</h3>
-    {:else}
+		<h3>Game Over</h3>
+	{:else}
 		<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
 		<Message {messageContent} />
 		<CountryInput bind:selectedCountry />

@@ -10,11 +10,14 @@
 		const searchResult = countries.find(
 			(e) => e.name.toLowerCase() == enteredCountry.toLowerCase()
 		);
+		const shortHandSearchResult = countries.find(
+			(e) => e.short.toLowerCase() == enteredCountry.toLowerCase()
+		);
 		if(enteredCountry == "") {
 			selectedCountry = "Skipped!"
 			return;
 		}
-		if (searchResult) {
+		if (searchResult || shortHandSearchResult) {
 			selectedCountry = enteredCountry;
 			countryInvalid = null;
 		} else {
