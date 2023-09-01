@@ -1,11 +1,7 @@
 <script>
 	import { initializeApp } from "firebase/app";
 	import { gameLoaded, gameStarted } from "../lib/data-store";
-	import {
-		getAuth,
-		GoogleAuthProvider,
-		signInWithPopup,
-	} from "firebase/auth";
+	import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 	import {
 		getFirestore,
@@ -53,7 +49,7 @@
 		} else {
 			loggedin = false;
 		}
-		currentUser=user;
+		currentUser = user;
 	});
 	$: username = username;
 	function startGame() {
@@ -69,7 +65,6 @@
 	gameLoaded.subscribe((value) => {
 		gameLoadedLocal = value;
 	});
-
 
 	function guest() {
 		if (
@@ -93,13 +88,10 @@
 	{#if !gameLoadedLocal}
 		<div class="home" transition:fade>
 			<div class="header">
-				<div class="title">
-					FlameFlags
-				</div>
+				<div class="title">FlameFlags</div>
 				<div class="acc" />
 				<div class="acc">
 					{#if loggedin}
-
 						<a
 							href="#"
 							role="button"
@@ -125,11 +117,9 @@
 						>or play as guest</a
 					> -->
 				{:else}
-					<a href="play"
-						role="button"
-						transition:fade
-						class="primary play">Play</a
-					>
+					<a href="play" role="button" transition:fade class="primary play">
+						<i class="fa-solid fa-play" /> Play
+					</a>
 				{/if}
 			</div>
 			<div class="stats">
@@ -172,9 +162,7 @@
 	}
 	.acc {
 		text-align: right;
-		display: grid;
 		justify-content: right;
-		grid-template-columns: 0.5fr 1.5fr;
 	}
 	.acc i {
 		font-size: 25px;
@@ -209,5 +197,8 @@
 	}
 	.settingsbtn {
 		width: fit-content;
+	}
+	i.fa-play {
+		margin-right: 8px;
 	}
 </style>
