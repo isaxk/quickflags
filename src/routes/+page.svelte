@@ -13,6 +13,7 @@
 	const provider = new GoogleAuthProvider();
 
 	let signedIn = false;
+    let profileImageURL;
 
 	function signIn() {
 		signInWithPopup(auth, provider);
@@ -21,7 +22,7 @@
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
 			signedIn = true;
-			const uid = user.uid;
+			profileImageURL = user.photoURL;
 			// ...
 		} else {
 			signedIn = false;
@@ -31,6 +32,11 @@
 
 <header>
 	<h3>FlameFlags</h3>
+    <div class="right">
+        {#if signedIn}
+        <div class="profile-image"><img src={profileImageURL} alt="Signed In"></div>
+        {/if}
+    </div>
 </header>
 
 <main>
@@ -59,4 +65,13 @@
 		display: grid;
 		place-items: center;
 	}
+    header {
+        display: grid;
+        grid-template-columns: 1fr max-content;
+    }
+    .profile-image img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
 </style>
