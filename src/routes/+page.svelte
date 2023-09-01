@@ -9,14 +9,13 @@
 
 <main>
     <div class="play-hero">
-        <button class="play-button">Play</button>
+        <a href="play" class="play-button" role="button">Play</a>
     </div>
     
 </main>
 
 <style>
     .play-button {
-        display: inline;
         width: 100px
     }
     .play-hero {

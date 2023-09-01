@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@picocss/pico": "^1.5.10"
+		"@picocss/pico": "^1.5.10",
+		"lodash": "^4.17.21"
 	}
 }
