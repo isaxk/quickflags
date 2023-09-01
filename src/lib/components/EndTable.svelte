@@ -33,17 +33,17 @@
 
 <style>
 	.incorrect {
-		background-color: hsl(0, 50%, 30%);
+		background-color: #732626;
 	}
 	.correct {
-		background-color: hsl(120, 50%, 25%);
+		background-color: #206020;
 	}
 	@media (prefers-color-scheme: light) {
 		.incorrect {
-			background-color: hsl(0, 100%, 82%);
+			background-color: #ffa3a3;
 		}
 		.correct {
-			background-color: hsl(120, 100%, 82%);
+			background-color: #a3ffa3;
 		}
 	}
 </style>
