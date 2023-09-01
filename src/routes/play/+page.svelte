@@ -26,6 +26,7 @@
 	let selectedCountry = null;
 	let gameScore = 0;
 	let timeRemaining = 45.0;
+	let questionHistory = [];
 	let currentCountyData = getRandomCounty();
 	let messageContent = '';
 	let currentMessageTimeout;
@@ -33,7 +34,6 @@
 	let startTimeStamp = 0;
 	let endTimeStamp = 0;
 	let timer;
-    let questionHistory = [];
 
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
@@ -46,6 +46,11 @@
 
 	function getRandomCounty() {
 		var randomIndex = Math.floor(Math.random() * countries.length);
+		for(var i=0;i<questionHistory.length;i++ && questionHistory.length>0) {
+			if(countries[randomIndex].code == questionHistory[i].code) {
+				return getRandomCounty();
+			}
+		}
 		return countries[randomIndex];
 	}
 
@@ -130,8 +135,8 @@
 				<h2>Game Over</h2>
                 You scored: {gameScore}
                 <div class="buttons">
-                    <a href="#" on:click={restartGame} role="button">Play again</a>
-                    <a href="/" role="button" class="outline">Back to home</a>
+                    <a href="#" on:click={restartGame} role="button"><i class="fa-solid fa-play"></i> Play again</a>
+                    <a href="/" role="button" class="outline"><i class="fa-solid fa-house"></i> Back to home</a>
                 </div>
 
 				<EndTable tableData={questionHistory} />

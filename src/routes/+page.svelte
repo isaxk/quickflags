@@ -46,10 +46,10 @@
 	<div class="play-hero">
 		<div class="buttons">
 			{#if signedIn}
-				<a href="play" class="play-button" role="button">Play</a>
+				<a href="play" class="play-button" role="button"><i class="fa-solid fa-play" /> Play</a>
 				
 			{:else}
-				<a href="#" on:click={signIn} class="play-button" role="button">Sign In</a>
+				<a href="#" on:click={signIn} class="play-button" role="button"><i class="fa-solid fa-right-to-bracket"></i> Sign In</a>
 				<a href="play" class="play-button secondary outline" role="button">Play as Guest</a>
 			{/if}
 		</div>
@@ -88,4 +88,7 @@
 		height: 50px;
 		padding: 10px 10px;
     }
+	.fa-play {
+		margin-right: 10px;
+	}
 </style>

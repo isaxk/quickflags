@@ -9,8 +9,8 @@
 				<th />
 				<th>Flag</th>
 				<th>Country</th>
-				<th>Correct?</th>
-				<th>Answered:</th>
+				<th>Answered</th>
+				<th>Correct</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -19,12 +19,16 @@
 					<td>{i + 1}.</td>
 					<td><img src="/flags/{question.code.toLowerCase()}.svg" alt="Flag" /></td>
 					<td>{question.name}</td>
-					{#if question.isCorrect}
-						<td class="correct">Correct</td>
+                    {#if question.answered == "Pass"}
+                    <td>{question.answered}</td>
+                    {:else}
+					<td>"{question.answered}"</td>
+                    {/if}
+                    {#if question.isCorrect}
+						<td class="correct"><i class="fa-solid fa-check" /></td>
 					{:else}
-						<td class="incorrect">Correct</td>
+						<td class="incorrect"><i class="fa-solid fa-xmark" /></td>
 					{/if}
-					<td>{question.answered}</td>
 				</tr>
 			{/each}
 		</tbody>
@@ -34,9 +38,11 @@
 <style>
 	.incorrect {
 		background-color: #732626;
+        text-align: center;
 	}
 	.correct {
 		background-color: #206020;
+        text-align: center;
 	}
 	@media (prefers-color-scheme: light) {
 		.incorrect {

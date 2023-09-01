@@ -16,3 +16,7 @@ header {
 header h3 {
     margin: 0px;
 }
+
+a .fa-solid, button .fa-solid {
+    margin-right: 5px;
+}
