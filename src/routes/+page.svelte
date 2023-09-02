@@ -19,9 +19,15 @@
 	let signedIn = false;
 	let profileImageURL;
 	let authenticated = false;
+	let flagsloaded = false;
+	let fullyLoaded = false;
 
 	function signIn() {
 		signInWithPopup(auth, provider);
+	}
+
+	$: if(flagsloaded && authenticated) {
+		fullyLoaded = true;
 	}
 
 	onAuthStateChanged(auth, (user) => {
@@ -50,9 +56,9 @@
 	</div>
 </header>
 
-{#key authenticated}
+{#key fullyLoaded}
 	<main in:fade={{ duration: 500, delay: 500 }} out:fade={{ duration: 500 }}>
-		{#if authenticated}
+		{#if fullyLoaded}
 			<div class="play-hero-container">
 				<div class="play-hero">
 					<div class="buttons">
@@ -71,10 +77,10 @@
 				<FlagBackground />
 			</div>
 		{:else}
-			<div class="play-hero-container">
-				<div class="play-hero" aria-busy="true" />
-				<FlagBackground />
-			</div>
+		<div class="loading-flags" on:load={()=>flagsloaded=true}>
+			<FlagBackground />
+		</div>
+		
 		{/if}
 	</main>
 {/key}
@@ -136,5 +142,12 @@
 	}
 	main {
 		height: 100vh;
+	}
+	.loading-flags {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 0px;
+		left: 0px;
 	}
 </style>

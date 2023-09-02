@@ -26,7 +26,7 @@
         border-radius: 10px;
         position: absolute;
         width: 100%;
-        height: 300px;
+        height: 100%;
         overflow: hidden;
         z-index: 1;
         top: 0px;
