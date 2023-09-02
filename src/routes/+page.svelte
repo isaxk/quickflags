@@ -106,6 +106,11 @@
 		backdrop-filter: blur(6px);
 		background-color: rgba(0, 0, 0, 0.211);
 	}
+	@media screen and (max-width: 570px) {
+		.play-hero-container {
+			height: 250px;
+		}
+	}
 	@media (prefers-color-scheme: light) {
 		.play-hero {
 			background-color: rgba(255, 255, 255, 0.411);
@@ -133,6 +138,8 @@
 		gap: 1rem;
 	}
 	.right a {
+		padding: 12px 16px;
+		font-size: 16px;
 	}
 	.fa-play {
 		margin-right: 10px;
