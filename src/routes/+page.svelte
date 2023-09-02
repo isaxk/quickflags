@@ -133,8 +133,6 @@
 		gap: 1rem;
 	}
 	.right a {
-		height: 50px;
-		padding: 10px 10px;
 	}
 	.fa-play {
 		margin-right: 10px;
