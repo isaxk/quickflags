@@ -3,12 +3,14 @@
 .app {
     width: 750px;
     max-width: 100%;
+    min-height: 100vh;
     margin: auto;
     padding: 0px 20px;
+    background-color: var(--background-color);
 }
 
 header {
-    height: 50px;
+    height: 60px;
     padding: 20px 0px;
     margin-bottom: 45px;
 }
