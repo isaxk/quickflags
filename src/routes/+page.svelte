@@ -1,204 +1,157 @@
 <script>
-	import { initializeApp } from "firebase/app";
-	import { gameLoaded, gameStarted } from "../lib/data-store";
-	import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
+	import { initializeApp } from 'firebase/app';
 	import {
-		getFirestore,
-		collection,
-		doc,
-		getDoc,
-		setDoc,
-		onSnapshot,
-	} from "firebase/firestore";
-	import { getAnalytics } from "firebase/analytics";
-	import Game from "./Game.svelte";
-	import { slide, fade } from "svelte/transition";
-	import Stats from "../lib/Stats.svelte";
+		getAuth,
+		GoogleAuthProvider,
+		signInWithPopup,
+		onAuthStateChanged,
+		signOut
+	} from 'firebase/auth';
+	import { firebaseConfig } from '$lib/firebase';
+	import FlagBackground from '$lib/components/FlagBackground.svelte';
 
-	import { firebaseConfig } from "../lib/firebase";
+	import { fade, slide, fly } from 'svelte/transition';
+	import Stats from '$lib/components/Stats.svelte';
 
-	let currentUser;
 	const app = initializeApp(firebaseConfig);
-	const db = getFirestore(app);
 	const auth = getAuth(app);
 	const provider = new GoogleAuthProvider();
-	let loggedin = false;
-	let username;
-	if (auth.currentUser) {
-		loggedin = true;
-		username = auth.currentUser.email.split("@")[0];
+
+	let signedIn = false;
+	let profileImageURL;
+	let authenticated = false;
+
+	function signIn() {
+		signInWithPopup(auth, provider);
 	}
-	$: auth.onAuthStateChanged((user) => {
+
+	onAuthStateChanged(auth, (user) => {
 		if (user) {
-			loggedin = true;
-			username = user.email.split("@")[0];
-
-			let unsub = onSnapshot(doc(db, "username", user.uid), () => {
-				getDoc(doc(db, "username", user.uid)).then(async (docSnap) => {
-					if (docSnap.exists()) {
-						username = docSnap.data().username;
-					} else {
-						await setDoc(doc(db, "username", user.uid), {
-							username: user.email.split("@")[0],
-						});
-						username: user.email.split("@")[0];
-					}
-				});
-			});
+			signedIn = true;
+			profileImageURL = user.photoURL;
 		} else {
-			loggedin = false;
+			signedIn = false;
 		}
-		currentUser = user;
+		setTimeout(() => {
+			authenticated = true;
+		}, 500);
 	});
-	$: username = username;
-	function startGame() {
-		gameLoaded.set(true);
-	}
-
-	let gameStartedLocal;
-	let gameLoadedLocal;
-
-	gameStarted.subscribe((value) => {
-		gameStartedLocal = value;
-	});
-	gameLoaded.subscribe((value) => {
-		gameLoadedLocal = value;
-	});
-
-	function guest() {
-		if (
-			confirm(
-				"Are you sure you want to play as a guest? \n\nYour score won't be saved for you or anyone else to see!"
-			)
-		) {
-			startGame();
-		}
-	}
-	console.log(gameStartedLocal);
-	console.log(gameStarted);
+	
 </script>
 
-<svelte:head>
-	<title>Flagz</title>
-	<meta name="description" content="The best way to learn flags" />
-</svelte:head>
+<header>
+	<h3>FlameFlags</h3>
+	<div class="right">
+		{#if signedIn}
+			<a href="#" on:click={() => signOut(auth)} class="secondary outline" role="button"
+				>Sign Out</a
+			>
+			<div class="profile-image"><img src={profileImageURL} alt="Signed In" /></div>
+		{/if}
+	</div>
+</header>
 
-<section>
-	{#if !gameLoadedLocal}
-		<div class="home" transition:fade>
-			<div class="header">
-				<div class="title">FlameFlags</div>
-				<div class="acc" />
-				<div class="acc">
-					{#if loggedin}
-						<a
-							href="#"
-							role="button"
-							transition:fade
-							class="secondary outline signout"
-							on:click={() => {
-								auth.signOut();
-							}}>Sign Out</a
-						>
-					{/if}
+{#key authenticated}
+	<main in:fade={{ duration: 500, delay: 500 }} out:fade={{ duration: 500 }}>
+		{#if authenticated}
+			<div class="play-hero-container">
+				<div class="play-hero">
+					<div class="buttons">
+						{#if signedIn}
+							<a href="play" class="play-button" role="button"
+								><i class="fa-solid fa-play" /> Play</a
+							>
+						{:else}
+							<a href="#" on:click={signIn} class="play-button" role="button"
+								><i class="fa-solid fa-right-to-bracket" /> Sign In</a
+							>
+							<br>
+							<a href="play">or play as guest</a>
+						{/if}
+					</div>
 				</div>
+				<FlagBackground />
 			</div>
-			<div class="buttons">
-				{#if !loggedin}
-					<button
-						class="primary"
-						on:click={() => {
-							signInWithPopup(auth, provider);
-						}}>Sign In with Google</button
-					>
-					<!-- svelte-ignore a11y-invalid-attribute -->
-					<!-- <a href="#" class="guest" on:click={guest}
-						>or play as guest</a
-					> -->
-				{:else}
-					<a href="play" role="button" transition:fade class="primary play">
-						<i class="fa-solid fa-play" /> Play
-					</a>
-				{/if}
+			{#if signedIn}
+			<Stats {app} />
+			{:else}
+			<br><br>
+			<h3>Sign In to see your stats</h3>
+			{/if}
+		{:else}
+			<div class="play-hero-container">
+				<div class="play-hero" aria-busy="true" />
+				<FlagBackground />
 			</div>
-			<div class="stats">
-				{#if loggedin}
-					<h3>Your Stats:</h3>
-					<Stats {app} />
-				{:else}
-					<h3>Your stats:</h3>
-					Login to see your stats
-				{/if}
-			</div>
-		</div>
-	{:else}
-		{#key !gameLoadedLocal}
-			<div class="container" transition:fade>
-				<Game {app} />
-			</div>
-		{/key}
-	{/if}
-</section>
+		{/if}
+	</main>
+{/key}
 
 <style>
-	h1 {
-		margin: 20px 0px 40px 0px;
+	.play-button {
+		min-width: 100px;
+		border: 1px solid #11191f;
 	}
-	.buttons button {
-		margin: auto;
-		width: fit-content;
-		margin-bottom: 10px;
-	}
-	.buttons {
-		margin: 120px 0px;
-	}
-	.guest {
-		font-size: 16px;
-		text-decoration: underline;
-	}
-	p {
-		text-align: left;
-	}
-	.acc {
-		text-align: right;
-		justify-content: right;
-	}
-	.acc i {
-		font-size: 25px;
-	}
-	.acc .settingsbtn {
+	.play-hero-container {
+		width: 100%;
+		height: 300px;
 		display: grid;
 		place-items: center;
-	}
-	.signout {
-		padding: 10px 20px;
-		width: max-content;
-	}
-	.stats {
-		margin-top: 70px;
-	}
-	.container {
 		position: relative;
+		border-radius: 10px;
+	}
+	.play-hero {
+		border-radius: 10px;
 		width: 100%;
 		height: 100%;
+		position: absolute;
+		top: 0px;
 		left: 0px;
+		z-index: 100;
+		display: grid;
+		place-items: center;
+		backdrop-filter: blur(6px);
+		background-color: rgba(0, 0, 0, 0.211);
 	}
-	.beta {
-		background-color: rgba(255, 255, 0, 0.533);
-		padding: 5px;
-		border-radius: 5px;
-		box-sizing: border-box;
-		font-size: 0.8em;
-		color: black;
+	@media screen and (max-width: 570px) {
+		.play-hero-container {
+			height: 250px;
+		}
 	}
-	.stats h3 {
-		margin-bottom: 5px;
+	@media (prefers-color-scheme: light) {
+		.play-hero {
+			background-color: rgba(255, 255, 255, 0.411);
+		}
+		.play-button {
+			border-color: #fff;
+		}
 	}
-	.settingsbtn {
-		width: fit-content;
+	header {
+		display: grid;
+		grid-template-columns: 1fr max-content;
+		align-items: center;
 	}
-	i.fa-play {
-		margin-right: 8px;
+	.profile-image img {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+	}
+	.profile-image {
+		padding-top: 2.5px;
+	}
+	.right {
+		display: grid;
+		grid-template-columns: 1fr max-content;
+		gap: 1rem;
+	}
+	.right a {
+		padding: 12px 16px;
+		font-size: 16px;
+	}
+	.fa-play {
+		margin-right: 10px;
+	}
+	main {
+		height: 100vh;
 	}
 </style>

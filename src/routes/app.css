@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+
+.app {
+    width: 750px;
+    max-width: 100%;
+    min-height: 100vh;
+    margin: auto;
+    padding: 0px 20px;
+    background-color: var(--background-color);
+}
+
+header {
+    height: 60px;
+    padding: 20px 0px;
+    margin-bottom: 45px;
+}
+
+header h3 {
+    margin: 0px;
+}
+
+a .fa-solid, button .fa-solid {
+    margin-right: 5px;
+}
