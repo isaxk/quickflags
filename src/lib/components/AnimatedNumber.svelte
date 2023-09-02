@@ -17,6 +17,7 @@
         }
     }
 
+
 	function incrementNumber() {
         calculatedNumber += minimate(1, number / 101);
         if(format) {

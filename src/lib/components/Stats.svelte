@@ -1,76 +1,67 @@
 <script>
-    export let app;
-    import {
-        getFirestore,
-        collection,
-        doc,
-        getDoc,
-        setDoc,
-        onSnapshot,
-    } from "firebase/firestore";
-    import { getAuth } from "firebase/auth";
-    import { gameScoreFormat, accuracyFormat, gamesPlayedFormat } from '$lib/formats';
-	import AnimatedNumber from "./AnimatedNumber.svelte";
-    const auth = getAuth();
-    const user = auth.currentUser;
+	export let app;
+	import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+	import { getAuth } from 'firebase/auth';
+	import { gameScoreFormat, accuracyFormat, gamesPlayedFormat } from '$lib/formats';
+	import AnimatedNumber from './AnimatedNumber.svelte';
+	const auth = getAuth();
+	const user = auth.currentUser;
 
-    const db = getFirestore(app);
-    let gamesPlayed = "";
-    let highscore = "";
-    let achievments = [];
-    let unsub = onSnapshot(doc(db, "gamesplayed", user.uid), () => {
-        getDoc(doc(db, "gamesplayed", user.uid)).then(async (docSnap) => {
-            if (docSnap.exists()) {
-                gamesPlayed = docSnap.data().gamesPlayed;
-            } else {
-                await setDoc(doc(db, "gamesplayed", user.uid), {
-                    gamesPlayed: 0,
-                    uid: user.uid
-                });
-                gamesPlayed = 0;
-            }
-        });
-    });
+	const db = getFirestore(app);
+	let gamesPlayed = 0;
+	let highscore = 0;
+	let achievments = [];
 
-    let unsubhighscore = onSnapshot(doc(db, "highscore", user.uid), () => {
-        getDoc(doc(db, "highscore", user.uid)).then(async (docSnap) => {
-            if (docSnap.exists()) {
-                highscore = docSnap.data().highscore;
-            } else {
-                await setDoc(doc(db, "highscore", user.uid), {
-                    highscore: 0,
-                    uid: user.uid
-                });
-                highscore = 0;
-            }
-        });
-    });
+	let unsub = onSnapshot(doc(db, 'gamesplayed', user.uid), () => {
+		getDoc(doc(db, 'gamesplayed', user.uid)).then(async (docSnap) => {
+			if (docSnap.exists()) {
+				gamesPlayed = docSnap.data().gamesPlayed;
+			} else {
+				await setDoc(doc(db, 'gamesplayed', user.uid), {
+					gamesPlayed: 0,
+					uid: user.uid
+				});
+				gamesPlayed = 0;
+			}
+		});
+	});
 
-    let unsubachievments = onSnapshot(
-        doc(db, "achievements", user.uid),
-        () => {
-            getDoc(doc(db, "achievements", user.uid)).then(async (docSnap) => {
-                if (docSnap.exists()) {
-                    achievments = docSnap.data();
-                } else {
-                    await setDoc(doc(db, "achievements", user.uid), {
-                        achievments: [],
-                        uid: user.uid
-                    });
-                    achievments = [];
-                }
-            });
-            console.log(achievments);
-        }
-    );
+	let unsubhighscore = onSnapshot(doc(db, 'highscore', user.uid), () => {
+		getDoc(doc(db, 'highscore', user.uid)).then(async (docSnap) => {
+			if (docSnap.exists()) {
+				highscore = docSnap.data().highscore;
+			} else {
+				await setDoc(doc(db, 'highscore', user.uid), {
+					highscore: 0,
+					uid: user.uid
+				});
+				highscore = 0;
+			}
+		});
+	});
 
-    $: achievments = achievments;
+	let unsubachievments = onSnapshot(doc(db, 'achievements', user.uid), () => {
+		getDoc(doc(db, 'achievements', user.uid)).then(async (docSnap) => {
+			if (docSnap.exists()) {
+				achievments = docSnap.data();
+			} else {
+				await setDoc(doc(db, 'achievements', user.uid), {
+					achievments: [],
+					uid: user.uid
+				});
+				achievments = [];
+			}
+		});
+		console.log(achievments);
+	});
+
+	$: achievments = achievments;
 </script>
 
 <div class="stats">
-    <h3><i class="fa-solid fa-chart-simple"></i> Stats:</h3>
-    <div class="row-1">
-        <!-- <div class="badges">
+	<h3><i class="fa-solid fa-chart-simple" /> Stats:</h3>
+	<div class="row-1">
+		<!-- <div class="badges">
             <div class="title">Badges</div>
             <img
                 src="/badges/10badge.png"
@@ -78,18 +69,20 @@
                 title="Score 10,000 points in one game"
             />
         </div> -->
-    </div>
-    <div class="row-2">
-        <div class="scores">
-            <div class="title"><i class="fa-solid fa-play"></i> Games played:</div>
-            <AnimatedNumber number={gamesPlayed} format={gamesPlayedFormat}/>
-        </div>
-        <div class="games" aria-disabled="true">
-            <div class="title"><i class="fa-solid fa-star"></i> Highest Score:</div>
-            <AnimatedNumber number={highscore} format={gameScoreFormat}/>
-        </div>
-    </div>
-    <!-- <div class="row-3">
+	</div>
+	<div class="row-2">
+		{#key (highscore, gamesPlayed)}
+			<div class="scores">
+				<div class="title"><i class="fa-solid fa-play" /> Games played:</div>
+				<AnimatedNumber number={gamesPlayed} format={gamesPlayedFormat} />
+			</div>
+			<div class="games" aria-disabled="true">
+				<div class="title"><i class="fa-solid fa-star" /> Highest Score:</div>
+				<AnimatedNumber number={highscore} format={gameScoreFormat} />
+			</div>
+		{/key}
+	</div>
+	<!-- <div class="row-3">
         <div class="title">Achievments</div>
         <div class="achievments">
             {#if achievments.firstplayer}
@@ -175,46 +168,46 @@
 </div>
 
 <style>
-    .stats {
-        text-align: left;
-        padding: 60px 10px 0px 10px;
-        display: grid;
-        gap: 10px;
-    }
-    .row-1 {
-        display: grid;
-        grid-template-columns: 1fr;
-    }
-    .row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .title {
-        margin-top: 20px;
-        font-size: 24px;
-    }
-    .badges {
-    }
-    .badges img {
-        width: 60px;
-    }
-    .badge {
-        font-size: 13px;
-        margin: 5px 0px;
-    }
-    .badge .name {
-        font-size: 20px;
-        font-weight: 500;
-    }
-    .achievments {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 1rem;
-    }
-    .row-3 {
-        margin-top: 50px;
-    }
-    h3 {
-        margin-bottom: 0px;
-    }
+	.stats {
+		text-align: left;
+		padding: 60px 10px 0px 10px;
+		display: grid;
+		gap: 10px;
+	}
+	.row-1 {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+	.row-2 {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+	.title {
+		margin-top: 20px;
+		font-size: 24px;
+	}
+	.badges {
+	}
+	.badges img {
+		width: 60px;
+	}
+	.badge {
+		font-size: 13px;
+		margin: 5px 0px;
+	}
+	.badge .name {
+		font-size: 20px;
+		font-weight: 500;
+	}
+	.achievments {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 1rem;
+	}
+	.row-3 {
+		margin-top: 50px;
+	}
+	h3 {
+		margin-bottom: 0px;
+	}
 </style>
