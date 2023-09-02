@@ -3,10 +3,10 @@
     import shuffle from "lodash/shuffle";
     import { slide, fade } from "svelte/transition";
 
-    let shuffledCountries = shuffle(countries);
+    let shuffledCountries = shuffle(countries).splice(0, 60);
 
     setInterval(()=>{
-        shuffledCountries = shuffle(countries);
+        shuffledCountries = shuffle(countries).splice(0, 60);
     }, 3000)
 </script>
 
