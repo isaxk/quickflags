@@ -11,6 +11,7 @@
 	import FlagBackground from '$lib/components/FlagBackground.svelte';
 
 	import { fade, slide, fly } from 'svelte/transition';
+	import Stats from '$lib/components/Stats.svelte';
 
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
@@ -28,7 +29,6 @@
 		if (user) {
 			signedIn = true;
 			profileImageURL = user.photoURL;
-			// ...
 		} else {
 			signedIn = false;
 		}
@@ -36,6 +36,7 @@
 			authenticated = true;
 		}, 500);
 	});
+	
 </script>
 
 <header>
@@ -71,6 +72,12 @@
 				</div>
 				<FlagBackground />
 			</div>
+			{#if signedIn}
+			<Stats {app} />
+			{:else}
+			<br><br>
+			<h3>Sign In to see your stats</h3>
+			{/if}
 		{:else}
 			<div class="play-hero-container">
 				<div class="play-hero" aria-busy="true" />

@@ -5,6 +5,7 @@
 	import EndTable from '$lib/components/EndTable.svelte';
 	import countries from '$lib/countries';
 	import { clean } from '$lib/text';
+	import { gameScoreFormat, accuracyFormat } from '$lib/formats';
 	import Message from '$lib/components/Message.svelte';
 	import { browser } from '$app/environment';
 	import { slide, fly } from 'svelte/transition';
@@ -18,10 +19,13 @@
 		onAuthStateChanged,
 		signOut
 	} from 'firebase/auth';
+	import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+
 	import { firebaseConfig } from '$lib/firebase';
 	import AnimatedNumber from '../../lib/components/AnimatedNumber.svelte';
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
+	const db = getFirestore(app);
 	const provider = new GoogleAuthProvider();
 
 	let signedIn = false;
@@ -40,25 +44,17 @@
 	let timer;
 	let loadStats = false;
 	let accuracy;
+	let currentUser;
+	let beatHighscore = false;
+	let resultsSaved;
 
 	function percentage(partialValue, totalValue) {
 		return (100 * partialValue) / totalValue;
 	}
 
-	let gameScoreFormat = new Intl.NumberFormat('en-US', {
-		minimumIntegerDigits: 5,
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0
-	});
-
-	let accuracyFormat = new Intl.NumberFormat('en-US', {
-		minimumIntegerDigits: 2,
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 0
-	});
-
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
+			currentUser = user;
 			signedIn = true;
 			profileImageURL = user.photoURL;
 		} else {
@@ -91,8 +87,44 @@
 		console.log(currentCountyData);
 	}
 
+	function uploadResults() {
+		var gamesPlayed = 0;
+		var highscore = 0;
+		var gamesPlayedRef = doc(db, 'gamesplayed', currentUser.uid);
+		var highscoreRef = doc(db, 'highscore', currentUser.uid);
+		getDoc(gamesPlayedRef).then(async (docSnap) => {
+			if (docSnap.exists()) {
+				gamesPlayed = docSnap.data().gamesPlayed + 1;
+			} else {
+				gamesPlayed = 1;
+			}
+			await setDoc(gamesPlayedRef, {
+				gamesPlayed: gamesPlayed
+			});
+		});
+		getDoc(highscoreRef).then(async (docSnap) => {
+			if (docSnap.exists()) {
+				highscore = docSnap.data().highscore;
+				if (gameScore > highscore) {
+					highscore = gameScore;
+					beatHighscore = true;
+				}
+			} else {
+				highscore = gameScore;
+				beatHighscore = true;
+			}
+			if (beatHighscore) {
+				await setDoc(highscoreRef, {
+					highscore: highscore
+				});
+			}
+		});
+		resultsSaved = true;
+	}
+
 	function endGame() {
 		gameEnded = true;
+		if (signedIn) uploadResults();
 		accuracy = percentage(correctQuestions, questionHistory.length);
 		setTimeout(() => (loadStats = true), 100);
 		console.log(questionHistory);
@@ -163,17 +195,35 @@
 		{#if gameEnded}
 			<div class="endScreen">
 				<h2>Game Over</h2>
-				<div class="stats">
-					{#if loadStats}
+				{#if loadStats}
+					<div class="stats">
 						<div class="score" transition:fly={{ y: 40, duration: 350, delay: 600 }}>
-							You scored: <AnimatedNumber delay={700} number={gameScore} format={gameScoreFormat} />
+							You scored: <AnimatedNumber delay={700} number={gameScore} format={gameScoreFormat} /><br>
+							{#if beatHighscore}
+								And beat your highscore!
+							{/if}
 						</div>
 						<div class="accuracy" transition:fly={{ y: 40, duration: 350, delay: 1450 }}>
 							Accuracy: <AnimatedNumber delay={1920} number={accuracy} format={accuracyFormat} />%
 						</div>
+					</div>
+					<br />
+					{#if signedIn}
+						{#if resultsSaved}
+							<div class="server"><i class="fa-solid fa-checkmark" /> Results Saved</div>
+						{:else}
+						<div
+							class="server"
+							aria-busy="true"
+							transition:fly={{ y: 40, duration: 350, delay: 1800 }}
+						>
+							Saving results to your account
+						</div>
+						{/if}
+					{:else}
+						<div class="server"><a href="#">Sign In to save your results</a></div>
 					{/if}
-				</div>
-
+				{/if}
 				<div class="buttons">
 					<a href="#" on:click={restartGame} role="button"
 						><i class="fa-solid fa-play" /> Play again</a

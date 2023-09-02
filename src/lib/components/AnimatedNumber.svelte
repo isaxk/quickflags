@@ -8,8 +8,17 @@
 	let displayedNumber = 0;
     let calculatedNumber = 0;
 
+    function minimate(min, val) {
+        if(min >= val) {
+            return min;
+        }
+        else {
+            return val;
+        }
+    }
+
 	function incrementNumber() {
-        calculatedNumber += number / 101;
+        calculatedNumber += minimate(1, number / 101);
         if(format) {
             displayedNumber = format.format(calculatedNumber);
         }
@@ -24,8 +33,9 @@
             displayedNumber = number;
         }
 			return;
+            // test
 		}
-		window.setTimeout(incrementNumber, number/3000);
+		window.setTimeout(incrementNumber, minimate(8, number/3000));
 	}
 
 	window.setTimeout(incrementNumber, delay);
