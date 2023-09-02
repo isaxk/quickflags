@@ -61,10 +61,19 @@
 		margin: auto;
 		display: grid;
 		grid-template-columns: 1fr max-content;
-		gap: 0.5rem;
+		grid-gap: 0.5rem;
 	}
 	.next-button {
 		display: inline;
 		width: max-content;
+	}
+	@media screen and (max-width: 570px) {
+		.container {
+			position: fixed;
+			bottom: 0px;
+			left: 0px;
+			margin: 0px auto;
+			padding: 0px 20px;
+		}
 	}
 </style>
