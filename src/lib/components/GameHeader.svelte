@@ -34,6 +34,11 @@
         grid-template-columns: 1fr max-content;
         align-items: center;
     }
+    @media screen and (max-width: 570px) {
+        header {
+            margin-bottom: 20px;
+        }
+    }
     .data {
         display: grid;
         height: 50px;

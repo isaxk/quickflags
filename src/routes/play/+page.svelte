@@ -6,6 +6,7 @@
 	import countries from '$lib/countries';
 	import { clean } from '$lib/text';
 	import Message from '$lib/components/Message.svelte';
+	import { browser } from '$app/environment';
 	import { slide, fly } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
@@ -53,7 +54,7 @@
 	let accuracyFormat = new Intl.NumberFormat('en-US', {
 		minimumIntegerDigits: 2,
 		minimumFractionDigits: 0,
-		maximumFractionDigits: 0,
+		maximumFractionDigits: 0
 	});
 
 	onAuthStateChanged(auth, (user) => {
@@ -92,7 +93,7 @@
 
 	function endGame() {
 		gameEnded = true;
-		accuracy = percentage(correctQuestions, questionHistory.length)
+		accuracy = percentage(correctQuestions, questionHistory.length);
 		setTimeout(() => (loadStats = true), 100);
 		console.log(questionHistory);
 		clearInterval(timer);
@@ -112,6 +113,7 @@
 		startTimeStamp = Date.now();
 		endTimeStamp = startTimeStamp + timeRemaining * 1000;
 		timer = setInterval(() => {
+			document.body.scrollIntoView();
 			if (Date.now() >= endTimeStamp + 100) return;
 			if (Date.now() >= endTimeStamp) {
 				endGame();
@@ -124,6 +126,9 @@
 	}
 
 	function handleSelectedCounty(e) {
+		if (browser) {
+			document.body.scrollIntoView();
+		}
 		if (e) {
 			var correct = false;
 			if (clean(e) == clean(currentCountyData.name) || clean(e) == clean(currentCountyData.short)) {
@@ -144,7 +149,9 @@
 		}
 	}
 
-	startTimer();
+	if (browser) {
+		startTimer();
+	}
 
 	$: handleSelectedCounty(selectedCountry);
 </script>
@@ -184,11 +191,16 @@
 	</main>
 {/key}
 
+<svelte:body style="overflow-y: none;" />
+
 <style>
 	.endScreen {
 		text-align: center;
 	}
 	.buttons {
 		padding: 40px 0px;
+	}
+	main {
+		overflow-y: hidden;
 	}
 </style>

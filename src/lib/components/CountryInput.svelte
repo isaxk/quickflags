@@ -35,11 +35,12 @@
     }
 </script>
 
-<form class="container" on:submit={handleSubmit}>
+<form class="container" on:submit={handleSubmit} autocomplete="off">
 	<!-- svelte-ignore a11y-autofocus -->
 	<input
 		autofocus
 		type="text"
+		autocomplete="off"
 		aria-invalid={countryInvalid}
 		class="country-input"
 		bind:value={enteredCountry}
@@ -67,7 +68,7 @@
 		display: inline;
 		width: max-content;
 	}
-	@media screen and (max-width: 570px) {
+	/* @media screen and (max-width: 570px) {
 		.container {
 			position: fixed;
 			bottom: 0px;
@@ -75,5 +76,5 @@
 			margin: 0px auto;
 			padding: 0px 20px;
 		}
-	}
+	} */
 </style>
