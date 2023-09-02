@@ -6,7 +6,7 @@
     let shuffledCountries = shuffle(countries);
 
     setInterval(()=>{
-        shuffledCountries = shuffle(countries).slice(0, 50);
+        shuffledCountries = shuffle(countries);
     }, 3000)
 </script>
 
