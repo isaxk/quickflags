@@ -4,13 +4,14 @@
 	import { getAuth } from 'firebase/auth';
 	import { gameScoreFormat, accuracyFormat, gamesPlayedFormat } from '$lib/formats';
 	import AnimatedNumber from './AnimatedNumber.svelte';
+	import { getUnlockedBadges } from '$lib/achievments.js';
 	const auth = getAuth();
 	const user = auth.currentUser;
 
 	const db = getFirestore(app);
 	let gamesPlayed = 0;
 	let highscore = 0;
-	let achievments = [];
+	let unlockedAchievments = [];
 
 	let unsub = onSnapshot(doc(db, 'gamesplayed', user.uid), () => {
 		getDoc(doc(db, 'gamesplayed', user.uid)).then(async (docSnap) => {
@@ -40,7 +41,7 @@
 		});
 	});
 
-	let unsubachievments = onSnapshot(doc(db, 'achievements', user.uid), () => {
+	/* let unsubachievments = onSnapshot(doc(db, 'achievements', user.uid), () => {
 		getDoc(doc(db, 'achievements', user.uid)).then(async (docSnap) => {
 			if (docSnap.exists()) {
 				achievments = docSnap.data();
@@ -53,118 +54,43 @@
 			}
 		});
 		console.log(achievments);
-	});
+	}); */
 
-	$: achievments = achievments;
+	$: {
+		unlockedAchievments = getUnlockedBadges(gamesPlayed, highscore);
+		console.log(unlockedAchievments);
+	}
 </script>
 
 <div class="stats">
-	<h3><i class="fa-solid fa-chart-simple" /> Stats:</h3>
-	<div class="row-1">
-		<!-- <div class="badges">
-            <div class="title">Badges</div>
-            <img
-                src="/badges/10badge.png"
-                alt="Score 10,000 points in one game"
-                title="Score 10,000 points in one game"
-            />
-        </div> -->
-	</div>
-	<div class="row-2">
+	<div class="left">
+		<div class="title"><i class="fa-solid fa-chart-simple" /> Stats:</div>
 		{#key (highscore, gamesPlayed)}
 			<div class="scores">
-				<div class="title"><i class="fa-solid fa-play" /> Games played:</div>
+				<div class="title">Games played:</div>
 				<AnimatedNumber number={gamesPlayed} format={gamesPlayedFormat} />
 			</div>
 			<div class="games" aria-disabled="true">
-				<div class="title"><i class="fa-solid fa-star" /> Highest Score:</div>
+				<div class="title">Highest Score:</div>
 				<AnimatedNumber number={highscore} format={gameScoreFormat} />
 			</div>
 		{/key}
 	</div>
-	<!-- <div class="row-3">
-        <div class="title">Achievments</div>
-        <div class="achievments">
-            {#if achievments.firstplayer}
-                <div class="badge">
-                    <div class="name">The True OG</div>
-                     First Ever Player
-                </div>
-            {/if}
-            {#if achievments.flawless}
-                <div class="badge">
-                    <div class="name">Flawless</div>
-                    Get 100% accuracy in a game with over 30,000 points
-                </div>
-            {/if}
-            {#if highscore >= 50000}
-                <div class="badge">
-                    <div class="name">High Points V</div>
-                    Get a score of 50,000!
-                </div>
-            {/if}
-            {#if highscore >= 40000}
-                <div class="badge">
-                    <div class="name">High Points IV</div>
-                    Get a score of 40,000!
-                </div>
-            {/if}
-            {#if highscore >= 30000}
-                <div class="badge">
-                    <div class="name">High Points III</div>
-                    Get a score of 30,000!
-                </div>
-            {/if}
-            {#if highscore >= 15000}
-                <div class="badge">
-                    <div class="name">High Points II</div>
-                    Get a score of 15,000!
-                </div>
-            {/if}
-            {#if highscore >= 10000}
-                <div class="badge">
-                    <div class="name">High Points I</div>
-                    Get a score of 5,000!
-                </div>
-            {/if}
-            {#if gamesPlayed >= 500}
-                <div class="badge">
-                    <div class="name">Grinder V</div>
-                    Play 500 games
-                </div>
-            {/if}
-            {#if gamesPlayed >= 250}
-                <div class="badge">
-                    <div class="name">Grinder IV</div>
-                    Play 250 games
-                </div>
-            {/if}
-            {#if gamesPlayed >= 100}
-                <div class="badge">
-                    <div class="name">Grinder III</div>
-                    Play 100 games
-                </div>
-            {/if}
-            {#if gamesPlayed >= 45}
-                <div class="badge">
-                    <div class="name">Grinder II</div>
-                    Play 45 games
-                </div>
-            {/if}
-            {#if gamesPlayed >= 10}
-                <div class="badge">
-                    <div class="name">Grinder I</div>
-                    Play 10 games
-                </div>
-            {/if}
-            {#if gamesPlayed >= 1}
-                <div class="badge">
-                    <div class="name">Beginnings</div>
-                    Play your first game
-                </div>
-            {/if}
-        </div>
-    </div> -->
+	<div class="right">
+		<div class="title">Achievments:</div>
+		<div class="achievments">
+			{#key unlockedAchievments}
+				{#if unlockedAchievments.length > 0}
+					{#each unlockedAchievments as badge}
+						<div class="badge">
+							<div class="name">{badge.name}</div>
+							<div class="desc">{badge.desc}</div>
+						</div>
+					{/each}
+				{/if}
+			{/key}
+		</div>
+	</div>
 </div>
 
 <style>
@@ -172,7 +98,9 @@
 		text-align: left;
 		padding: 60px 10px 0px 10px;
 		display: grid;
-		gap: 10px;
+		gap: 3rem;
+		display: grid;
+		grid-template-columns: max-content 1fr;
 	}
 	.row-1 {
 		display: grid;
@@ -185,6 +113,9 @@
 	.title {
 		margin-top: 20px;
 		font-size: 24px;
+	}
+	.row-3 .title {
+		margin-bottom: 40px;
 	}
 	.badges {
 	}

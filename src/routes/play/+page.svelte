@@ -7,6 +7,7 @@
 	import { clean } from '$lib/text';
 	import { gameScoreFormat, accuracyFormat } from '$lib/formats';
 	import Message from '$lib/components/Message.svelte';
+	import { getUnlockedBadges } from '$lib/achievments.js';
 	import { browser } from '$app/environment';
 	import { slide, fly } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
@@ -82,17 +83,31 @@
 		}, 1500);
 	}
 
+	let questionTimeout;
+	let timeoutIndex = 10;
+
+	function handleTimeout() {
+		timeoutIndex = timeoutIndex - 1;
+		if(timeoutIndex===0) {
+			handleSelectedCounty("Pass");
+		}
+	}
+
 	function nextCounty() {
+		if(questionTimeout) clearInterval(questionTimeout);
 		currentCountyData = getRandomCounty();
+		timeoutIndex=10;
+		questionTimeout = setInterval(()=>{handleTimeout()}, 1000);
 		console.log(currentCountyData);
 	}
 
-	function uploadResults() {
-		var gamesPlayed = 0;
-		var highscore = 0;
+	let gamesPlayed = 0;
+	let highscore = 0;
+
+	async function uploadResults() {
 		var gamesPlayedRef = doc(db, 'gamesplayed', currentUser.uid);
 		var highscoreRef = doc(db, 'highscore', currentUser.uid);
-		getDoc(gamesPlayedRef).then(async (docSnap) => {
+		await getDoc(gamesPlayedRef).then(async (docSnap) => {
 			if (docSnap.exists()) {
 				gamesPlayed = docSnap.data().gamesPlayed + 1;
 			} else {
@@ -102,7 +117,7 @@
 				gamesPlayed: gamesPlayed
 			});
 		});
-		getDoc(highscoreRef).then(async (docSnap) => {
+		await getDoc(highscoreRef).then(async (docSnap) => {
 			if (docSnap.exists()) {
 				highscore = docSnap.data().highscore;
 				if (gameScore > highscore) {
@@ -119,16 +134,26 @@
 				});
 			}
 		});
+		unlockedBadges = getUnlockedBadges(gamesPlayed, 0);
+		for (var i = 0; i < unlockedBadges.length; i++) {
+			if (unlockedBadges[i].isNew === true) {
+				newBadges.push(unlockedBadges[i]);
+			}
+		}
 		resultsSaved = true;
 	}
 
-	function endGame() {
-		gameEnded = true;
-		if (signedIn) uploadResults();
+	let unlockedBadges = [];
+	let newBadges = [];
+
+	async function endGame() {
+		clearInterval(timer);
+		if (signedIn) await uploadResults();
 		accuracy = percentage(correctQuestions, questionHistory.length);
 		setTimeout(() => (loadStats = true), 100);
-		console.log(questionHistory);
-		clearInterval(timer);
+		console.log(gamesPlayed);
+		console.log(newBadges);
+		gameEnded = true;
 	}
 
 	function restartGame() {
@@ -142,6 +167,7 @@
 	}
 
 	function startTimer() {
+		questionTimeout = setInterval(()=>{handleTimeout()}, 1000);
 		startTimeStamp = Date.now();
 		endTimeStamp = startTimeStamp + timeRemaining * 1000;
 		timer = setInterval(() => {
@@ -197,28 +223,55 @@
 				<h2>Game Over</h2>
 				{#if loadStats}
 					<div class="stats">
-						<div class="score" transition:fly={{ y: 40, duration: 350, delay: 600 }}>
-							You scored: <AnimatedNumber delay={700} number={gameScore} format={gameScoreFormat} /><br>
-							{#if beatHighscore}
-								And beat your highscore!
-							{/if}
+						<div class="numbers">
+							<div class="title">Results:</div>
+							<div class="score" transition:fly={{ y: 40, duration: 350, delay: 600 }}>
+								You scored: <AnimatedNumber
+									delay={700}
+									number={gameScore}
+									format={gameScoreFormat}
+								/>
+							</div>
+							<div class="highscore" transition:fly={{ y: 40, duration: 350, delay: 1450 }}>
+								{#if beatHighscore}
+									And beat your highscore!
+								{/if}
+							</div>
+
+							<div class="accuracy" transition:fly={{ y: 40, duration: 350, delay: 1920 }}>
+								Accuracy: <AnimatedNumber delay={2320} number={accuracy} format={accuracyFormat} />%
+							</div>
 						</div>
-						<div class="accuracy" transition:fly={{ y: 40, duration: 350, delay: 1450 }}>
-							Accuracy: <AnimatedNumber delay={1920} number={accuracy} format={accuracyFormat} />%
-						</div>
+						{#key newBadges}
+							<div class="badges">
+								<div class="title">New Badges:</div>
+								<div class="badges-list">
+									{#if newBadges.length > 0}
+										{#each newBadges as badge}
+											<div class="badge">
+												<div class="name">{badge.name}</div>
+												<div class="desc">{badge.desc}</div>
+											</div>
+										{/each}
+									{:else}
+										<div class="badge">None</div>
+									{/if}
+								</div>
+							</div>
+						{/key}
 					</div>
 					<br />
 					{#if signedIn}
 						{#if resultsSaved}
 							<div class="server"><i class="fa-solid fa-checkmark" /> Results Saved</div>
 						{:else}
-						<div
-							class="server"
-							aria-busy="true"
-							transition:fly={{ y: 40, duration: 350, delay: 1800 }}
-						>
-							Saving results to your account
-						</div>
+							<div
+								class="server"
+								aria-busy="true"
+								transition:fly={{ y: 40, duration: 350, delay: 1800 }}
+							>
+								Saving results to your account
+							</div>
 						{/if}
 					{:else}
 						<div class="server"><a href="#">Sign In to save your results</a></div>
@@ -234,8 +287,8 @@
 				<EndTable tableData={questionHistory} />
 			</div>
 		{:else}
-			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
-			<Message {messageContent} />
+			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" {timeoutIndex}/>
+			<Message {messageContent}/>
 			<CountryInput bind:selectedCountry />
 		{/if}
 	</main>
@@ -252,5 +305,23 @@
 	}
 	main {
 		overflow-y: hidden;
+	}
+	.title {
+		margin-bottom: 20px;
+		font-weight: 600;
+	}
+	.stats {
+		width: max-content;
+		margin: auto;
+		display: grid;
+		gap: 3rem;
+		grid-template-columns: max-content 1fr;
+		text-align: left;
+	}
+	.badges-list {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		text-align: left;
 	}
 </style>
