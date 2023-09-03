@@ -20,10 +20,12 @@
 		}
 	}
 
+	const skip = throttle(()=>{
+		selectedCountry="Pass";
+	},1500)
+
 	const handleSubmit = throttle(() => {
-		if (!enteredCountry) {
-			selectedCountry = 'Pass';
-			enteredCountry = '';
+		if (enteredCountry == "") {
 			return;
 		}
 		const searchResult = countries.find((e) => clean(e.name) == clean(enteredCountry));
@@ -39,11 +41,6 @@
 		timeoutIndex = 10;
 	}, 700);
 
-	function handleInputChange() {
-		if (enteredCountry == '') {
-			countryInvalid = null;
-		}
-	}
 
 	let plainCountries = countriesPlainList();
 
@@ -76,7 +73,7 @@
 			bind:selectedItem={enteredCountry}
 		/>
 	{/key}
-	<button class="next-button" on:click={handleSubmit}>Next</button>
+	<button class="next-button outline secondary" on:click={skip}>Skip</button>
 </form>
 
 <style>
