@@ -68,7 +68,7 @@
 	<!-- svelte-ignore a11y-autofocus -->
 	{#key autocompletekey}
 		<AutoComplete
-			maxItemsToShowInList="3"
+			maxItemsToShowInList=5
 			inputClassName="country-input"
 			autofocus
 			placeholder="Enter Country..."

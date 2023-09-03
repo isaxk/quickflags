@@ -21,11 +21,11 @@
 		position: relative;
 	}
 	.flag-image {
-		height: 300px;
+		height: 200px;
 	}
     @media screen and (max-width: 570px) {
         .flag-image, .flag-image-container {
-            height: 150px;
+            height: 120px;
         }
     }
 </style>

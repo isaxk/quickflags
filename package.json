@@ -24,6 +24,7 @@
 		"lodash": "^4.17.21",
 		"simple-svelte-autocomplete": "^2.5.2",
 		"svelecte": "^3.16.4",
+		"svelte-headlessui": "^0.0.25",
 		"typescript": "^5.2.2"
 	}
 }

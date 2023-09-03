@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 	import { slide, fly } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import { invalidateAll } from "$app/navigation";
+	import { invalidateAll } from '$app/navigation';
 
 	import { initializeApp } from 'firebase/app';
 	import {
@@ -26,6 +26,7 @@
 	import { firebaseConfig } from '$lib/firebase';
 	import AnimatedNumber from '../../lib/components/AnimatedNumber.svelte';
 	import EndGameStats from '../../lib/components/EndGameStats.svelte';
+	import { onMount } from 'svelte';
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
 	const db = getFirestore(app);
@@ -33,7 +34,7 @@
 
 	let signedIn = false;
 	let profileImageURL = null;
-	let selectedCountry = "";
+	let selectedCountry = '';
 	let gameScore = 0;
 	let timeRemaining = 45;
 	let questionHistory = [];
@@ -126,7 +127,6 @@
 		startTimeStamp = Date.now();
 		endTimeStamp = startTimeStamp + timeRemaining * 1000;
 		timer = setInterval(() => {
-			document.body.scrollIntoView();
 			if (Date.now() >= endTimeStamp + 100) return;
 			if (Date.now() >= endTimeStamp) {
 				endGame();
@@ -139,10 +139,11 @@
 	}
 
 	function handleSelectedCounty(e) {
+		if (gameEnded) return;
 		if (browser) {
 			document.body.scrollIntoView();
 		}
-		if (e=="") return;
+		if (e == '') return;
 		if (e) {
 			var correct = false;
 			if (clean(e) == clean(currentCountyData.name) || clean(e) == clean(currentCountyData.short)) {
@@ -163,9 +164,9 @@
 		}
 	}
 
-	if (browser) {
+	onMount(() => {
 		startTimer();
-	}
+	});
 
 	$: handleSelectedCounty(selectedCountry);
 </script>
@@ -190,7 +191,7 @@
 				<EndTable tableData={questionHistory} />
 			</div>
 		{:else}
-			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.webp" />
+			<FlagImage src="https://flagcdn.com/w320/{currentCountyData.code.toLowerCase()}.webp" />
 			<Message {messageContent} />
 			<CountryInput bind:selectedCountry />
 		{/if}
