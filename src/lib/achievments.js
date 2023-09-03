@@ -59,3 +59,22 @@ export function getUnlockedBadges(gamesPlayed, highscore) {
     }
     return unlockedAchievments;
 }
+
+export function getNewBadges(gamesPlayed, highscore) {
+    var unlockedAchievments = [];
+    for (let badge of achievmentsList) {
+        var badgeType = badge(0).type;
+        var badgeData;
+
+        if (badgeType == 'gamesplayed') {
+            badgeData = badge(gamesPlayed);
+        }
+        if (badgeData) {
+            if (badgeData.isNew === true) {
+                unlockedAchievments.push(badgeData);
+                /* badgeData.isNew = gamesPlayed<badgeData.threshold+1; */
+            }
+        }
+    }
+    return unlockedAchievments;
+}

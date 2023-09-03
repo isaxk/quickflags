@@ -1,7 +1,7 @@
 <script>
 	import AnimatedNumber from './AnimatedNumber.svelte';
 	import { gameScoreFormat, accuracyFormat } from '$lib/formats.js';
-	import { getUnlockedBadges } from '../achievments.js';
+	import { getNewBadges, getUnlockedBadges } from '../achievments.js';
 	import { fly } from 'svelte/transition';
 	import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 	import { initializeApp } from 'firebase/app';
@@ -52,14 +52,7 @@
 				});
 			}
 		});
-		unlockedBadges = getUnlockedBadges(gamesPlayed, 0);
-		if (unlockedBadges.length > 0) {
-			for (var i = 0; i < unlockedBadges.length; i++) {
-				if (unlockedBadges[i].isNew === true) {
-					newBadges.push(unlockedBadges[i]);
-				}
-			}
-		}
+		newBadges = getNewBadges(gamesPlayed, 0)
 		resultsSaved = true;
 	}
     if(signedIn) uploadResults();
