@@ -66,13 +66,15 @@
 	<div class="left">
 		<div class="title"><i class="fa-solid fa-chart-simple" /> Stats:</div>
 		{#key (highscore, gamesPlayed)}
-			<div class="scores">
-				<div class="title">Games played:</div>
-				<AnimatedNumber number={gamesPlayed} format={gamesPlayedFormat} />
-			</div>
-			<div class="games" aria-disabled="true">
-				<div class="title">Highest Score:</div>
-				<AnimatedNumber number={highscore} format={gameScoreFormat} />
+			<div class="data">
+				<div class="scores">
+					<div class="title">Games played:</div>
+					<AnimatedNumber number={gamesPlayed} format={gamesPlayedFormat} />
+				</div>
+				<div class="games" aria-disabled="true">
+					<div class="title">Highest Score:</div>
+					<AnimatedNumber number={highscore} format={gameScoreFormat} />
+				</div>
 			</div>
 		{/key}
 	</div>
@@ -100,7 +102,16 @@
 		display: grid;
 		gap: 3rem;
 		display: grid;
-		grid-template-columns: max-content 1fr;
+		grid-template-columns: 1fr 2fr;
+	}
+	@media screen and (max-width: 530px) {
+		.stats {
+			grid-template-columns: 1fr;
+		}
+	}
+	.data {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	}
 	.row-1 {
 		display: grid;
@@ -114,8 +125,8 @@
 		margin-top: 20px;
 		font-size: 24px;
 	}
-	.row-3 .title {
-		margin-bottom: 40px;
+	.right .title {
+		margin-bottom: 20px;
 	}
 	.badges {
 	}
@@ -132,7 +143,7 @@
 	}
 	.achievments {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 		gap: 1rem;
 	}
 	.row-3 {

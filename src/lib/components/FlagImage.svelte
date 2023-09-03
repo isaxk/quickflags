@@ -13,6 +13,7 @@
 <style>
 	.flag-image-container {
 		width: 500px;
+		max-width: 100%;
 		margin: auto;
 		height: 300px;
 		display: grid;
