@@ -112,6 +112,7 @@
 	.data {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 0.5rem;
 	}
 	.row-1 {
 		display: grid;

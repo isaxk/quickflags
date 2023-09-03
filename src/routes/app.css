@@ -1,13 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
 
-html, body {
-    height: 100%;
-}
 
 .app {
     width: 750px;
-    max-width: 100%;
-    height: 100vh;
     margin: auto;
     padding: 0px 20px;
     background-color: var(--background-color);
