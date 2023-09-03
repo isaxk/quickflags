@@ -36,7 +36,7 @@
 			return;
             // test
 		}
-		window.setTimeout(incrementNumber, minimate(8, number/3000));
+		window.setTimeout(incrementNumber, minimate(15, number/3000));
 	}
 
 	window.setTimeout(incrementNumber, delay);

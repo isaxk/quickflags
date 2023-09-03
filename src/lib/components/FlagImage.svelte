@@ -2,17 +2,12 @@
 	import { slide } from 'svelte/transition';
 
 	export let src;
-
-	export let timeoutIndex;
 </script>
 
 <div class="flag-image-container">
 	{#key src}
 		<img in:slide={{ y: 40, duration: 350 }} out:slide={{ y: 40, duration: 300 }} class="flag-image" {src} alt={src} />
 	{/key}
-	<div class="timeout-index">
-		{timeoutIndex}
-	</div>
 </div>
 
 <style>
@@ -32,9 +27,4 @@
             height: 150px;
         }
     }
-	.timeout-index {
-		position: absolute;
-		right: 0px;
-		bottom: 0px;
-	}
 </style>
