@@ -52,4 +52,8 @@
 			background-color: #a3ffa3;
 		}
 	}
+
+	img {
+		max-width: 75px;
+	}
 </style>
