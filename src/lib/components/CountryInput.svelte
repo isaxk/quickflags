@@ -68,7 +68,7 @@
 	<!-- svelte-ignore a11y-autofocus -->
 	{#key autocompletekey}
 		<AutoComplete
-			maxItemsToShowInList="4"
+			maxItemsToShowInList=4
 			inputClassName="country-input"
 			autofocus
 			placeholder="Enter Country..."
@@ -93,7 +93,9 @@
 		display: inline;
 		width: max-content;
 	}
-	.container {
-		margin-bottom: 200px;
+	@media screen and (min-width: 570px) {
+		.container {
+			margin-bottom: 300px;
+		}
 	}
 </style>
