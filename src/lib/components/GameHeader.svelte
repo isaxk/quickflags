@@ -15,7 +15,7 @@
 </script>
 
 <header>
-    <h3>FlameFlags</h3>
+    <h3>QuickFlags</h3>
     <div class="data">
         <div class="score">{gameScoreFormat.format(gameScore)}</div>
         <div class="time-remaining">{timeRemainingFormat.format(timeRemaining)}</div>
