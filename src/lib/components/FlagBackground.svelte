@@ -18,7 +18,7 @@
 		class="flags"
 		in:fade={{ duration: 750, delay: 250 }}
 		out:fade={{ duration: 750 }}
-		style="background-image: url(/bg{shuffledCountries}.png);"
+		style="background-image: url(/bg{shuffledCountries}.webp);"
 	/>
 {/key}
 

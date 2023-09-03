@@ -190,7 +190,7 @@
 				<EndTable tableData={questionHistory} />
 			</div>
 		{:else}
-			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.svg" />
+			<FlagImage src="/flags/{currentCountyData.code.toLowerCase()}.webp" />
 			<Message {messageContent} />
 			<CountryInput bind:selectedCountry />
 		{/if}

@@ -17,7 +17,7 @@
 			{#each tableData as question, i}
 				<tr>
 					<td>{i + 1}.</td>
-					<td><img src="/flags/{question.code.toLowerCase()}.svg" alt="Flag" /></td>
+					<td><img src="/flags/{question.code.toLowerCase()}.webp" alt="Flag" /></td>
 					<td>{question.name}</td>
                     {#if question.answered == "Pass"}
                     <td>{question.answered}</td>
