@@ -39,8 +39,12 @@
 	
 </script>
 
+<svelte:head>
+	<title>QuickFlags</title>
+</svelte:head>
+
 <header>
-	<h3>FlameFlags</h3>
+	<h3>QuickFlags</h3>
 	<div class="right">
 		{#if signedIn}
 			<a href="#" on:click={() => signOut(auth)} class="secondary outline" role="button"
