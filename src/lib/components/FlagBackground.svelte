@@ -10,7 +10,7 @@
 		if (shuffledCountries == 4) {
 			shuffledCountries = 1;
 		}
-	}, 5000);
+	}, 3000);
 </script>
 
 {#key shuffledCountries}
