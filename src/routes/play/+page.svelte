@@ -171,6 +171,8 @@
 	$: handleSelectedCounty(selectedCountry);
 </script>
 
+<svelte:head><title>Playing Quick Flags</title></svelte:head>
+
 <GameHeader {timeRemaining} {gameScore} {profileImageURL} />
 
 {#key gameEnded}

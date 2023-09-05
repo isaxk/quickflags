@@ -41,6 +41,7 @@
 
 <svelte:head>
 	<title>QuickFlags</title>
+	<meta name="description" content="The fast-paced flag memory game. Name as many flags as you can in 45 seconds.">
 </svelte:head>
 
 <header>
