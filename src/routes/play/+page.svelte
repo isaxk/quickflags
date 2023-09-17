@@ -13,6 +13,8 @@
 	import { flip } from 'svelte/animate';
 	import { invalidateAll } from '$app/navigation';
 
+	
+
 	import { initializeApp } from 'firebase/app';
 	import {
 		getAuth,
@@ -121,9 +123,9 @@
 	}
 
 	function startTimer() {
-		questionTimeout = setInterval(() => {
+		/* questionTimeout = setInterval(() => {
 			handleTimeout();
-		}, 1000);
+		}, 1000); */
 		startTimeStamp = Date.now();
 		endTimeStamp = startTimeStamp + timeRemaining * 1000;
 		timer = setInterval(() => {

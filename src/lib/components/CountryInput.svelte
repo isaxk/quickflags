@@ -6,6 +6,26 @@
 	import { onMount } from 'svelte';
 	import { clean } from '$lib/text';
 
+	import Keyboard from 'svelte-keyboard';
+
+	let innerWidth = 0;
+	let innerHeight = 0;
+
+	let boxvalue = '';
+
+	const onKeydown = (event) => {
+		console.log(event.detail);
+		if (event.detail === 'Backspace') {
+			enteredCountry = enteredCountry.substring(0, enteredCountry.length - 1);
+		} else if (event.detail === 'Enter') {
+			handleSubmit(enteredCountry);
+		} else if (event.detail === 'Space') {
+			enteredCountry = enteredCountry + '';
+		} else {
+			enteredCountry += event.detail;
+		}
+	};
+
 	export let selectedCountry = null;
 	let enteredCountry = '';
 	let countryInvalid = null;
@@ -20,12 +40,12 @@
 		}
 	}
 
-	const skip = throttle(()=>{
-		selectedCountry="Pass";
-	},1500)
+	const skip = throttle(() => {
+		selectedCountry = 'Pass';
+	}, 1500);
 
 	const handleSubmit = throttle(() => {
-		if (enteredCountry == "") {
+		if (enteredCountry == '') {
 			return;
 		}
 		const searchResult = countries.find((e) => clean(e.name) == clean(enteredCountry));
@@ -39,8 +59,7 @@
 			countryInvalid = true;
 		}
 		timeoutIndex = 10;
-	}, 700);
-
+	}, 300);
 
 	let plainCountries = countriesPlainList();
 
@@ -57,24 +76,37 @@
 	onMount(() => {
 		let timeoutFunc = window.setInterval(handleTimeout, 1000);
 	});
-
-	$: handleSubmit(enteredCountry);
 </script>
 
-<form class="container">
+<svelte:window bind:innerWidth bind:innerHeight />
+
+<form class="container" on:submit={handleSubmit(enteredCountry)}>
 	<!-- svelte-ignore a11y-autofocus -->
 	{#key autocompletekey}
-		<AutoComplete
+		<!-- <AutoComplete
 			maxItemsToShowInList=4
 			inputClassName="country-input"
 			autofocus
 			placeholder="Enter Country..."
 			items={plainCountries}
 			bind:selectedItem={enteredCountry}
-		/>
+		/> -->
+		{#if innerWidth < 600}
+			<input readonly bind:value={enteredCountry} />
+		{:else}
+			<input autofocus bind:value={enteredCountry} />
+		{/if}
 	{/key}
-	<button class="next-button outline secondary" on:click={skip}>Skip</button>
+	<button class="next-button outline secondary" type="submit">Skip</button>
 </form>
+{#if innerWidth < 600}
+<Keyboard
+	--background="transparent"
+	--border="1px solid var(--form-element-border-color)"
+	--color="var(--h3-color) !important"
+	on:keydown={onKeydown}
+/>
+{/if}
 
 <style>
 	.container {
@@ -90,9 +122,5 @@
 		display: inline;
 		width: max-content;
 	}
-	@media screen and (min-width: 570px) {
-		.container {
-			margin-bottom: 300px;
-		}
-	}
+	
 </style>

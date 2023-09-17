@@ -26,3 +26,7 @@ a .fa-solid, button .fa-solid {
 .country-input {
     padding: 15px 20px !important;
 }
+
+.key {
+    color: var(--h3-color) !important;
+}
