@@ -40,7 +40,7 @@
 		timeoutIndex = timeoutIndex - 1;
 		if (timeoutIndex <= 0) {
 			timeoutIndex = 15;
-			enteredCountry="";
+			enteredCountry = "";
 			selectedCountry = 'Pass';
 		}
 	}
