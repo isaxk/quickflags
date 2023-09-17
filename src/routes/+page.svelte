@@ -47,7 +47,7 @@
 <header>
 	<div class="left">
 		<h3>QuickFlags</h3>
-		<div class="creator">by isaxk</div>
+		<div class="creator">by <a href="https://www.isaxk.com">isaxk</a></div>
 	</div>
 	
 	<div class="right">
