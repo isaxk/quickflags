@@ -39,25 +39,16 @@
 	export let messageContent = '';
 	let enteredCountry = '';
 	let countryInvalid = null;
-	let timeoutIndex = 15;
 	let autocompletekey = 0;
 
-	function handleTimeout() {
-		timeoutIndex = timeoutIndex - 1;
-		if (timeoutIndex <= 0) {
-			timeoutIndex = 15;
-			enteredCountry = '';
-			selectedCountry = 'Pass';
-		}
-	}
 
 	const skip = throttle(() => {
 		selectedCountry = 'Pass';
 	}, 1500);
 
 	const handleSubmit = throttle((val) => {
-		if (val == '') {
-			selectedCountry = 'Pass!';
+		if (val === '') {
+			selectedCountry = 'Pass';
 			return;
 		}
 		const searchResult = countries.find((e) => clean(e.name) == clean(val));
@@ -70,7 +61,6 @@
 		} else {
 			countryInvalid = true;
 		}
-		timeoutIndex = 15;
 	}, 300);
 
 	let plainCountries = countriesPlainList();
@@ -91,11 +81,6 @@
 		return plain;
 	}
 
-	let timeoutFunc;
-
-	onMount(() => {
-		let timeoutFunc = window.setInterval(handleTimeout, 1000);
-	});
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -153,7 +138,7 @@
 
 <style>
 	.container {
-		padding: 40px 0px;
+		padding: 20px 0px;
 		width: 550px;
 		max-width: 100%;
 		margin: -20px auto;

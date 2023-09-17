@@ -14,8 +14,6 @@
 	import { flip } from 'svelte/animate';
 	import { invalidateAll } from '$app/navigation';
 
-	
-
 	import { initializeApp } from 'firebase/app';
 	import {
 		getAuth,
@@ -141,23 +139,30 @@
 		}, 10);
 	}
 
-	const handleSelectedCounty = throttle((e)=>{ 
+	const handleSelectedCounty = throttle((e) => {
 		if (gameEnded) return;
 		if (browser) {
 			document.body.scrollIntoView();
 		}
+		console.log(e);
 		if (e == '') return;
 		if (e) {
 			var correct = false;
 			if (clean(e) == clean(currentCountyData.name) || clean(e) == clean(currentCountyData.short)) {
-				sendMessage("Correct");
+				sendMessage('Correct! (+4000)');
 				gameScore += 4000;
 				correctQuestions++;
 				correct = true;
-			} else if (e == 'Pass') {
-				sendMessage("Incorrect!");
+			} else if (e === 'Pass') {
+				endTimeStamp = endTimeStamp - 2000;
+				sendMessage('Passed! (-2 seconds)');
 			} else {
-				sendMessage("Incorrect!");
+				if (gameScore >= 6000) {
+					sendMessage('Incorrect! (-500)');
+					gameScore -= 500;
+				} else {
+					sendMessage('Incorrect!');
+				}
 			}
 			currentCountyData.isCorrect = correct;
 			currentCountyData.answered = e;
@@ -165,7 +170,7 @@
 			selectedCountry = null;
 			nextCounty();
 		}
-	},300);
+	}, 300);
 
 	onMount(() => {
 		startTimer();
@@ -197,8 +202,8 @@
 			</div>
 		{:else}
 			<FlagImage src="https://flagcdn.com/w320/{currentCountyData.code.toLowerCase()}.webp" />
-			
-			<CountryInput bind:selectedCountry {messageContent}/>
+
+			<CountryInput bind:selectedCountry {messageContent} />
 		{/if}
 	</main>
 {/key}

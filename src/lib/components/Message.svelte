@@ -14,8 +14,8 @@
 
 <style>
 	.message {
-		height: 40px;
-		margin-top: 40px;
+		height: 60px;
+		margin-top: 60px;
 		display: grid;
 		place-items: center;
 		padding-top: 10px;
