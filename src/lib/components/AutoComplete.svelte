@@ -5,21 +5,20 @@
 	import { clean } from '$lib/text';
 	export let value = '';
 	export let countries = '';
-    export let complete = (val) => {}
+	export let complete = (val) => {};
 	let results = [];
 	if (value.length > 0) {
 		results = countries.filter((o) => clean(o.name).includes(value));
 	}
-
 </script>
 
-<div class="auto-complete">
-	{#key results}
-		{#if results.length > 0}
+{#if results.length > 0}
+	<div class="auto-complete">
+		{#key results}
 			{#each results.splice(0, 5) as result, i}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div class="item" on:click={()=>complete(result.name)}>
+				<div class="item" on:click={() => complete(result.name)}>
 					<div class="left">
 						<div class="key">
 							{i + 1}
@@ -28,10 +27,9 @@
 					<div class="right">{result.name}</div>
 				</div>
 			{/each}
-		{/if}
-	{/key}
-</div>
-
+		{/key}
+	</div>
+{/if}
 <div class="spacer" />
 
 <style>
@@ -42,19 +40,19 @@
 		background-color: #00000072;
 		border-radius: 5px;
 		min-width: 300px;
-        padding: 5px;
+		padding: 5px;
 	}
 	.item {
 		padding: 10px 10px;
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		gap: 1rem;
-        border-bottom: 1px solid var(--muted-border-color);
-        transition: .3s;
+		border-bottom: 1px solid var(--muted-border-color);
+		transition: 0.3s;
 	}
-    .item:hover {
-        background-color: #ffffff0c;
-    }
+	.item:hover {
+		background-color: #ffffff0c;
+	}
 	.key {
 		background: linear-gradient(#3a3a3a, #595959);
 		width: 30px;
