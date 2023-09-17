@@ -14,14 +14,15 @@
 
 <style>
 	.message {
-		height: 20px;
+		height: 40px;
+		margin-top: 40px;
 		display: grid;
 		place-items: center;
 		padding-top: 10px;
 	}
 	@media screen and (max-width: 570px) {
-        .message {
+		.message {
 			height: 10px;
 		}
-    }
+	}
 </style>

@@ -29,4 +29,6 @@ a .fa-solid, button .fa-solid {
 
 .key {
     color: var(--h3-color) !important;
+    box-sizing: border-box;
+    padding: 0px;
 }

@@ -149,14 +149,14 @@
 		if (e) {
 			var correct = false;
 			if (clean(e) == clean(currentCountyData.name) || clean(e) == clean(currentCountyData.short)) {
-				sendMessage(currentCountyData.name + ' was correct!');
+				sendMessage("Correct");
 				gameScore += 4000;
 				correctQuestions++;
 				correct = true;
 			} else if (e == 'Pass') {
-				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
+				sendMessage("Incorrect!");
 			} else {
-				sendMessage('Incorrect! Answer was ' + currentCountyData.name);
+				sendMessage("Incorrect!");
 			}
 			currentCountyData.isCorrect = correct;
 			currentCountyData.answered = e;
@@ -196,8 +196,8 @@
 			</div>
 		{:else}
 			<FlagImage src="https://flagcdn.com/w320/{currentCountyData.code.toLowerCase()}.webp" />
-			<Message {messageContent} />
-			<CountryInput bind:selectedCountry />
+			
+			<CountryInput bind:selectedCountry {messageContent}/>
 		{/if}
 	</main>
 {/key}
