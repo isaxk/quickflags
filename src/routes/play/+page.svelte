@@ -5,6 +5,7 @@
 	import EndTable from '$lib/components/EndTable.svelte';
 	import countries from '$lib/countries';
 	import { clean } from '$lib/text';
+	import throttle from 'lodash/throttle';
 	import { gameScoreFormat, accuracyFormat } from '$lib/formats';
 	import Message from '$lib/components/Message.svelte';
 	import { getUnlockedBadges } from '$lib/achievments.js';
@@ -140,7 +141,7 @@
 		}, 10);
 	}
 
-	function handleSelectedCounty(e) {
+	const handleSelectedCounty = throttle((e)=>{ 
 		if (gameEnded) return;
 		if (browser) {
 			document.body.scrollIntoView();
@@ -164,7 +165,7 @@
 			selectedCountry = null;
 			nextCounty();
 		}
-	}
+	},300);
 
 	onMount(() => {
 		startTimer();

@@ -35,8 +35,6 @@
 		}
 	}, 100);
 
-
-
 	export let selectedCountry = null;
 	export let messageContent = '';
 	let enteredCountry = '';
@@ -78,12 +76,12 @@
 	let plainCountries = countriesPlainList();
 
 	const checkForNumber = (event) => {
-		if(isNumeric(event.key)) {
+		if (isNumeric(event.key)) {
 			var results = countries.filter((o) => clean(o.name).includes(clean(enteredCountry)));
-			enteredCountry = results[event.key-1].name;
+			enteredCountry = results[event.key - 1].name;
 			event.preventDefault();
 		}
-	}
+	};
 
 	function countriesPlainList() {
 		var plain = [];
@@ -106,7 +104,14 @@
 		<Message {messageContent} />
 		<form class="container" on:submit={handleSubmit(enteredCountry)}>
 			{#key enteredCountry}
-				<AutoComplete {countries} value={clean(enteredCountry)} complete={(val)=>{handleSubmit(val)}}/>
+				<AutoComplete
+					{countries}
+					value={clean(enteredCountry)}
+					complete={(v) => {
+						enteredCountry = v;
+						handleSubmit(v);
+					}}
+				/>
 			{/key}
 			<!-- svelte-ignore a11y-autofocus -->
 
