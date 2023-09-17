@@ -168,6 +168,8 @@
 			currentCountyData.answered = e;
 			questionHistory.push(currentCountyData);
 			selectedCountry = null;
+			clearInterval(timer);
+			startTimer();
 			nextCounty();
 		}
 	}, 300);
