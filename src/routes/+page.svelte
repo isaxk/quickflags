@@ -45,7 +45,11 @@
 </svelte:head>
 
 <header>
-	<h3>QuickFlags</h3>
+	<div class="left">
+		<h3>QuickFlags</h3>
+		<div class="creator">by isaxk</div>
+	</div>
+	
 	<div class="right">
 		{#if signedIn}
 			<a href="#" on:click={() => signOut(auth)} class="secondary outline" role="button"
@@ -158,5 +162,8 @@
 	}
 	main {
 		height: 100vh;
+	}
+	.left .creator {
+		font-size: 15px;
 	}
 </style>
