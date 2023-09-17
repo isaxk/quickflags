@@ -164,6 +164,7 @@
 		height: 100vh;
 	}
 	.left .creator {
-		font-size: 15px;
+		font-size: 18px;
+		padding-left: 2.5;
 	}
 </style>
