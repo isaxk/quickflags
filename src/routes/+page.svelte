@@ -36,12 +36,26 @@
 			authenticated = true;
 		}, 500);
 	});
-	
+
+	function playAsGuest() {
+		if (
+			confirm(
+				"Are sure you want to remain un-logged in? \n\nIt's as simple as linking your google account and will give you all these benifts:\n - Achievments\n - Highscores\n - Stats"
+			)
+		) {
+			location = 'play';
+		} else {
+			return;
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>QuickFlags</title>
-	<meta name="description" content="The fast-paced flag memory game. Name as many flags as you can in 45 seconds.">
+	<meta
+		name="description"
+		content="The fast-paced flag memory game. Name as many flags as you can in 45 seconds."
+	/>
 </svelte:head>
 
 <header>
@@ -49,11 +63,10 @@
 		<h3>QuickFlags</h3>
 		<div class="creator">by <a href="https://www.isaxk.com">isaxk</a></div>
 	</div>
-	
+
 	<div class="right">
 		{#if signedIn}
-			<a href="#" on:click={() => signOut(auth)} class="secondary outline" role="button"
-				>Sign Out</a
+			<a href="#" on:click={() => signOut(auth)} class="secondary outline" role="button">Sign Out</a
 			>
 			<div class="profile-image"><img src={profileImageURL} alt="Signed In" /></div>
 		{/if}
@@ -71,21 +84,32 @@
 								><i class="fa-solid fa-play" /> Play</a
 							>
 						{:else}
-							<a href="#" on:click={signIn} class="play-button" role="button"
-								><i class="fa-solid fa-right-to-bracket" /> Sign In</a
+							<a href="#" on:click={signIn} class="play-button" role="button">
+								<div class="left">
+									<i class="fa-brands fa-google" />
+								</div>
+								<div class="right">
+									<div class="main">Sign In</div>
+									<div class="google">with Google</div>
+								</div>
+							</a>
+							<br />
+							<a
+								href="#"
+								on:click={() => {
+									return playAsGuest();
+								}}>or play as guest</a
 							>
-							<br>
-							<a href="play">or play as guest</a>
 						{/if}
 					</div>
 				</div>
 				<FlagBackground />
 			</div>
 			{#if signedIn}
-			<Stats {app} />
+				<Stats {app} />
 			{:else}
-			<br><br>
-			<h3>Sign In to see your stats</h3>
+				<br /><br />
+				<h3>Sign In to see your stats</h3>
 			{/if}
 		{:else}
 			<div class="play-hero-container">
@@ -94,12 +118,26 @@
 			</div>
 		{/if}
 	</main>
+
+	<footer>
+		<div class="left">&copy; isaxk.com 2023</div>
+		<div class="right">
+			<a href="/info/privacy">Privacy Policy</a>
+			<a href="https://www.isaxk.com">Creator</a>
+			<a href="#">Report a bug</a>
+		</div>
+	</footer>
 {/key}
 
 <style>
 	.play-button {
 		min-width: 100px;
 		border: 1px solid #11191f;
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		align-items: center;
+		padding: 10px 20px;
+		margin-bottom: -20px;
 	}
 	.play-hero-container {
 		width: 100%;
@@ -148,17 +186,21 @@
 	.profile-image {
 		padding-top: 2.5px;
 	}
-	.right {
+	header .right {
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		gap: 1rem;
 	}
-	.right a {
+	header .right a {
 		padding: 12px 16px;
 		font-size: 16px;
 	}
+	.fa-google,
 	.fa-play {
 		margin-right: 10px;
+	}
+	.fa-google {
+		font-size: 20px;
 	}
 	main {
 		height: 100vh;
@@ -166,5 +208,24 @@
 	.left .creator {
 		font-size: 18px;
 		padding-left: 2.5;
+	}
+	footer {
+		width: 100%;
+		height: 100px;
+		padding: 0px 0px;
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		align-items: center;
+		gap: 1rem;
+		font-size: 16px;
+	}
+	footer .right {
+		text-align: right;
+	}
+	footer .right a {
+		margin-left: 10px;
+	}
+	.google {
+		font-size: 10px;
 	}
 </style>

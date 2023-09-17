@@ -16,4 +16,3 @@
 	</div>
 {/key}
 
-<footer />
