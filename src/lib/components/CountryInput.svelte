@@ -1,5 +1,5 @@
 <script>
-	import AutoComplete from 'simple-svelte-autocomplete';
+	import AutoComplete from '$lib/components/AutoComplete.svelte';
 
 	import countries from '$lib/countries';
 	import Message from '$lib/components/Message.svelte';
@@ -7,9 +7,15 @@
 	import { onMount } from 'svelte';
 	import { clean } from '$lib/text';
 
+	function isNumeric(str) {
+		if (typeof str != 'string') return false; // we only process strings!
+		return (
+			!isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+			!isNaN(parseFloat(str))
+		); // ...and ensure strings of whitespace fail
+	}
+
 	import Keyboard from 'svelte-keyboard';
-
-
 
 	let innerWidth = 0;
 	let innerHeight = 0;
@@ -29,8 +35,10 @@
 		}
 	}, 100);
 
+
+
 	export let selectedCountry = null;
-	export let messageContent = "";
+	export let messageContent = '';
 	let enteredCountry = '';
 	let countryInvalid = null;
 	let timeoutIndex = 15;
@@ -40,7 +48,7 @@
 		timeoutIndex = timeoutIndex - 1;
 		if (timeoutIndex <= 0) {
 			timeoutIndex = 15;
-			enteredCountry = "";
+			enteredCountry = '';
 			selectedCountry = 'Pass';
 		}
 	}
@@ -49,13 +57,13 @@
 		selectedCountry = 'Pass';
 	}, 1500);
 
-	const handleSubmit = throttle(() => {
-		if (enteredCountry == '') {
+	const handleSubmit = throttle((val) => {
+		if (val == '') {
 			selectedCountry = 'Pass!';
 			return;
 		}
-		const searchResult = countries.find((e) => clean(e.name) == clean(enteredCountry));
-		const shortHandSearchResult = countries.find((e) => clean(e.short) == clean(enteredCountry));
+		const searchResult = countries.find((e) => clean(e.name) == clean(val));
+		const shortHandSearchResult = countries.find((e) => clean(e.short) == clean(val));
 		if (searchResult || shortHandSearchResult) {
 			selectedCountry = enteredCountry;
 			enteredCountry = '';
@@ -68,6 +76,14 @@
 	}, 300);
 
 	let plainCountries = countriesPlainList();
+
+	const checkForNumber = (event) => {
+		if(isNumeric(event.key)) {
+			var results = countries.filter((o) => clean(o.name).includes(clean(enteredCountry)));
+			enteredCountry = results[event.key-1].name;
+			event.preventDefault();
+		}
+	}
 
 	function countriesPlainList() {
 		var plain = [];
@@ -86,10 +102,14 @@
 
 <svelte:window bind:innerWidth bind:innerHeight />
 <div class="keyboard-container">
-	<Message {messageContent} />
-	<form class="container" on:submit={handleSubmit(enteredCountry)}>
-		<!-- svelte-ignore a11y-autofocus -->
-		{#key autocompletekey}
+	<div class="keyboard-inner">
+		<Message {messageContent} />
+		<form class="container" on:submit={handleSubmit(enteredCountry)}>
+			{#key enteredCountry}
+				<AutoComplete {countries} value={clean(enteredCountry)} complete={(val)=>{handleSubmit(val)}}/>
+			{/key}
+			<!-- svelte-ignore a11y-autofocus -->
+
 			<!-- <AutoComplete
 			maxItemsToShowInList=4
 			inputClassName="country-input"
@@ -98,28 +118,32 @@
 			items={plainCountries}
 			bind:selectedItem={enteredCountry}
 		/> -->
-			{#if innerWidth < 600}
-				<input readonly bind:value={enteredCountry} />
-			{:else}
-				<input autofocus bind:value={enteredCountry} />
-			{/if}
-		{/key}
-		{#if enteredCountry.length>0}
-		<button class="next-button primary" type="submit">Next</button>
-		{:else}
-		<button class="next-button outline secondary" type="submit">Skip</button>
+			<div class="grid">
+				{#key autocompletekey}
+					{#if innerWidth < 600}
+						<input readonly bind:value={enteredCountry} />
+					{:else}
+						<input autofocus on:keydown={checkForNumber} bind:value={enteredCountry} />
+					{/if}
+				{/key}
+				{#if enteredCountry.length > 0}
+					<button class="next-button primary" type="submit">Next</button>
+				{:else}
+					<button class="next-button outline secondary" type="submit">Skip</button>
+				{/if}
+			</div>
+		</form>
+		{#if innerWidth < 600}
+			<Keyboard
+				--background="transparent"
+				--border="1px solid var(--form-element-border-color)"
+				--color="var(--h3-color) !important"
+				--margin="0.125rem"
+				layout="wordle"
+				on:keydown={onKeydown}
+			/>
 		{/if}
-	</form>
-	{#if innerWidth < 600}
-		<Keyboard
-			--background="transparent"
-			--border="1px solid var(--form-element-border-color)"
-			--color="var(--h3-color) !important"
-			--margin="0.125rem"
-			layout="wordle"
-			on:keydown={onKeydown}
-		/>
-	{/if}
+	</div>
 </div>
 
 <style>
@@ -128,6 +152,9 @@
 		width: 550px;
 		max-width: 100%;
 		margin: -20px auto;
+		position: relative;
+	}
+	.container .grid {
 		display: grid;
 		grid-template-columns: 1fr max-content;
 		grid-gap: 0.5rem;
@@ -144,5 +171,12 @@
 		position: fixed;
 		bottom: 0px;
 		left: 0px;
+	}
+	.keyboard-inner {
+		position: relative;
+		width: 550px;
+		max-width: 100%;
+		margin: 0px auto;
+		height: 100%;
 	}
 </style>
