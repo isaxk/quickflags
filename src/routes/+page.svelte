@@ -124,7 +124,7 @@
 		<div class="right">
 			<a href="/info/privacy">Privacy Policy</a>
 			<a href="https://www.isaxk.com">Creator</a>
-			<a href="#">Report a bug</a>
+			<a href="/info/flagindex">Flags Index</a>
 		</div>
 	</footer>
 {/key}

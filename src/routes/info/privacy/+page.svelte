@@ -1,6 +1,4 @@
-<header>
-    <a href="/"><i class="fa-solid fa-arrow-left"></i> Back to home page</a>
-</header>
+
 
 <h2>Privacy Policy for QuickFlags</h2>
 
