@@ -42,13 +42,19 @@
 		background-color: #00000072;
 		border-radius: 5px;
 		min-width: 300px;
+        padding: 5px;
 	}
 	.item {
 		padding: 10px 10px;
 		display: grid;
 		grid-template-columns: max-content 1fr;
 		gap: 1rem;
+        border-bottom: 1px solid var(--muted-border-color);
+        transition: .3s;
 	}
+    .item:hover {
+        background-color: #ffffff0c;
+    }
 	.key {
 		background: linear-gradient(#3a3a3a, #595959);
 		width: 30px;
