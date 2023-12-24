@@ -7,15 +7,21 @@
 		onAuthStateChanged,
 		signOut
 	} from 'firebase/auth';
+	import { getAnalytics } from "firebase/analytics";
 	import { firebaseConfig } from '$lib/firebase';
 	import FlagBackground from '$lib/components/FlagBackground.svelte';
 
 	import { fade, slide, fly } from 'svelte/transition';
 	import Stats from '$lib/components/Stats.svelte';
+	import { onMount } from 'svelte';
 
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
 	const provider = new GoogleAuthProvider();
+
+	onMount(()=>{
+		const analytics = getAnalytics(app);
+	})
 
 	let signedIn = false;
 	let profileImageURL;

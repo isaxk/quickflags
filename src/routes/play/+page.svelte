@@ -23,6 +23,8 @@
 		signOut
 	} from 'firebase/auth';
 	import { getFirestore, collection, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+	import { getAnalytics } from "firebase/analytics";
+	
 
 	import { firebaseConfig } from '$lib/firebase';
 	import AnimatedNumber from '../../lib/components/AnimatedNumber.svelte';
@@ -32,7 +34,9 @@
 	const auth = getAuth(app);
 	const db = getFirestore(app);
 	const provider = new GoogleAuthProvider();
-
+	onMount(()=>{
+		const analytics = getAnalytics(app);
+	})
 	let signedIn = false;
 	let profileImageURL = null;
 	let selectedCountry = '';
