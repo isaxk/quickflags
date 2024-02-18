@@ -247,7 +247,11 @@ export default [
 	},
 	{
 		code: 'CI',
+<<<<<<< HEAD
 		name: "Ivory Coast",
+=======
+		name: "Côte d'Ivoire",
+>>>>>>> 3dbfb5f (mvp)
 		short: 'ivory coast',
 		easy: 20
 	},

@@ -10,7 +10,14 @@
 }
 
 body {
+<<<<<<< HEAD
     min-height: 100vh;
+=======
+    font-family: var(--display-font-family);
+    background-color: var(--page-background-color);
+    color: var(--text-color);
+    min-height: 100%;
+>>>>>>> 3dbfb5f (mvp)
 }
 
 html {
@@ -31,8 +38,11 @@ html {
 }
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+<<<<<<< HEAD
 }
 
 .mono {
     font-family: var(--mono-font-family);
+=======
+>>>>>>> 3dbfb5f (mvp)
 }

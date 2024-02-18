@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <script lang="ts">
 	import FlagBackground from "$lib/components/FlagBackground.svelte";
 	import Countup from "svelte-countup";
@@ -93,3 +94,23 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 >>>>>>> 167f551 (Initial Commit)
+=======
+<script lang="ts">
+	import FlagBackground from "$lib/components/FlagBackground.svelte";
+</script>
+
+<FlagBackground>
+	<a href="/play" class="play-button">Play</a>
+</FlagBackground>
+
+<style>
+	.play-button {
+		color: white;
+		background-color: var(--primary-accent-color);
+		padding: 10px 20px;
+		border-radius: 5px;
+		text-decoration: none;
+		font-size: 18px;
+	}
+</style>
+>>>>>>> 3dbfb5f (mvp)
