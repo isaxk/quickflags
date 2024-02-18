@@ -2,6 +2,8 @@
 	import { page } from "$app/stores";
 	import { timeRemaining, score, increment } from "$lib/stores";
 	import { fade, crossfade, slide, fly } from "svelte/transition";
+	import Countup from "svelte-countup";
+	import { browser } from "$app/environment";
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -17,6 +19,12 @@
 		minimumIntegerDigits: 4,
 		maximumFractionDigits: 0,
 	});
+
+	let previousScore = 0;
+
+	$: if(browser) {
+		window.setTimeout(()=>previousScore = $score,1000)
+	};
 </script>
 
 <div class="header-container">
@@ -36,18 +44,24 @@
 						{timeFormat.format($timeRemaining / 1000)}
 					</div>
 					<div class="score">
-						{scoreFormat.format($score)}
+						{#key $score}
+							<span><Countup value={$score} initial={previousScore} duration={250}></Countup></span>
+						{/key}
 						{#key $increment}
-							<div class="scoreincrement" in:fly={{y:300,duration:300}} out:fly={{y:-10,duration:100}}>
+							<div
+								class="scoreincrement"
+								in:fly={{ y: 300, duration: 300 }}
+								out:fly={{ y: -10, duration: 100 }}
+							>
 								{#if $increment != 0}
 									{#if $increment > 0}
-									<span class="positive">
-										+{incrementFormat.format($increment)}
-									</span>
+										<span class="positive">
+											+{incrementFormat.format($increment)}
+										</span>
 									{:else}
-									<span class="negative">
-										-{incrementFormat.format($increment)}
-									</span>
+										<span class="negative">
+											-{incrementFormat.format($increment)}
+										</span>
 									{/if}
 								{/if}
 							</div>
@@ -69,7 +83,8 @@
 		padding: 20px 10px;
 		box-sizing: border-box;
 		display: grid;
-		grid-template-columns: 1fr max-content;
+		grid-template-columns: 3fr 1fr;
+		align-items: center;
 	}
 	.title {
 		font-size: 20px;
@@ -79,6 +94,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 20px;
+		text-align: right;
 	}
 	.right a {
 		color: white;
@@ -88,6 +104,16 @@
 	.score {
 		font-family: var(--mono-font-family);
 		font-size: 18px;
+	}
+	.score {
+		display: grid;
+		align-items: center;
+		position: relative;
+	}
+	.scoreincrement {
+		position: absolute;
+		bottom: -30px;
+		right: 0px;
 	}
 	@media screen and (max-width: 500px) {
 		.header-content {

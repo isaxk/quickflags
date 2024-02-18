@@ -4,9 +4,8 @@
 	import countries from "$lib/countries";
 	import { onDestroy, onMount } from "svelte";
 	import { timeRemaining, score, increment } from "$lib/stores";
-    import { scale } from "svelte/transition";
-    import Countup from "svelte-countup";
-
+	import { scale } from "svelte/transition";
+	import Countup from "svelte-countup";
 
 	let enteredCountry: string = "";
 	let currentCountry: {
@@ -68,6 +67,7 @@
 		window.setTimeout(() => {
 			increment.set(0);
 			score.update((n) => n + v);
+	
 		}, 500);
 	};
 
@@ -75,8 +75,6 @@
 
 	onDestroy(() => {
 		clearInterval(timer);
-		score.set(0);
-		timeRemaining.set(45000);
 	});
 
 	$: if ($timeRemaining <= 0) {
@@ -99,7 +97,11 @@
 </script>
 
 {#if $timeRemaining > 0}
-	<div class="game" out:scale={{ duration: 300, start: 1.02, opacity: 0 }}>
+	<div
+		class="game"
+		out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
+		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
+	>
 		{#if currentCountry}
 			<FlagImage countryCode={currentCountry.code} />
 
@@ -107,24 +109,34 @@
 		{/if}
 	</div>
 {:else}
-	<div class="end" in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}>
+	<div
+		class="end"
+		out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
+		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
+	>
 		<h1>Times Up!</h1>
-        <div class="score">
-            You scored: <span class="scorenumber"><Countup value={$score} duration={1000}/></span>
-        </div>
-		
+		<div class="score">
+			You scored: <span class="scorenumber"
+				><Countup value={$score} duration={1000} /></span
+			>
+		</div>
+		<a href="/" class="btn">Main menu</a>
+		<button on:click={startGame} class="btn">Play Again</button>
 	</div>
 {/if}
 
 <style>
-    .score {
-        font-size: 20px;
-    }
-    .scorenumber {
-        font-family: var(--mono-font-family);
-    }
+	.score {
+		font-size: 20px;
+	}
+	.scorenumber {
+		font-family: var(--mono-font-family);
+	}
 
-    .end {
-        padding: 50px 0px;
-    }
+	.end {
+		padding: 50px 0px;
+	}
+	.game , .end {
+		min-height: 100%;
+	}
 </style>
