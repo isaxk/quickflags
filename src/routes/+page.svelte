@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script lang="ts">
 	import FlagBackground from "$lib/components/FlagBackground.svelte";
 	import Countup from "svelte-countup";
@@ -88,3 +89,7 @@
 		font-size: 80%;
 	}
 </style>
+=======
+<h1>Welcome to SvelteKit</h1>
+<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+>>>>>>> 167f551 (Initial Commit)
