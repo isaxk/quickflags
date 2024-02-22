@@ -38,7 +38,7 @@
 			>
 				{#if $page.url.pathname === "/"}
 					<a href="https://github.com/isaxk/quickflags">GitHub</a>
-					<a href="https://www.isaxk.com">isaxk.com</a>
+					<a href="https:/www.isaxk.com">isaxk.com</a>
 				{:else if $page.url.pathname === "/play" && $timeRemaining > 0}
 					<div class="timeremaining">
 						{timeFormat.format($timeRemaining / 1000)}
