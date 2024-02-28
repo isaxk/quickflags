@@ -17,7 +17,8 @@
 	};
 	let timer: any;
 	let endTime: number;
-	let gameLength:number = 45000;
+	let gameLength: number = 45000;
+	let flagImageKey : number = 0;
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -36,7 +37,9 @@
 	};
 
 	const nextCountry = () => {
+		flagImageKey++;
 		currentCountry = countries[pickRandomCountry()];
+		incorrectPause = false;
 	};
 
 	const startTimer = () => {
@@ -53,11 +56,9 @@
 	const startGame = () => {
 		nextCountry();
 		score.set(0);
-		timeRemaining.set(gameLength)
+		timeRemaining.set(gameLength);
 		window.setTimeout(startTimer, 500);
 	};
-
-	
 
 	const updateScore = (v: number) => {
 		increment.set(0);
@@ -65,7 +66,6 @@
 		window.setTimeout(() => {
 			increment.set(0);
 			score.update((n) => n + v);
-	
 		}, 500);
 	};
 
@@ -81,7 +81,10 @@
 
 	$: console.log(enteredCountry);
 
+	let incorrectPause = false;
+
 	const handleSubmit = (e: any) => {
+		if(incorrectPause) return;
 		if (
 			normalise(enteredCountry) === normalise(currentCountry.name) ||
 			normalise(enteredCountry) === normalise(currentCountry.short)
@@ -89,7 +92,9 @@
 			nextCountry();
 			updateScore(4000);
 		} else {
-			nextCountry();
+			incorrectPause = true;
+			flagImageKey++;
+			window.setTimeout(nextCountry, 1500);
 		}
 	};
 </script>
@@ -101,8 +106,7 @@
 		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
 	>
 		{#if currentCountry}
-			<FlagImage countryCode={currentCountry.code} />
-
+			<FlagImage countryCode={currentCountry.code} {incorrectPause} key={flagImageKey}/>
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
 		{/if}
 	</div>
@@ -113,16 +117,18 @@
 		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
 	>
 		<h1>Times Up!</h1>
-		<div class="score">
+		<h3 class="score">
 			You scored: <span class="scorenumber"
 				><Countup value={$score} duration={1000} /></span
 			>
-		</div>
-		<div class="buttons" in:scale={{duration:500, delay:1500, start: 0.992, opacity: 0 }}>
+		</h3>
+		<div
+			class="buttons"
+			in:scale={{ duration: 500, delay: 1500, start: 0.992, opacity: 0 }}
+		>
 			<a href="/" class="btn outline" role="button">Main menu</a>
 			<button on:click={startGame} class="btn">Play Again</button>
 		</div>
-		
 	</div>
 {/if}
 
@@ -137,7 +143,8 @@
 	.end {
 		padding: 50px 0px;
 	}
-	.game , .end {
+	.game,
+	.end {
 		min-height: 100%;
 	}
 	.buttons {
