@@ -22,30 +22,31 @@
 
 	let previousScore = 0;
 
-	$: if(browser) {
-		window.setTimeout(()=>previousScore = $score,1000)
-	};
+	$: if (browser) {
+		window.setTimeout(() => (previousScore = $score), 1000);
+	}
 </script>
 
 <div class="header-container">
-	<div class="header-content">
-		<div class="title">QuickFlags</div>
+	<nav class="header-content">
+		<ul>
+			<li>QuickFlags</li>
+		</ul>
 		{#key $page.url.pathname}
-			<div
-				class="right"
-				in:fade={{ duration: 100, delay: 101 }}
-				out:fade={{ duration: 100 }}
-			>
+			<ul in:fade={{ duration: 100, delay: 101 }} out:fade={{ duration: 100 }}>
 				{#if $page.url.pathname === "/"}
-					<a href="https://github.com/isaxk/quickflags">GitHub</a>
-					<a href="https:/www.isaxk.com">isaxk.com</a>
+					<li><a href="https://github.com/isaxk/quickflags">GitHub</a></li>
+					<li><a href="https:/www.isaxk.com">isaxk.com</a></li>
 				{:else if $page.url.pathname === "/play" && $timeRemaining > 0}
-					<div class="timeremaining">
+					<li class="timeremaining">
 						{timeFormat.format($timeRemaining / 1000)}
-					</div>
-					<div class="score">
+					</li>
+					<li class="score">
 						{#key $score}
-							<span><Countup value={$score} initial={previousScore} duration={250}></Countup></span>
+							<span
+								><Countup value={$score} initial={previousScore} duration={250}
+								></Countup></span
+							>
 						{/key}
 						{#key $increment}
 							<div
@@ -66,48 +67,29 @@
 								{/if}
 							</div>
 						{/key}
-					</div>
+					</li>
 				{/if}
-			</div>
+			</ul>
 		{/key}
-	</div>
+	</nav>
 </div>
 
 <style>
 	.header-container {
-		height: 80px;
 	}
 	.header-content {
 		max-width: 800px;
 		margin: auto;
 		padding: 20px 10px;
 		box-sizing: border-box;
-		display: grid;
-		grid-template-columns: 3fr 1fr;
-		align-items: center;
 	}
-	.title {
-		font-size: 20px;
-		font-weight: 500;
-	}
-	.right {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 20px;
-		text-align: right;
-	}
-	.right a {
-		color: white;
-		text-decoration: none;
-	}
+
 	.timeremaining,
 	.score {
 		font-family: var(--mono-font-family);
 		font-size: 18px;
 	}
 	.score {
-		display: grid;
-		align-items: center;
 		position: relative;
 	}
 	.scoreincrement {

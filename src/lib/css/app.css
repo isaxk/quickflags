@@ -10,9 +10,6 @@
 }
 
 body {
-    font-family: var(--display-font-family);
-    background-color: var(--page-background-color);
-    color: var(--text-color);
     min-height: 100%;
 }
 

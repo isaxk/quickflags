@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Header from "$lib/components/Header.svelte";
 	import "$lib/css/app.css";
+	import "@picocss/pico";
 	import { scale } from "svelte/transition";
 
 	export let data;

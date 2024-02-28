@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --open --host",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@picocss/pico": "^2.0.3",
 		"svelte-countup": "^0.2.6"
 	}
 }
