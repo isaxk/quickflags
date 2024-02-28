@@ -6,6 +6,7 @@
 	import { timeRemaining, score, increment } from "$lib/stores";
 	import { scale } from "svelte/transition";
 	import Countup from "svelte-countup";
+	import { normalise } from "$lib/text";
 
 	let enteredCountry: string = "";
 	let currentCountry: {
@@ -16,6 +17,7 @@
 	};
 	let timer: any;
 	let endTime: number;
+	let gameLength:number = 45000;
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -38,7 +40,7 @@
 	};
 
 	const startTimer = () => {
-		endTime = Date.now() + 45000;
+		endTime = Date.now() + gameLength;
 		timer = window.setInterval(() => {
 			timeRemaining.set(endTime - Date.now());
 		}, 10);
@@ -51,15 +53,11 @@
 	const startGame = () => {
 		nextCountry();
 		score.set(0);
-		timeRemaining.set(45000);
+		timeRemaining.set(gameLength)
 		window.setTimeout(startTimer, 500);
 	};
 
-	const normalise = (value: string) => {
-		value = value.toLowerCase();
-		value = value.replace(/\s+/g, "");
-		return value;
-	};
+	
 
 	const updateScore = (v: number) => {
 		increment.set(0);
@@ -120,8 +118,11 @@
 				><Countup value={$score} duration={1000} /></span
 			>
 		</div>
-		<a href="/" class="btn">Main menu</a>
-		<button on:click={startGame} class="btn">Play Again</button>
+		<div class="buttons" in:scale={{duration:500, delay:1500, start: 0.992, opacity: 0 }}>
+			<a href="/" class="btn outline" role="button">Main menu</a>
+			<button on:click={startGame} class="btn">Play Again</button>
+		</div>
+		
 	</div>
 {/if}
 
@@ -138,5 +139,8 @@
 	}
 	.game , .end {
 		min-height: 100%;
+	}
+	.buttons {
+		padding: 20px 0px;
 	}
 </style>

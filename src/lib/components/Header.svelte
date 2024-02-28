@@ -33,7 +33,7 @@
 			<li>QuickFlags</li>
 		</ul>
 		{#key $page.url.pathname}
-			<ul in:fade={{ duration: 100, delay: 101 }} out:fade={{ duration: 100 }}>
+			<ul>
 				{#if $page.url.pathname === "/"}
 					<li><a href="https://github.com/isaxk/quickflags">GitHub</a></li>
 					<li><a href="https:/www.isaxk.com">isaxk.com</a></li>
@@ -44,8 +44,7 @@
 					<li class="score">
 						{#key $score}
 							<span
-								><Countup value={$score} initial={previousScore} duration={250}
-								></Countup></span
+								>{scoreFormat.format($score)}</span
 							>
 						{/key}
 						{#key $increment}
@@ -94,8 +93,8 @@
 	}
 	.scoreincrement {
 		position: absolute;
-		bottom: -30px;
-		right: 0px;
+		bottom: -5px;
+		right: 10px;
 	}
 	@media screen and (max-width: 500px) {
 		.header-content {
