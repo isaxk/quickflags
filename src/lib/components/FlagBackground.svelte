@@ -11,7 +11,7 @@
 	}, 4000);
 </script>
 
-<div class="container">
+<div class="contain">
 	{#key shuffledCountries}
 		<div
 			class="flags"
@@ -26,10 +26,12 @@
 </div>
 
 <style>
-	.container {
+	.contain {
 		height: 300px;
 		position: relative;
 		border-radius: 10px;
+		margin-bottom: 30px;
+		width: 100%;
 	}
 	.content {
 		position: absolute;

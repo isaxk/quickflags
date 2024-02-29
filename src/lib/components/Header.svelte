@@ -35,9 +35,9 @@
 		{#key $page.url.pathname}
 			<ul>
 				{#if $page.url.pathname === "/"}
-					<li><a href="https://github.com/isaxk/quickflags">GitHub</a></li>
-					<li><a href="https:/www.isaxk.com">isaxk.com</a></li>
-					<li><details class="dropdown">
+					<li><a href="https://github.com/isaxk/quickflags" class="secondary">GitHub</a></li>
+					<li><a href="https:/www.isaxk.com" class="secondary">isaxk.com</a></li>
+					<!-- <li><details class="dropdown">
 						<summary class="outline secondary">
 						  <img src="https://lh3.googleusercontent.com/a/AAcHTtePeQf3jhyP4H4oocJBbzTfKfkqnx1XVJKLqAcPtuWYoVM=s96-c"/>
 						</summary>
@@ -45,7 +45,7 @@
 							<li><a href="#">Profile</a></li>
 							<li><a href="#">Log Out</a></li>
 						  </ul>
-					  </details></li>
+					  </details></li> -->
 				{:else if $page.url.pathname === "/play" && $timeRemaining > 0}
 					<li class="timeremaining">
 						{timeFormat.format($timeRemaining / 1000)}

@@ -32,3 +32,7 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.mono {
+    font-family: var(--mono-font-family);
+}

@@ -247,7 +247,7 @@ export default [
 	},
 	{
 		code: 'CI',
-		name: "Côte d'Ivoire",
+		name: "Ivory Coast",
 		short: 'ivory coast',
 		easy: 20
 	},

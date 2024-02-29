@@ -14,8 +14,8 @@
 <div class="outer">
 	{#key key}
 		<div
-			class="container"
-			in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
+			class="contain"
+			in:scale={{ delay: 300, duration: 300, start: 0.992, opacity: 0 }}
 			out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
 		>
 			{#if !incorrectPause}
@@ -47,7 +47,7 @@
 		width: 100%;
 		position: relative;
 	}
-	.container {
+	.contain {
 		width: 100%;
 		height: 100%;
 		display: grid;
@@ -69,7 +69,7 @@
 
 	@media screen and (max-width: 500px) {
 		.outer {
-			height: 180px;
+			height: 220px;
 			margin-bottom: 25px;
 			margin-top: -25px;
 		}

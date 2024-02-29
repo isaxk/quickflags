@@ -4,9 +4,10 @@
 	import countries from "$lib/countries";
 	import { onDestroy, onMount } from "svelte";
 	import { timeRemaining, score, increment } from "$lib/stores";
-	import { scale } from "svelte/transition";
+	import { scale, fade } from "svelte/transition";
 	import Countup from "svelte-countup";
 	import { normalise } from "$lib/text";
+	import { highscore, gamesPlayed } from "$lib/stats";
 
 	let enteredCountry: string = "";
 	let currentCountry: {
@@ -19,6 +20,8 @@
 	let endTime: number;
 	let gameLength: number = 45000;
 	let flagImageKey : number = 0;
+	let beatHighscore : boolean = false;
+	let oldHighscore : number = $highscore;
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -51,6 +54,11 @@
 
 	const endGame = () => {
 		clearInterval(timer);
+		if($score>$highscore) {
+			highscore.set($score);
+			window.setTimeout(()=>beatHighscore=true, 1500);
+		}
+		gamesPlayed.update(n=>n+1)
 	};
 
 	const startGame = () => {
@@ -126,9 +134,12 @@
 				><Countup value={$score} duration={1000} /></span
 			>
 		</h3>
+		{#if beatHighscore}
+		<p in:fade={{duration:200}}>And beat your highscore of {oldHighscore}!</p>
+		{/if}
 		<div
 			class="buttons"
-			in:scale={{ duration: 500, delay: 1500, start: 0.992, opacity: 0 }}
+			in:scale={{ duration: 500, delay: 2000, start: 0.992, opacity: 0 }}
 		>
 			<a href="/" class="btn outline" role="button">Main menu</a>
 			<button on:click={startGame} class="btn">Play Again</button>
