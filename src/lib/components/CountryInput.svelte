@@ -1,172 +1,84 @@
-<script>
-	import AutoComplete from '$lib/components/AutoComplete.svelte';
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { createEventDispatcher } from "svelte";
+	const dispatch = createEventDispatcher();
 
-	import countries from '$lib/countries';
-	import Message from '$lib/components/Message.svelte';
-	import throttle from 'lodash/throttle';
-	import { onMount } from 'svelte';
-	import { clean } from '$lib/text';
+	import Svelecte from "svelecte";
+	import AutoComplete from "./AutoComplete.svelte";
+	import countries from "$lib/countries";
+	import { normalise } from "$lib/text";
 
-	function isNumeric(str) {
-		if (typeof str != 'string') return false; // we only process strings!
-		return (
-			!isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
-			!isNaN(parseFloat(str))
-		); // ...and ensure strings of whitespace fail
+	export let value: string;
+
+	let results: { code: string; name: string; short: string; easy: number }[] =
+		[];
+
+	let currentValue: string = "";
+
+	function handleSubmit() {
+		var search = countries.filter((o) =>
+			normalise(o.name).startsWith(normalise(currentValue)),
+		);
+		if (value.length > 0 && search.length == 0) {
+			search = countries.filter((o) =>
+				normalise(o.short).startsWith(normalise(currentValue)),
+			);
+		}
+		value = search[0].name;
+		dispatch("submit");
+		currentValue = "";
 	}
 
-	import Keyboard from 'svelte-keyboard';
+
 
 	let innerWidth = 0;
 	let innerHeight = 0;
 
-	let boxvalue = '';
-
-	const onKeydown = throttle((event) => {
-		console.log(event.detail);
-		if (event.detail === 'Backspace') {
-			enteredCountry = enteredCountry.substring(0, enteredCountry.length - 1);
-		} else if (event.detail === 'Enter') {
-			handleSubmit(enteredCountry);
-		} else if (event.detail === 'Space') {
-			enteredCountry = enteredCountry + '';
+	$: {
+		if (currentValue.length > 0) {
+			results = countries.filter((o) =>
+				normalise(o.name).startsWith(normalise(currentValue)),
+			);
 		} else {
-			enteredCountry += event.detail;
+			results = [];
 		}
-	}, 100);
-
-	export let selectedCountry = null;
-	export let messageContent = '';
-	let enteredCountry = '';
-	let countryInvalid = null;
-	let autocompletekey = 0;
-
-
-	const skip = throttle(() => {
-		selectedCountry = 'Pass';
-	}, 1500);
-
-	const handleSubmit = throttle((val) => {
-		if (val === '') {
-			selectedCountry = 'Pass';
-			return;
-		}
-		const searchResult = countries.find((e) => clean(e.name) == clean(val));
-		const shortHandSearchResult = countries.find((e) => clean(e.short) == clean(val));
-		if (searchResult || shortHandSearchResult) {
-			selectedCountry = enteredCountry;
-			enteredCountry = '';
-			countryInvalid = null;
-			autocompletekey++;
-		} else {
-			countryInvalid = true;
-		}
-	}, 300);
-
-	let plainCountries = countriesPlainList();
-
-	const checkForNumber = (event) => {
-		if (isNumeric(event.key)) {
-			var results = countries.filter((o) => clean(o.name).includes(clean(enteredCountry)));
-			enteredCountry = results[event.key - 1].name;
-			event.preventDefault();
-		}
-	};
-
-	function countriesPlainList() {
-		var plain = [];
-		for (var i = 0; i < countries.length; i++) {
-			plain.push(countries[i].name);
-		}
-		return plain;
 	}
-
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
-<div class="keyboard-container">
-	<div class="keyboard-inner">
-		<Message {messageContent} />
-		<form class="container" on:submit={handleSubmit(enteredCountry)}>
-			{#key enteredCountry}
-				<AutoComplete
-					{countries}
-					value={clean(enteredCountry)}
-					complete={(v) => {
-						enteredCountry = v;
-						handleSubmit(v);
-					}}
-				/>
-			{/key}
-			<!-- svelte-ignore a11y-autofocus -->
 
-			<!-- <AutoComplete
-			maxItemsToShowInList=4
-			inputClassName="country-input"
-			autofocus
-			placeholder="Enter Country..."
-			items={plainCountries}
-			bind:selectedItem={enteredCountry}
-		/> -->
-			<div class="grid">
-				{#key autocompletekey}
-					{#if innerWidth < 600}
-						<input readonly bind:value={enteredCountry} />
-					{:else}
-						<input autofocus on:keydown={checkForNumber} bind:value={enteredCountry} />
-					{/if}
-				{/key}
-				{#if enteredCountry.length > 0}
-					<button class="next-button primary" type="submit">Next</button>
-				{:else}
-					<button class="next-button outline secondary" type="submit">Skip</button>
-				{/if}
-			</div>
-		</form>
-		{#if innerWidth < 600}
-			<Keyboard
-				--background="transparent"
-				--border="1px solid var(--form-element-border-color)"
-				--color="var(--h3-color) !important"
-				--margin="0.125rem"
-				layout="wordle"
-				on:keydown={onKeydown}
-			/>
-		{/if}
+<form class="container" on:submit|preventDefault={handleSubmit}>
+	<div class="autocomplete">
+		<AutoComplete {results} />
 	</div>
-</div>
+	<fieldset role="group">
+		{#if innerWidth > 500}
+			<input
+				type="text"
+				bind:value={currentValue}
+				autocomplete="off"
+				autofocus
+			/>
+		{:else}
+			<input type="text" bind:value={currentValue} autocomplete="off" />
+		{/if}
+		{#if currentValue.length === 0}
+			<button type="submit" class="outline secondary">Skip</button>
+		{:else}
+			<button type="submit">Next</button>
+		{/if}
+	</fieldset>
+</form>
 
 <style>
-	.container {
-		padding: 20px 0px;
-		width: 550px;
-		max-width: 100%;
-		margin: -20px auto;
+	form {
+		max-width: 600px;
+		margin: auto;
 		position: relative;
 	}
-	.container .grid {
-		display: grid;
-		grid-template-columns: 1fr max-content;
-		grid-gap: 0.5rem;
-	}
-	.next-button {
-		display: inline;
-		width: max-content;
-	}
-	.keyboard-container {
-		width: 100%;
-		height: 40%;
-		padding: 20px;
-		min-height: 450px;
-		position: fixed;
-		bottom: 0px;
+	.autocomplete {
+		position: absolute;
+		bottom: 95px;
 		left: 0px;
-	}
-	.keyboard-inner {
-		position: relative;
-		width: 550px;
-		max-width: 100%;
-		margin: 0px auto;
-		height: 100%;
 	}
 </style>
