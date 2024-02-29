@@ -30,11 +30,11 @@
 <div class="header-container">
 	<nav class="header-content">
 		<ul>
-			<li>QuickFlags</li>
+			<li><a href="/" class="contrast">QuickFlags</a></li>
 		</ul>
 		{#key $page.url.pathname}
 			<ul>
-				{#if $page.url.pathname === "/"}
+				{#if $page.url.pathname !== "/play"}
 					<li><a href="https://github.com/isaxk/quickflags" class="secondary">GitHub</a></li>
 					<li><a href="https:/www.isaxk.com" class="secondary">isaxk.com</a></li>
 					<!-- <li><details class="dropdown">
