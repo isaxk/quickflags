@@ -1,3 +1,4 @@
+
 <script lang="ts">
 	import CountryInput from "$lib/components/CountryInput.svelte";
 	import FlagImage from "$lib/components/FlagImage.svelte";
