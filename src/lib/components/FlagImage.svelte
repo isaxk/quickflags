@@ -4,7 +4,7 @@
 	import { cubicInOut } from "svelte/easing";
 	import IncorrectPause from "./IncorrectPause.svelte";
 
-	export let countryCode: string;
+	export let currentCountry: { name: string; code: string; easy: number };
 	export let incorrectPause: boolean;
 	export let key: number;
 
@@ -20,20 +20,26 @@
 		>
 			{#if !incorrectPause}
 				<img
-					src="https://flagcdn.com/h240/{countryCode.toLowerCase()}.webp"
+					src="https://flagcdn.com/h240/{currentCountry.code.toLowerCase()}.webp"
 					alt="FLAG"
 				/>
 			{/if}
 		</div>
 	{/key}
 </div>
-{#key incorrectPause}
-<div class="pause">
-	{#if incorrectPause}
-		<IncorrectPause />
-	{/if}
-</div>
+
+<div class="pause-container">
+	{#key incorrectPause}
+	<div class="pause" in:scale={{ delay: 0, duration: 400, start: 0.992, opacity: 0 }}
+	out:scale={{ duration: 300, start: 1.02, opacity: 0 }}>
+		{#if incorrectPause}
+			<IncorrectPause />
+			<div class="message" >Answer was {currentCountry.name}</div>
+		{/if}
+	</div>
 {/key}
+</div>
+
 
 <style>
 	.outer {
@@ -56,6 +62,11 @@
 		max-width: 100%;
 	}
 
+	.message {
+		padding: 10px 0px 20px 0px;
+		text-align: center;
+	}
+
 	@media screen and (max-width: 500px) {
 		.outer {
 			height: 180px;
@@ -64,7 +75,18 @@
 		}
 	}
 	.pause {
-		height: 8px;
+		height: 100%;
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		
+		
+		
+	}
+	.pause-container {
+		position: relative;
+		height: 20px;
 		max-width: 600px;
 		margin: auto;
 		margin-bottom: 50px;

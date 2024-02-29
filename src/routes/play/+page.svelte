@@ -79,12 +79,16 @@
 		endGame();
 	}
 
-	$: console.log(enteredCountry);
-
 	let incorrectPause = false;
 
 	const handleSubmit = (e: any) => {
 		if(incorrectPause) return;
+		if(enteredCountry==="") {
+			incorrectPause = true;
+			flagImageKey++;
+			window.setTimeout(nextCountry, 1500);
+			return;
+		}
 		if (
 			normalise(enteredCountry) === normalise(currentCountry.name) ||
 			normalise(enteredCountry) === normalise(currentCountry.short)
@@ -106,7 +110,7 @@
 		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
 	>
 		{#if currentCountry}
-			<FlagImage countryCode={currentCountry.code} {incorrectPause} key={flagImageKey}/>
+			<FlagImage {currentCountry} {incorrectPause} key={flagImageKey}/>
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
 		{/if}
 	</div>

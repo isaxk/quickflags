@@ -19,7 +19,6 @@
 		var search = countries.filter((o) =>
 			normalise(o.name).startsWith(normalise(currentValue)),
 		);
-		console.log(search);
 		if (value.length > 0 && search.length == 0) {
 			search = countries.filter((o) =>
 				normalise(o.short).startsWith(normalise(currentValue)),
@@ -30,11 +29,7 @@
 		currentValue = "";
 	}
 
-	onMount(() => {
-		window.setInterval(() => {
-			window.scrollTo(0, 0);
-		}, 100);
-	});
+
 
 	let innerWidth = 0;
 	let innerHeight = 0;
