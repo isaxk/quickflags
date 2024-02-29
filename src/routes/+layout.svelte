@@ -25,6 +25,7 @@
 		margin: auto;
         padding: 0px 10px;
         box-sizing: border-box;
-        min-height: 100%;
+        min-height: 80vh;
+		position: relative;
 	}
 </style>
