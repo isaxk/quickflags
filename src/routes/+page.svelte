@@ -19,7 +19,7 @@
 </FlagBackground>
 
 <article class="news">
-	<h3>Welcome to v3!</h3>
+	<h3>v3 is here!</h3>
 	<a href="/info/v3">What's New?</a>
 	
 </article>
