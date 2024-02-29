@@ -34,6 +34,7 @@
 		Highscores and data will now be stored locally. New servers may be launched
 		in the future.
 	</p>
+	<a href="https://old.flags.pages.dev">Go back to 2.0</a>
 </article>
 
 <article>
