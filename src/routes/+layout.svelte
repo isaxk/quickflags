@@ -10,6 +10,10 @@
 <Header />
 
 
+<svelte:head>
+	<title>QuickFlags</title>
+</svelte:head>
+
 {#key data.url}
 	<div class="main"
 		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
