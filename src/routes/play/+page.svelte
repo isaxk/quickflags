@@ -59,7 +59,7 @@
 			highscore.set($score);
 			window.setTimeout(()=>beatHighscore=true, 1500);
 		}
-		gamesPlayed.update(n=>n+1)
+		gamesPlayed.set($gamesPlayed+1)
 	};
 
 	const startGame = () => {

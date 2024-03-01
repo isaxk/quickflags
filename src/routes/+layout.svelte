@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from "$app/environment";
 	import Header from "$lib/components/Header.svelte";
 	import "$lib/css/app.css";
 	import "@picocss/pico";
