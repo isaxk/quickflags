@@ -15,16 +15,12 @@
 </script>
 
 <FlagBackground>
-	<div class="content">
-		<a href="/play" class="play-button" role="button">Play</a>
-	</div>
-	
+	<a href="/play" class="play-button" role="button">Play</a>
 </FlagBackground>
 
 <article class="news">
 	<h3>v3 is here!</h3>
 	<a href="/info/v3">What's New?</a>
-	
 </article>
 
 <article>

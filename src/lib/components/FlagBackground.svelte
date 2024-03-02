@@ -25,7 +25,7 @@
 			style="background-image: url(/bg{shuffledCountries}.webp);"
 		></div>
 	{/key}
-	<div class="content">
+	<div class="contents">
 		<slot />
 	</div>
 </div>
@@ -38,7 +38,7 @@
 		margin-bottom: 30px;
 		width: 100%;
 	}
-	.content {
+	.contents {
 		position: absolute;
 		top: 0;
 		left: 0;

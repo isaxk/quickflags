@@ -9,25 +9,64 @@
 	import { scale } from "svelte/transition";
 
 	import { firebaseConfig } from "$lib/firebase/config";
+	import { goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import {
+		addDoc,
+		collection,
+		doc,
+		getDoc,
+		getDocs,
+		getFirestore,
+		query,
+		setDoc,
+		where,
+	} from "firebase/firestore";
 
 	export let data;
 
-
 	const app = initializeApp(firebaseConfig);
 	const auth = getAuth(app);
+	const db = getFirestore(app);
 
-	let currentUser:any;
+	let currentUser: any;
+	let currentUserProfile: any = {
+		data: null,
+	};
+	let mounted = false;
 
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			currentUser = user;
-		} else {
-			currentUser = null;
-		}
+	onMount(() => {
+		onAuthStateChanged(auth, async (user) => {
+			if (user) {
+				var userProfile = await getUserProfile(user.uid, user);
+				currentUserProfile = userProfile;
+				currentUser = user;
+			} else {
+				goto("/");
+				currentUser = null;
+				currentUserProfile = null;
+			}
+		});
+		mounted = true;
 	});
+
+	async function getUserProfile(uid: string, user:any) {
+		const docRef = doc(db, "profiles", uid);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			return docSnap.data();
+		} else {
+			await setDoc(docRef, {
+				username: user.email.substring(0, user.email.indexOf('@')),
+				photoURL: user.photoURL,
+				uid: user.uid
+			});
+			return (await getDoc(docRef)).data();
+		}
+	}
 </script>
 
-<Header currentUser={currentUser} {app} />
+<Header {currentUser} {app} {currentUserProfile} />
 
 <svelte:head>
 	<title>QuickFlags</title>

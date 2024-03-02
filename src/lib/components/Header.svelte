@@ -10,9 +10,14 @@
 	import { fade, crossfade, slide, fly } from "svelte/transition";
 	import Countup from "svelte-countup";
 	import { browser } from "$app/environment";
+	import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
 
 	export let currentUser: any;
+	export let currentUserProfile:any;
 	export let app;
+
+
+
 
 	const auth = getAuth(app);
 	const provider = new GoogleAuthProvider();
@@ -34,19 +39,23 @@
 
 	let previousScore = 0;
 
+	
+
 	$: if (browser) {
 		window.setTimeout(() => (previousScore = $score), 1000);
+
 	}
 
 	function signIn() {
 		signInWithRedirect(auth, provider);
 	}
+
 </script>
 
 <div class="header-container">
 	<nav class="header-content">
 		<ul>
-			<li><a href="/" class="contrast">QuickFlags</a></li>
+			<li class="title"><a href="/" class="contrast">QuickFlags</a></li>
 		</ul>
 		{#key $page.url.pathname}
 			<ul>
@@ -66,7 +75,7 @@
 									<img src={currentUser.photoURL} alt="profile" />
 								</summary>
 								<ul dir="rtl">
-									<li class="username">{currentUser.email.substring(0, currentUser.email.indexOf("@"))}</li>
+									<li class="username">{currentUserProfile.username}</li>
 									<li><a href="#">Profile</a></li>
 									<li>
 										<a href="#" on:click={() => signOut(auth)}>Sign Out</a>
@@ -119,8 +128,9 @@
 	.header-content {
 		max-width: 800px;
 		margin: auto;
-		padding: 20px 10px;
+		padding: 0px 10px;
 		box-sizing: border-box;
+		height: 115px;
 	}
 
 	.timeremaining,
@@ -161,5 +171,8 @@
 		border-bottom: #a4a4a42c 1px solid;
 		padding-bottom: 10px;
 		margin-bottom: 10px;
+	}
+	.title {
+		font-weight: 500;
 	}
 </style>
