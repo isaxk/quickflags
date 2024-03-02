@@ -7,17 +7,20 @@
 		signOut,
 	} from "firebase/auth";
 	import { timeRemaining, score, increment } from "$lib/local/stores";
-	import { fade, crossfade, slide, fly } from "svelte/transition";
+	import { fade, crossfade, slide, fly, scale } from "svelte/transition";
 	import Countup from "svelte-countup";
 	import { browser } from "$app/environment";
-	import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
+	import {
+		collection,
+		getDocs,
+		getFirestore,
+		query,
+		where,
+	} from "firebase/firestore";
 
 	export let currentUser: any;
-	export let currentUserProfile:any;
+	export let currentUserProfile: any;
 	export let app;
-
-
-
 
 	const auth = getAuth(app);
 	const provider = new GoogleAuthProvider();
@@ -39,27 +42,27 @@
 
 	let previousScore = 0;
 
-	
-
 	$: if (browser) {
 		window.setTimeout(() => (previousScore = $score), 1000);
-
 	}
 
 	function signIn() {
 		signInWithRedirect(auth, provider);
 	}
-
 </script>
 
 <div class="header-container">
-	<nav class="header-content">
-		<ul>
-			<li class="title"><a href="/" class="contrast">QuickFlags</a></li>
-		</ul>
-		{#key $page.url.pathname}
-			<ul>
-				{#if $page.url.pathname !== "/play/local"}
+	{#key $page.url.pathname}
+		<nav class="header-content">
+			{#if $page.url.pathname !== "/play/local"}
+				<ul>
+					<li class="title">
+						<a href="/" class="contrast">QuickFlags</a>
+						<div class="tagline">The speed flag-knowledge game.</div>
+					</li>
+				</ul>
+
+				<ul>
 					<li>
 						<a href="https://github.com/isaxk/quickflags" class="secondary"
 							>GitHub</a
@@ -72,7 +75,11 @@
 						<li>
 							<details class="dropdown">
 								<summary class="outline secondary">
-									<img src={"https://api.dicebear.com/7.x/pixel-art/svg?seed="+currentUser.uid} alt="Profile">
+									<img
+										src={"https://api.dicebear.com/7.x/pixel-art/svg?seed=" +
+											currentUser.uid}
+										alt="Profile"
+									/>
 								</summary>
 								<ul dir="rtl">
 									<li class="username">{currentUserProfile.username}</li>
@@ -88,38 +95,43 @@
 							<button on:click={signIn}>Sign In</button>
 						</li>
 					{/if}
-				{:else if $page.url.pathname === "/play/local" && $timeRemaining > 0}
-					<li class="timeremaining">
-						{timeFormat.format($timeRemaining / 1000)}
-					</li>
-					<li class="score">
-						{#key $score}
-							<span>{scoreFormat.format($score)}</span>
-						{/key}
-						{#key $increment}
-							<div
-								class="scoreincrement"
-								in:fly={{ y: 300, duration: 300 }}
-								out:fly={{ y: -10, duration: 100 }}
-							>
-								{#if $increment != 0}
-									{#if $increment > 0}
-										<span class="positive">
-											+{incrementFormat.format($increment)}
-										</span>
-									{:else}
-										<span class="negative">
-											-{incrementFormat.format($increment)}
-										</span>
+				</ul>
+			{:else if $page.url.pathname === "/play/local"}
+				<ul><li>QuickFlags - Local Play</li></ul>
+				{#if $timeRemaining > 0}
+					<ul>
+						<li class="timeremaining">
+							{timeFormat.format($timeRemaining / 1000)}
+						</li>
+						<li class="score">
+							{#key $score}
+								<span>{scoreFormat.format($score)}</span>
+							{/key}
+							{#key $increment}
+								<div
+									class="scoreincrement"
+									in:fly={{ y: 300, duration: 300 }}
+									out:fly={{ y: -10, duration: 100 }}
+								>
+									{#if $increment != 0}
+										{#if $increment > 0}
+											<span class="positive">
+												+{incrementFormat.format($increment)}
+											</span>
+										{:else}
+											<span class="negative">
+												-{incrementFormat.format($increment)}
+											</span>
+										{/if}
 									{/if}
-								{/if}
-							</div>
-						{/key}
-					</li>
+								</div>
+							{/key}
+						</li>
+					</ul>
 				{/if}
-			</ul>
-		{/key}
-	</nav>
+			{/if}
+		</nav>
+	{/key}
 </div>
 
 <style>
@@ -174,5 +186,8 @@
 	}
 	.title {
 		font-weight: 500;
+	}
+	.tagline {
+		font-size: 70%;
 	}
 </style>

@@ -6,8 +6,7 @@
 			<div class="left">
 				<h4>Local Play</h4>
 				<p>
-					Try and beat your highscore in the singleplayer speed-flag knowledge
-					mode
+					Name as many flags as you can in 45 seconds!
 				</p>
 			</div>
 			<div class="right">
@@ -18,7 +17,7 @@
 			<div class="left">
 				<h4>Online Play</h4>
 				<p>
-					1v1 your friend and see who has the best knowledge in flags
+					Name each flag faster than your oppenent to damage them.
 				</p>
 			</div>
 			<div class="right">
