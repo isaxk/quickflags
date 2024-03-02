@@ -5,6 +5,7 @@
 		getDoc,
 		getDocs,
 		getFirestore,
+		onSnapshot,
 		query,
 		where,
 	} from "firebase/firestore";
@@ -35,8 +36,12 @@
 				data: doc.data(),
 			});
 		});
+		console.log(gamesArray[0]);
 		return gamesArray[0];
 	}
+
+
+	let unsub: any;
 
 	async function getUserProfile(uid: string) {
 		const docRef = doc(db, "profiles", uid);
@@ -46,16 +51,20 @@
 	}
 
 	async function loadData() {
-		let gameData: any = await getGameData();
+		var gameData = await getGameData();
 
 		players = {
 			manager: await getUserProfile("eI8DdSo4iTN7RhjTizmLhuKp9Nx1"),
 		};
 
+		unsub = onSnapshot(doc(db, "games", gameData.id), (doc) => {
+			console.log("Current data: ", doc.data());
+		});
+
 		dataloaded = true;
 	}
 
-    loadData();
+	loadData();
 </script>
 
 {#if dataloaded}
@@ -63,6 +72,6 @@
 		<h2>Waiting for host to start...</h2>
 		<p>Code: {data.id}</p>
 
-		<PlayerBanner data={players.manager}/>
+		<PlayerBanner data={players.manager} />
 	</div>
 {/if}
