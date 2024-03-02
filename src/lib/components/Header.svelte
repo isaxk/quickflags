@@ -1,9 +1,21 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import { timeRemaining, score, increment } from "$lib/stores";
+	import {
+		getAuth,
+		GoogleAuthProvider,
+		signInWithRedirect,
+		signOut,
+	} from "firebase/auth";
+	import { timeRemaining, score, increment } from "$lib/local/stores";
 	import { fade, crossfade, slide, fly } from "svelte/transition";
 	import Countup from "svelte-countup";
 	import { browser } from "$app/environment";
+
+	export let currentUser: any;
+	export let app;
+
+	const auth = getAuth(app);
+	const provider = new GoogleAuthProvider();
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -25,6 +37,10 @@
 	$: if (browser) {
 		window.setTimeout(() => (previousScore = $score), 1000);
 	}
+
+	function signIn() {
+		signInWithRedirect(auth, provider);
+	}
 </script>
 
 <div class="header-container">
@@ -34,27 +50,42 @@
 		</ul>
 		{#key $page.url.pathname}
 			<ul>
-				{#if $page.url.pathname !== "/play"}
-					<li><a href="https://github.com/isaxk/quickflags" class="secondary">GitHub</a></li>
-					<li><a href="https://www.isaxk.com" class="secondary">isaxk.com</a></li>
-					<!-- <li><details class="dropdown">
-						<summary class="outline secondary">
-						  <img src="https://lh3.googleusercontent.com/a/AAcHTtePeQf3jhyP4H4oocJBbzTfKfkqnx1XVJKLqAcPtuWYoVM=s96-c"/>
-						</summary>
-						<ul dir="rtl">
-							<li><a href="#">Profile</a></li>
-							<li><a href="#">Log Out</a></li>
-						  </ul>
-					  </details></li> -->
-				{:else if $page.url.pathname === "/play" && $timeRemaining > 0}
+				{#if $page.url.pathname !== "/play/local"}
+					<li>
+						<a href="https://github.com/isaxk/quickflags" class="secondary"
+							>GitHub</a
+						>
+					</li>
+					<li>
+						<a href="https://www.isaxk.com" class="secondary">isaxk.com</a>
+					</li>
+					{#if currentUser}
+						<li>
+							<details class="dropdown">
+								<summary class="outline secondary">
+									<img src={currentUser.photoURL} alt="profile" />
+								</summary>
+								<ul dir="rtl">
+									<li class="username">{currentUser.email.substring(0, currentUser.email.indexOf("@"))}</li>
+									<li><a href="#">Profile</a></li>
+									<li>
+										<a href="#" on:click={() => signOut(auth)}>Sign Out</a>
+									</li>
+								</ul>
+							</details>
+						</li>
+					{:else}
+						<li>
+							<button on:click={signIn}>Sign In</button>
+						</li>
+					{/if}
+				{:else if $page.url.pathname === "/play/local" && $timeRemaining > 0}
 					<li class="timeremaining">
 						{timeFormat.format($timeRemaining / 1000)}
 					</li>
 					<li class="score">
 						{#key $score}
-							<span
-								>{scoreFormat.format($score)}</span
-							>
+							<span>{scoreFormat.format($score)}</span>
 						{/key}
 						{#key $increment}
 							<div
@@ -125,5 +156,10 @@
 	}
 	details {
 		z-index: 1000;
+	}
+	.username {
+		border-bottom: #a4a4a42c 1px solid;
+		padding-bottom: 10px;
+		margin-bottom: 10px;
 	}
 </style>

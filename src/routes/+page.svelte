@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FlagBackground from "$lib/components/FlagBackground.svelte";
 	import Countup from "svelte-countup";
-	import { highscore, gamesPlayed } from "$lib/stats";
+	import { highscore, gamesPlayed } from "$lib/local/stats";
 	import { onDestroy, onMount } from "svelte";
 
 	let mounted: boolean = false;
@@ -15,7 +15,10 @@
 </script>
 
 <FlagBackground>
-	<a href="/play" class="play-button" role="button">Play</a>
+	<div class="content">
+		<a href="/play" class="play-button" role="button">Play</a>
+	</div>
+	
 </FlagBackground>
 
 <article class="news">

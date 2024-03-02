@@ -22,6 +22,7 @@
 	"type": "module",
 	"dependencies": {
 		"@picocss/pico": "^2.0.3",
+		"firebase": "^10.8.1",
 		"svelecte": "^4.0.0",
 		"svelte-countup": "^0.2.6"
 	}

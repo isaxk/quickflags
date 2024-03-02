@@ -45,7 +45,7 @@
 		width: 100%;
 		height: 100%;
 		z-index: 100;
-		background-color: #121212bf;
+		background-color: #121212e6;
 		display: grid;
 		place-items: center;
 		backdrop-filter: blur(6px);

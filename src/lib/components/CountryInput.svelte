@@ -3,11 +3,11 @@
 	import { createEventDispatcher } from "svelte";
 	import Svelecte from "svelecte";
 	import AutoComplete from "./AutoComplete.svelte";
-	import countries from "$lib/countries";
-	import { normalise } from "$lib/text";
+	import countries from "$lib/data/countries";
+	import { normalise } from "$lib/data/text";
 
 	export let value: string;
-	
+
 	let innerWidth = 0;
 	let innerHeight = 0;
 	let results: { code: string; name: string; short: string; easy: number }[] =
