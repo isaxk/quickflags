@@ -72,7 +72,7 @@
 						<li>
 							<details class="dropdown">
 								<summary class="outline secondary">
-									<img src={currentUser.photoURL} alt="profile" />
+									<img src={"https://api.dicebear.com/7.x/pixel-art/svg?seed="+currentUser.uid} alt="Profile">
 								</summary>
 								<ul dir="rtl">
 									<li class="username">{currentUserProfile.username}</li>
@@ -158,11 +158,11 @@
 		color: red;
 	}
 	summary img {
-		border-radius: 50%;
-		height: 30px;
+		border-radius: 5px;
+		height: 25px;
 	}
 	summary {
-		padding: 5px 10px;
+		padding: 0px 0px;
 	}
 	details {
 		z-index: 1000;
