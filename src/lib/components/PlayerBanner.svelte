@@ -41,6 +41,7 @@
 		align-items: center;
 		background-color: rgba(94, 113, 119, 0.158);
 		border-radius: 5px;
+        width: 100%;
 	}
     .banner.right {
         grid-template-columns: 1fr 50px;

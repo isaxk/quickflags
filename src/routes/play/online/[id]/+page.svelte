@@ -90,6 +90,8 @@
 			<div class="right">
 				{#if players.opponent}
 					<PlayerBanner data={players.opponent} right={true} />
+				{:else}
+					<div aria-busy="true">Waiting for opponent...</div>
 				{/if}
 			</div>
 		</div>
@@ -99,7 +101,7 @@
 <style>
 	.verses {
 		display: grid;
-		grid-template-columns: 1fr max-content 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		gap: 20px;
 		align-items: center;
 		margin-top: 50px;
