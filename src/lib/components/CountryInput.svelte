@@ -1,21 +1,22 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { createEventDispatcher } from "svelte";
-	const dispatch = createEventDispatcher();
-
 	import Svelecte from "svelecte";
 	import AutoComplete from "./AutoComplete.svelte";
 	import countries from "$lib/countries";
 	import { normalise } from "$lib/text";
 
 	export let value: string;
-
+	
+	let innerWidth = 0;
+	let innerHeight = 0;
 	let results: { code: string; name: string; short: string; easy: number }[] =
 		[];
-
 	let currentValue: string = "";
 
-	function handleSubmit() {
+	const dispatch = createEventDispatcher();
+
+	const  handleSubmit = () => {
 		var search = countries.filter((o) =>
 			normalise(o.name).startsWith(normalise(currentValue)),
 		);
@@ -28,11 +29,6 @@
 		dispatch("submit");
 		currentValue = "";
 	}
-
-
-
-	let innerWidth = 0;
-	let innerHeight = 0;
 
 	$: {
 		if (currentValue.length > 0) {

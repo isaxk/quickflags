@@ -1,14 +1,19 @@
-<script>
+<script lang="ts">
+	import { onDestroy, onMount } from "svelte";
 	import { slide, fade, fly } from "svelte/transition";
 
 	let shuffledCountries = 1;
-
-	setInterval(() => {
+	let interval:any;
+	onMount(()=> {
+		interval = setInterval(() => {
 		shuffledCountries++;
 		if (shuffledCountries == 4) {
 			shuffledCountries = 1;
 		}
 	}, 4000);
+	})
+	onDestroy(()=>clearInterval(interval))
+	
 </script>
 
 <div class="contain">
