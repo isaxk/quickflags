@@ -101,7 +101,7 @@
 <style>
 	.verses {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 0.5fr 1fr;
 		gap: 20px;
 		align-items: center;
 		margin-top: 50px;
