@@ -12,11 +12,11 @@
 		incorrectPause,
 	} from "$lib/stores/game";
 
-	import CountryInput from "$lib/components/CountryInput.svelte";
-	import GameDisplay from "$lib/components/GameDisplay.svelte";
+	import CountryInput from "$lib/components/game/CountryInput.svelte";
+	import GameDisplay from "$lib/components/game/FlagDisplay.svelte";
 	import countries from "$lib/data/countries";
-	import IncorrectPause from "$lib/components/IncorrectPause.svelte";
-	import EndScreen from "$lib/components/EndScreen.svelte";
+	import IncorrectPause from "$lib/components/game/IncorrectPause.svelte";
+	import EndScreen from "$lib/components/game/EndScreen.svelte";
 	import { standardScale } from "$lib/utils/transition";
 
 	let enteredCountry: string = "";
@@ -112,6 +112,3 @@
 	<EndScreen on:restart={startGame} {oldHighscore} {beatHighscore} />
 {/if}
 
-<style>
-
-</style>

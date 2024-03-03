@@ -1,7 +1,7 @@
 <script lang="ts">
 
-	import FlagBackground from "$lib/components/FlagBackground.svelte";
-	import Footer from "$lib/components/Footer.svelte";
+	import FlagBackground from "$lib/components/ui/FlagBackground.svelte";
+	import Footer from "$lib/components/ui/Footer.svelte";
 	import Countup from "svelte-countup";
 
 	import { highscore, gamesPlayed } from "$lib/stores/stats";

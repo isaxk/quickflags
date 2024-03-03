@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { browser } from "$app/environment";
-	import { page } from "$app/stores";
-	import GameHeader from "$lib/components/GameHeader.svelte";
-	import HomeHeader from "$lib/components/HomeHeader.svelte";
-	import Header from "$lib/components/HomeHeader.svelte";
 	import "$lib/css/app.scss";
+
+	import { page } from "$app/stores";
+	import GameHeader from "$lib/components/game/Header.svelte";
+	import HomeHeader from "$lib/components/ui/Header.svelte";
+
 	import { standardScale } from "$lib/utils/transition";
 	import { scale } from "svelte/transition";
 
@@ -23,11 +23,7 @@
 	{/if}
 
 	{#key data.url}
-		<div
-			class="main"
-			in:scale={standardScale.in}
-			out:scale={standardScale.out}
-		>
+		<div class="main" in:scale={standardScale.in} out:scale={standardScale.out}>
 			<slot />
 		</div>
 	{/key}
