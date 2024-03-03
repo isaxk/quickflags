@@ -9,6 +9,7 @@
 		score,
 		increment,
 		currentCountry,
+		incorrectPause,
 	} from "$lib/stores/game";
 
 	import CountryInput from "$lib/components/CountryInput.svelte";
@@ -31,7 +32,7 @@
 	}
 
 	function nextCountry() {
-		incorrectPause = false;
+		incorrectPause.set(false);
 		currentCountry.set(countries[pickRandomCountry()]);
 	}
 
@@ -52,7 +53,7 @@
 	}
 
 	function startGame() {
-		incorrectPause = false;
+		incorrectPause.set(false);
 		score.set(0);
 		timeRemaining.set(gameLength);
 		window.setTimeout(startTimer, 500);
@@ -79,12 +80,10 @@
 		endGame();
 	}
 
-	let incorrectPause = false;
-
 	function handleSubmit() {
-		if (incorrectPause) return;
+		if ($incorrectPause) return;
 		if (enteredCountry === "") {
-			incorrectPause = true;
+			incorrectPause.set(true);
 			window.setTimeout(nextCountry, 1500);
 			return;
 		}
@@ -95,7 +94,7 @@
 			nextCountry();
 			updateScore(4000);
 		} else {
-			incorrectPause = true;
+			incorrectPause.set(true);
 			window.setTimeout(nextCountry, 1500);
 		}
 	}
@@ -112,3 +111,7 @@
 {:else}
 	<EndScreen on:restart={startGame} {oldHighscore} {beatHighscore} />
 {/if}
+
+<style>
+
+</style>

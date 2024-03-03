@@ -44,10 +44,7 @@
 		max-width: 100%;
 	}
 
-	.message {
-		padding: 10px 0px 20px 0px;
-		text-align: center;
-	}
+
 
 	@media screen and (max-width: 500px) {
 		.outer {
@@ -56,22 +53,5 @@
 			margin-top: -25px;
 		}
 	}
-	.pause {
-		height: 100%;
-		position: absolute;
-		left: 0px;
-		top: 0px;
-		width: 100%;
-		
-		
-		
-	}
-	.pause-container {
-		position: relative;
-		height: 20px;
-		max-width: 600px;
-		margin: auto;
-		margin-bottom: 50px;
-		margin-top: -50px;
-	}
+
 </style>

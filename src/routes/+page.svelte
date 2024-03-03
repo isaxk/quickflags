@@ -5,7 +5,7 @@
 	import Countup from "svelte-countup";
 
 	import { highscore, gamesPlayed } from "$lib/stores/stats";
-	
+
 	import { onDestroy, onMount } from "svelte";
 	
 
@@ -63,20 +63,6 @@
 	.play-button {
 		padding-right: 30px;
 		padding-left: 30px;
-	}
-	footer {
-		width: 100%;
-		margin: auto;
-		box-sizing: border-box;
-		padding: 50px 10px;
-		font-size: 15px;
-		display: grid;
-		grid-template-columns: 1fr max-content;
-	}
-	.right {
-		text-align: right;
-		display: flex;
-		justify-items: right;
 	}
 	.news {
 		font-size: 80%;
