@@ -4,7 +4,6 @@
     import { standardScale } from "$lib/utils/transition";
 	import Countup from "svelte-countup";
 	import { fade, scale } from "svelte/transition";
-
     import { createEventDispatcher } from "svelte";
 
 
@@ -15,7 +14,7 @@
     export let oldHighscore:number;
 
     function restartGame() {
-        dispatch("restart")
+        dispatch("restart");
     }
 </script>
 

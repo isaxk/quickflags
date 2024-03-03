@@ -1,21 +1,9 @@
 <script lang="ts">
 	import { timeRemaining, score, increment } from "$lib/stores/game";
+	import { timeFormat, scoreFormat, incrementFormat } from "$lib/utils/format";
 	import { fly } from "svelte/transition";
 
-	const timeFormat = new Intl.NumberFormat("en-US", {
-		minimumIntegerDigits: 2,
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
-	});
-
-	const scoreFormat = new Intl.NumberFormat("en-US", {
-		minimumIntegerDigits: 5,
-		maximumFractionDigits: 0,
-	});
-	const incrementFormat = new Intl.NumberFormat("en-US", {
-		minimumIntegerDigits: 4,
-		maximumFractionDigits: 0,
-	});
+	
 </script>
 
 <div class="header-container">
