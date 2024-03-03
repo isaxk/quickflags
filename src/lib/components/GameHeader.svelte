@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { page } from "$app/stores";
 	import { timeRemaining, score, increment } from "$lib/stores/game";
-	import { fade, crossfade, slide, fly, scale } from "svelte/transition";
-	import Countup from "svelte-countup";
-	import { browser } from "$app/environment";
+	import { fly } from "svelte/transition";
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,

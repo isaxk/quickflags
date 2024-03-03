@@ -1,20 +1,14 @@
 <script lang="ts">
-	import { scale, fade } from "svelte/transition";
-
-	import { cubicInOut } from "svelte/easing";
-	import IncorrectPause from "./IncorrectPause.svelte";
-
+	import { scale } from "svelte/transition";
 	import { currentCountry, incorrectPause } from "$lib/stores/game";
-
-	let inteval: any;
+	import { standardScale } from "$lib/utils/transition";
 </script>
 
 <div class="outer">
 	{#key $currentCountry}
 		<div
 			class="contain"
-			in:scale={{ delay: 300, duration: 300, start: 0.992, opacity: 0 }}
-			out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
+			in:scale={standardScale.in} out:scale={standardScale.out}
 		>
 			{#if !$incorrectPause}
 				<img

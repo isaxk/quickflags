@@ -1,81 +1,73 @@
 <script lang="ts">
-
 	import { onDestroy, onMount } from "svelte";
 	import { scale, fade } from "svelte/transition";
-	import Countup from "svelte-countup";
 
 	import { normalise } from "$lib/utils/text";
 	import { highscore, gamesPlayed } from "$lib/stores/stats";
-	import { timeRemaining, score, increment, currentCountry } from "$lib/stores/game";
+	import {
+		timeRemaining,
+		score,
+		increment,
+		currentCountry,
+	} from "$lib/stores/game";
 
 	import CountryInput from "$lib/components/CountryInput.svelte";
 	import GameDisplay from "$lib/components/GameDisplay.svelte";
 	import countries from "$lib/data/countries";
 	import IncorrectPause from "$lib/components/IncorrectPause.svelte";
-	
-	
+	import EndScreen from "$lib/components/EndScreen.svelte";
+	import { standardScale } from "$lib/utils/transition";
 
 	let enteredCountry: string = "";
 	let timer: any;
 	let endTime: number;
 	let gameLength: number = 45000;
-	let flagImageKey: number = 0;
 	let beatHighscore: boolean = false;
 	let oldHighscore: number = $highscore;
 
-	const timeFormat = new Intl.NumberFormat("en-US", {
-		minimumIntegerDigits: 2,
-		minimumFractionDigits: 2,
-		maximumFractionDigits: 2,
-	});
-
-	const scoreFormat = new Intl.NumberFormat("en-US", {
-		minimumIntegerDigits: 5,
-		maximumFractionDigits: 0,
-	});
-
-	const pickRandomCountry = () => {
+	function pickRandomCountry() {
 		var index = Math.floor(Math.random() * countries.length);
 		return index;
-	};
+	}
 
-	const nextCountry = () => {
-		flagImageKey++;
-		currentCountry.set(countries[pickRandomCountry()]);
+	function nextCountry() {
 		incorrectPause = false;
-	};
+		currentCountry.set(countries[pickRandomCountry()]);
+	}
 
-	const startTimer = () => {
+	function startTimer() {
 		endTime = Date.now() + gameLength;
 		timer = window.setInterval(() => {
 			timeRemaining.set(endTime - Date.now());
 		}, 10);
-	};
+	}
 
-	const endGame = () => {
+	function endGame() {
 		clearInterval(timer);
 		if ($score > $highscore) {
 			highscore.set($score);
 			window.setTimeout(() => (beatHighscore = true), 1500);
 		}
 		gamesPlayed.set($gamesPlayed + 1);
-	};
+	}
 
-	const startGame = () => {
-		nextCountry();
+	function startGame() {
+		incorrectPause = false;
 		score.set(0);
 		timeRemaining.set(gameLength);
 		window.setTimeout(startTimer, 500);
-	};
+	}
 
-	const updateScore = (v: number) => {
+	function updateScore(v: number) {
 		increment.set(0);
 		increment.set(v);
 		window.setTimeout(() => {
 			increment.set(0);
 			score.update((n) => n + v);
 		}, 500);
-	};
+	}
+
+	currentCountry.set(countries[pickRandomCountry()]);
 
 	onMount(startGame);
 
@@ -89,11 +81,10 @@
 
 	let incorrectPause = false;
 
-	const handleSubmit = (e: any) => {
+	function handleSubmit() {
 		if (incorrectPause) return;
 		if (enteredCountry === "") {
 			incorrectPause = true;
-			flagImageKey++;
 			window.setTimeout(nextCountry, 1500);
 			return;
 		}
@@ -105,67 +96,19 @@
 			updateScore(4000);
 		} else {
 			incorrectPause = true;
-			flagImageKey++;
 			window.setTimeout(nextCountry, 1500);
 		}
-	};
+	}
 </script>
 
 {#if $timeRemaining > 0}
-	<div
-		class="game"
-		out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
-		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
-	>
+	<div class="game" in:scale={standardScale.in} out:scale={standardScale.out}>
 		{#if currentCountry}
 			<GameDisplay />
-			<IncorrectPause/>
+			<IncorrectPause />
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
 		{/if}
 	</div>
 {:else}
-	<div
-		class="end"
-		out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
-		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
-	>
-		<h1>Times Up!</h1>
-		<h3 class="score">
-			You scored: <span class="scorenumber"
-				><Countup value={$score} duration={1000} /></span
-			>
-		</h3>
-		{#if beatHighscore}
-			<p in:fade={{ duration: 200 }}>
-				And beat your highscore of {oldHighscore}!
-			</p>
-		{/if}
-		<div
-			class="buttons"
-			in:scale={{ duration: 500, delay: 2000, start: 0.992, opacity: 0 }}
-		>
-			<a href="/" class="btn outline" role="button">Main menu</a>
-			<button on:click={startGame} class="btn">Play Again</button>
-		</div>
-	</div>
+	<EndScreen on:restart={startGame} {oldHighscore} {beatHighscore} />
 {/if}
-
-<style>
-	.score {
-		font-size: 20px;
-	}
-	.scorenumber {
-		font-family: var(--mono-font-family);
-	}
-
-	.end {
-		padding: 50px 0px;
-	}
-	.game,
-	.end {
-		min-height: 100%;
-	}
-	.buttons {
-		padding: 20px 0px;
-	}
-</style>

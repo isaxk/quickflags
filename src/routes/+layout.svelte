@@ -5,6 +5,7 @@
 	import HomeHeader from "$lib/components/HomeHeader.svelte";
 	import Header from "$lib/components/HomeHeader.svelte";
 	import "$lib/css/app.scss";
+	import { standardScale } from "$lib/utils/transition";
 	import { scale } from "svelte/transition";
 
 	export let data;
@@ -24,8 +25,8 @@
 	{#key data.url}
 		<div
 			class="main"
-			in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
-			out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
+			in:scale={standardScale.in}
+			out:scale={standardScale.out}
 		>
 			<slot />
 		</div>

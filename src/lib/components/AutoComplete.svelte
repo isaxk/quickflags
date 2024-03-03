@@ -1,11 +1,10 @@
 <script lang="ts">
-	export let results: any;
-	let fixedResults: {
-		code: string;
-		name: string;
-		short: string;
-		easy: number;
-	}[] = [];
+	import type { Country }from "$lib/types";
+
+	export let results: Array<Country>;
+
+	let fixedResults: Array<Country> = [];
+
 	$: fixedResults = results.slice(0, 5).reverse();
 </script>
 

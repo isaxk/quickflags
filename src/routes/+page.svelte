@@ -1,8 +1,13 @@
 <script lang="ts">
+
 	import FlagBackground from "$lib/components/FlagBackground.svelte";
+	import Footer from "$lib/components/Footer.svelte";
 	import Countup from "svelte-countup";
+
 	import { highscore, gamesPlayed } from "$lib/stores/stats";
+	
 	import { onDestroy, onMount } from "svelte";
+	
 
 	let mounted: boolean = false;
 
@@ -12,6 +17,7 @@
 	onDestroy(() => {
 		mounted = false;
 	});
+
 </script>
 
 <FlagBackground>
@@ -46,15 +52,9 @@
 </div>
 
 
+<Footer />
 
 
-
-<footer>
-	<div class="copyright">Copyright &copy; isaxk.com 2024</div>
-	<div class="right">
-		<div class="version">v3.0.0</div>
-	</div>
-</footer>
 
 <style>
 	article {

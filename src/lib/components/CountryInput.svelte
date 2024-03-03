@@ -1,22 +1,21 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { createEventDispatcher } from "svelte";
-	import Svelecte from "svelecte";
-	import AutoComplete from "./AutoComplete.svelte";
-	import countries from "$lib/data/countries";
+	import type { Country } from "$lib/types";
 	import { normalise } from "$lib/utils/text";
+	import countries from "$lib/data/countries";
+
+	import AutoComplete from "./AutoComplete.svelte";
+	import { createEventDispatcher } from "svelte";
 
 	export let value: string;
-	
-	let innerWidth = 0;
-	let innerHeight = 0;
-	let results: { code: string; name: string; short: string; easy: number }[] =
-		[];
-	let currentValue: string = "";
 
 	const dispatch = createEventDispatcher();
 
-	const  handleSubmit = () => {
+	let innerWidth: number = 0;
+	let innerHeight: number = 0;
+	let results: Array<Country>;
+	let currentValue: string = "";
+
+	const handleSubmit = () => {
 		var search = countries.filter((o) =>
 			normalise(o.name).startsWith(normalise(currentValue)),
 		);
@@ -28,7 +27,7 @@
 		value = search[0].name;
 		dispatch("submit");
 		currentValue = "";
-	}
+	};
 
 	$: {
 		if (currentValue.length > 0) {
@@ -47,8 +46,10 @@
 	<div class="autocomplete">
 		<AutoComplete {results} />
 	</div>
+	<!-- svelte-ignore a11y-no-redundant-roles -->
 	<fieldset role="group">
 		{#if innerWidth > 500}
+			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				type="text"
 				bind:value={currentValue}
