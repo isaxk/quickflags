@@ -1,28 +1,27 @@
-
 <script lang="ts">
-	import CountryInput from "$lib/components/CountryInput.svelte";
-	import FlagImage from "$lib/components/FlagImage.svelte";
-	import countries from "$lib/countries";
+
 	import { onDestroy, onMount } from "svelte";
-	import { timeRemaining, score, increment } from "$lib/stores";
 	import { scale, fade } from "svelte/transition";
 	import Countup from "svelte-countup";
-	import { normalise } from "$lib/text";
-	import { highscore, gamesPlayed } from "$lib/stats";
+
+	import { normalise } from "$lib/utils/text";
+	import { highscore, gamesPlayed } from "$lib/stores/stats";
+	import { timeRemaining, score, increment, currentCountry } from "$lib/stores/game";
+
+	import CountryInput from "$lib/components/CountryInput.svelte";
+	import GameDisplay from "$lib/components/GameDisplay.svelte";
+	import countries from "$lib/data/countries";
+	import IncorrectPause from "$lib/components/IncorrectPause.svelte";
+	
+	
 
 	let enteredCountry: string = "";
-	let currentCountry: {
-		code: string;
-		name: string;
-		short: string;
-		easy: number;
-	};
 	let timer: any;
 	let endTime: number;
 	let gameLength: number = 45000;
-	let flagImageKey : number = 0;
-	let beatHighscore : boolean = false;
-	let oldHighscore : number = $highscore;
+	let flagImageKey: number = 0;
+	let beatHighscore: boolean = false;
+	let oldHighscore: number = $highscore;
 
 	const timeFormat = new Intl.NumberFormat("en-US", {
 		minimumIntegerDigits: 2,
@@ -42,7 +41,7 @@
 
 	const nextCountry = () => {
 		flagImageKey++;
-		currentCountry = countries[pickRandomCountry()];
+		currentCountry.set(countries[pickRandomCountry()]);
 		incorrectPause = false;
 	};
 
@@ -55,11 +54,11 @@
 
 	const endGame = () => {
 		clearInterval(timer);
-		if($score>$highscore) {
+		if ($score > $highscore) {
 			highscore.set($score);
-			window.setTimeout(()=>beatHighscore=true, 1500);
+			window.setTimeout(() => (beatHighscore = true), 1500);
 		}
-		gamesPlayed.set($gamesPlayed+1)
+		gamesPlayed.set($gamesPlayed + 1);
 	};
 
 	const startGame = () => {
@@ -91,16 +90,16 @@
 	let incorrectPause = false;
 
 	const handleSubmit = (e: any) => {
-		if(incorrectPause) return;
-		if(enteredCountry==="") {
+		if (incorrectPause) return;
+		if (enteredCountry === "") {
 			incorrectPause = true;
 			flagImageKey++;
 			window.setTimeout(nextCountry, 1500);
 			return;
 		}
 		if (
-			normalise(enteredCountry) === normalise(currentCountry.name) ||
-			normalise(enteredCountry) === normalise(currentCountry.short)
+			normalise(enteredCountry) === normalise($currentCountry.name) ||
+			normalise(enteredCountry) === normalise($currentCountry.short)
 		) {
 			nextCountry();
 			updateScore(4000);
@@ -119,7 +118,8 @@
 		in:scale={{ delay: 400, duration: 300, start: 0.992, opacity: 0 }}
 	>
 		{#if currentCountry}
-			<FlagImage {currentCountry} {incorrectPause} key={flagImageKey}/>
+			<GameDisplay />
+			<IncorrectPause/>
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
 		{/if}
 	</div>
@@ -136,7 +136,9 @@
 			>
 		</h3>
 		{#if beatHighscore}
-		<p in:fade={{duration:200}}>And beat your highscore of {oldHighscore}!</p>
+			<p in:fade={{ duration: 200 }}>
+				And beat your highscore of {oldHighscore}!
+			</p>
 		{/if}
 		<div
 			class="buttons"

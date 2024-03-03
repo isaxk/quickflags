@@ -1,11 +1,11 @@
 import { browser } from "$app/environment";
-import { writable } from "svelte/store";
+import { writable, type Writable } from "svelte/store";
 
-export const highscore = writable(0);
-export const gamesPlayed = writable(0);
+export const highscore: Writable<number> = writable(0);
+export const gamesPlayed: Writable<number> = writable(0);
 
 
-$: if(browser) {
+if(browser) {
     if (localStorage.getItem("highscore")) {
         highscore.set(parseInt(localStorage.highscore));
     }

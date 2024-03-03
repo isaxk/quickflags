@@ -4,23 +4,21 @@
 	import { cubicInOut } from "svelte/easing";
 	import IncorrectPause from "./IncorrectPause.svelte";
 
-	export let currentCountry: { name: string; code: string; easy: number };
-	export let incorrectPause: boolean;
-	export let key: number;
+	import { currentCountry, incorrectPause } from "$lib/stores/game";
 
 	let inteval: any;
 </script>
 
 <div class="outer">
-	{#key key}
+	{#key $currentCountry}
 		<div
 			class="contain"
 			in:scale={{ delay: 300, duration: 300, start: 0.992, opacity: 0 }}
 			out:scale={{ duration: 300, start: 1.02, opacity: 0 }}
 		>
-			{#if !incorrectPause}
+			{#if !$incorrectPause}
 				<img
-					src="https://flagcdn.com/h240/{currentCountry.code.toLowerCase()}.webp"
+					src="https://flagcdn.com/h240/{$currentCountry.code.toLowerCase()}.webp"
 					alt="FLAG"
 				/>
 			{/if}
@@ -28,22 +26,12 @@
 	{/key}
 </div>
 
-<div class="pause-container">
-	{#key incorrectPause}
-	<div class="pause" in:scale={{ delay: 0, duration: 400, start: 0.992, opacity: 0 }}
-	out:scale={{ duration: 300, start: 1.02, opacity: 0 }}>
-		{#if incorrectPause}
-			<IncorrectPause />
-			<div class="message" >Answer was {currentCountry.name}</div>
-		{/if}
-	</div>
-{/key}
-</div>
+
 
 
 <style>
 	.outer {
-		height: 400px;
+		height: 500px;
 		width: 100%;
 		position: relative;
 	}
@@ -58,7 +46,7 @@
 	}
 	img {
 		height: 100%;
-		max-height: 200px;
+		max-height: 240px;
 		max-width: 100%;
 	}
 

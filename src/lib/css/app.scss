@@ -1,12 +1,13 @@
+
+
+
+@use "@picocss/pico/scss/pico";
+
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap');
 
+
 :root {
-    --display-font-family: "Red Hat Display", Arial, sans-serif;
     --mono-font-family: "Red Hat Mono", "Courier New", monospace;
-    --page-background-color: #1c1c20;
-    --primary-accent-color: #3636d5;
-    --secondary-accent-color: #2c2c2c;
-    --text-color: #f7f7f7;
 }
 
 body {
@@ -36,3 +37,8 @@ html {
 .mono {
     font-family: var(--mono-font-family);
 }
+
+.header-content {
+    height: 120px;
+}
+

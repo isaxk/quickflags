@@ -37,6 +37,7 @@
 		border-radius: 10px;
 		margin-bottom: 30px;
 		width: 100%;
+		z-index: 0;
 	}
 	.content {
 		position: absolute;
@@ -45,7 +46,8 @@
 		width: 100%;
 		height: 100%;
 		z-index: 100;
-		background-color: #121212bf;
+		background: #121212df;
+		background: radial-gradient(#121212, #121212df);
 		display: grid;
 		place-items: center;
 		backdrop-filter: blur(6px);
@@ -57,8 +59,9 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-position: 50%;
+		background-position: left;
 		background-size: 800px;
 		border-radius: 10px;
+		background-repeat: repeat;
 	}
 </style>
