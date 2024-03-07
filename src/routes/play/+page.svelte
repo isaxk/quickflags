@@ -13,7 +13,7 @@
 	} from "$lib/stores/game";
 
 	import CountryInput from "$lib/components/game/CountryInput.svelte";
-	import GameDisplay from "$lib/components/game/FlagDisplay.svelte";
+	import FlagDisplay from "$lib/components/game/FlagDisplay.svelte";
 	import countries from "$lib/data/countries";
 	import IncorrectPause from "$lib/components/game/IncorrectPause.svelte";
 	import EndScreen from "$lib/components/game/EndScreen.svelte";
@@ -103,7 +103,7 @@
 {#if $timeRemaining > 0}
 	<div class="game" in:scale={standardScale.in} out:scale={standardScale.out}>
 		{#if currentCountry}
-			<GameDisplay />
+			<FlagDisplay />
 			<IncorrectPause />
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
 		{/if}
