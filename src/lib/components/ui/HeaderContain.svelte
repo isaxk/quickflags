@@ -5,7 +5,7 @@
 <div class="nav-container">
 	<nav>
 		<ul>
-			<li><a href="/">QuickFlags</a></li>
+			<li><a href="/" class="secondary">QuickFlags</a></li>
 		</ul>
 		<ul>
 			<slot />
