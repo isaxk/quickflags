@@ -2,11 +2,12 @@
 	import "$lib/css/app.scss";
 
 	import { page } from "$app/stores";
-	import GameHeader from "$lib/components/game/Header.svelte";
-	import HomeHeader from "$lib/components/ui/Header.svelte";
+	import GameHeader from "$lib/components/game/GameHeader.svelte";
+	import HomeHeader from "$lib/components/ui/HomeHeader.svelte";
 
 	import { standardScale } from "$lib/utils/transition";
 	import { scale } from "svelte/transition";
+	import HeaderContain from "$lib/components/ui/HeaderContain.svelte";
 
 	export let data;
 </script>
@@ -16,11 +17,13 @@
 </svelte:head>
 
 <div class="container">
-	{#if $page.url.pathname !== "/play"}
-		<HomeHeader />
-	{:else}
-		<GameHeader />
-	{/if}
+	<HeaderContain>
+		{#if $page.url.pathname !== "/play"}
+			<HomeHeader />
+		{:else}
+			<GameHeader />
+		{/if}
+	</HeaderContain>
 
 	{#key data.url}
 		<div class="main" in:scale={standardScale.in} out:scale={standardScale.out}>
@@ -34,5 +37,12 @@
 		max-width: 950px !important;
 		padding: 0px 20px;
 		box-sizing: border-box;
+	}
+	.main {
+		position: absolute;
+		top: 0px;
+		width: 100%;
+		box-sizing: border-box;
+		margin-top: 120px;
 	}
 </style>

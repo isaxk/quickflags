@@ -49,6 +49,9 @@
 			highscore.set($score);
 			window.setTimeout(() => (beatHighscore = true), 1500);
 		}
+		else {
+			beatHighscore=false;
+		}
 		gamesPlayed.set($gamesPlayed + 1);
 	}
 
@@ -56,6 +59,7 @@
 		incorrectPause.set(false);
 		score.set(0);
 		timeRemaining.set(gameLength);
+		currentCountry.set(countries[pickRandomCountry()])
 		window.setTimeout(startTimer, 500);
 	}
 
@@ -102,7 +106,7 @@
 
 {#if $timeRemaining > 0}
 	<div class="game" in:scale={standardScale.in} out:scale={standardScale.out}>
-		{#if currentCountry}
+		{#if $currentCountry}
 			<FlagDisplay />
 			<IncorrectPause />
 			<CountryInput bind:value={enteredCountry} on:submit={handleSubmit} />
