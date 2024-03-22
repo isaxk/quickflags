@@ -10,6 +10,6 @@ export const score: Writable<number> = writable(0);
 
 export const increment: Writable<number> = writable(0);
 
-export const currentCountry: Writable<Country> = writable();
+export const currentCountry: Writable<Country|null> = writable(null);
 
 export const incorrectPause: Writable<boolean> = writable();

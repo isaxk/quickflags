@@ -6,7 +6,7 @@
 	import HomeHeader from "$lib/components/ui/HomeHeader.svelte";
 
 	import { standardScale } from "$lib/utils/transition";
-	import { scale } from "svelte/transition";
+	import { scale, slide } from "svelte/transition";
 	import HeaderContain from "$lib/components/ui/HeaderContain.svelte";
 
 	export let data;
@@ -26,7 +26,7 @@
 	</HeaderContain>
 
 	{#key data.url}
-		<div class="main" in:scale={standardScale.in} out:scale={standardScale.out}>
+		<div class="main" in:slide>
 			<slot />
 		</div>
 	{/key}
@@ -37,12 +37,5 @@
 		max-width: 950px !important;
 		padding: 0px 20px;
 		box-sizing: border-box;
-	}
-	.main {
-		position: absolute;
-		top: 0px;
-		width: 100%;
-		box-sizing: border-box;
-		margin-top: 120px;
 	}
 </style>

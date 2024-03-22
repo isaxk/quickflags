@@ -48,9 +48,8 @@
 		if ($score > $highscore) {
 			highscore.set($score);
 			window.setTimeout(() => (beatHighscore = true), 1500);
-		}
-		else {
-			beatHighscore=false;
+		} else {
+			beatHighscore = false;
 		}
 		gamesPlayed.set($gamesPlayed + 1);
 	}
@@ -59,7 +58,6 @@
 		incorrectPause.set(false);
 		score.set(0);
 		timeRemaining.set(gameLength);
-		currentCountry.set(countries[pickRandomCountry()])
 		window.setTimeout(startTimer, 500);
 	}
 
@@ -78,6 +76,7 @@
 
 	onDestroy(() => {
 		clearInterval(timer);
+		currentCountry.set(null);
 	});
 
 	$: if ($timeRemaining <= 0) {
@@ -86,6 +85,7 @@
 
 	function handleSubmit() {
 		if ($incorrectPause) return;
+		if ($currentCountry === null) return;
 		if (enteredCountry === "") {
 			incorrectPause.set(true);
 			window.setTimeout(nextCountry, 1500);
@@ -115,4 +115,3 @@
 {:else}
 	<EndScreen on:restart={startGame} {oldHighscore} {beatHighscore} />
 {/if}
-
