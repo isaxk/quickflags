@@ -26,7 +26,7 @@
 	</HeaderContain>
 
 	{#key data.url}
-		<div class="main" in:slide>
+		<div class="main" transition:slide>
 			<slot />
 		</div>
 	{/key}
