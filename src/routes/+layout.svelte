@@ -34,7 +34,11 @@
 
 <style>
 	.container {
-		max-width: 950px !important;
+		max-width: 1000px !important;
+		padding: 0px 20px;
+		box-sizing: border-box;
+	}
+	.main {
 		padding: 0px 20px;
 		box-sizing: border-box;
 	}
