@@ -1,3 +1,0 @@
-export let load = ({ url }) => {
-	return { url: url.href };
-};
