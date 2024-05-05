@@ -23,6 +23,7 @@
 		lockInterval = window.setInterval(() => {
 			window.scrollTo(0, 0);
 		});
+		input.focus();
 	});
 
 	onDestroy(() => {
@@ -32,7 +33,6 @@
 
 <input
 	type="text"
-	autofocus
 	on:focus={() => (scrollLock = true)}
 	on:blur={handleBlur}
 	bind:value
