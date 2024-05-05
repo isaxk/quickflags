@@ -1,4 +1,6 @@
-export default [
+import type { Country } from "$lib/types";
+
+export const countries: Array<Country> = [
 	{
 		code: 'AF',
 		name: 'Afghanistan',
@@ -293,11 +295,11 @@ export default [
 		short: 'undefined',
 		easy: 15
 	},
-	/* {
+	{
         code: "DO",
         name: "Dominican Republic",
         short: "undefined", easy: 40,
-    }, */
+    },
 	{
 		code: 'EC',
 		name: 'Ecuador',
@@ -757,6 +759,12 @@ export default [
 	{
 		code: 'NE',
 		name: 'Niger',
+		short: 'undefined',
+		easy: 23
+	},
+	{
+		code: 'NG',
+		name: 'Nigeria',
 		short: 'undefined',
 		easy: 23
 	},

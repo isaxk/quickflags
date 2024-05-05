@@ -1,58 +1,26 @@
 <script lang="ts">
-	import { timeRemaining, score, increment } from "$lib/stores/game";
-	import { timeFormat, scoreFormat, incrementFormat } from "$lib/utils/format";
-	import { fade, fly } from "svelte/transition";
+	import { format } from "$lib/utils/format";
+	import { fly, slide } from "svelte/transition";
+	import BackLink from "../BackLink.svelte";
+
+	export let score: number;
+	export let timeRemaining: number;
+	export let increment: number | null;
 </script>
 
-{#if $timeRemaining > 0}
-	<li class="timeremaining">
-		{timeFormat.format($timeRemaining / 1000)}
-	</li>
-
-	<li class="score">
-		{#key $score}
-			<span>{scoreFormat.format($score)}</span>
-		{/key}
-		{#key $increment}
+<h1 class="text-xl font-medium w-full"><BackLink>QuickFlags</BackLink></h1>
+<div class="flex gap-4 text-lg">
+	<div class="font-mono relative">
+		{format.score(score)}
+		{#if increment !== null}
 			<div
-				class="scoreincrement"
-				in:fly={{ y: 300, duration: 300 }}
-				out:fly={{ y: -10, duration: 100 }}
+				class="absolute top-5 right-0 text-right text-green-600"
+				in:fly={{ y: 50 }}
+				out:fly={{ y: -10 }}
 			>
-				{#if $increment != 0}
-					{#if $increment > 0}
-						<span class="positive">
-							+{incrementFormat.format($increment)}
-						</span>
-					{:else}
-						<span class="negative">
-							-{incrementFormat.format($increment)}
-						</span>
-					{/if}
-				{/if}
+				+{format.increment(increment)}
 			</div>
-		{/key}
-	</li>
-{/if}
-
-<style>
-	.timeremaining,
-	.score {
-		font-family: var(--mono-font-family);
-		font-size: 18px;
-	}
-	.score {
-		position: relative;
-	}
-	.scoreincrement {
-		position: absolute;
-		bottom: -5px;
-		right: 10px;
-	}
-	.positive {
-		color: green;
-	}
-	.negative {
-		color: red;
-	}
-</style>
+		{/if}
+	</div>
+	<div class="font-mono">{format.time(timeRemaining)}</div>
+</div>

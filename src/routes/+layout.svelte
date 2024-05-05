@@ -1,45 +1,20 @@
-<script lang="ts">
-	import "$lib/css/app.scss";
-
-	import { page } from "$app/stores";
-	import GameHeader from "$lib/components/game/GameHeader.svelte";
-	import HomeHeader from "$lib/components/ui/HomeHeader.svelte";
-
-	import { standardScale } from "$lib/utils/transition";
-	import { scale, slide } from "svelte/transition";
-	import HeaderContain from "$lib/components/ui/HeaderContain.svelte";
+<script>
+	import PageTransition from "$lib/components/PageTransition.svelte";
+	import "../assets/css/main.css";
 
 	export let data;
 </script>
 
-<svelte:head>
-	<title>QuickFlags</title>
-</svelte:head>
+<PageTransition {data}>
+	<main class="max-w-screen-md h-screen m-auto box-border">
+		<slot />
+	</main>
+</PageTransition>
 
-<div class="container">
-	<HeaderContain>
-		{#if $page.url.pathname !== "/play"}
-			<HomeHeader />
-		{:else}
-			<GameHeader />
-		{/if}
-	</HeaderContain>
-
-	{#key data.url}
-		<div class="main" transition:slide>
-			<slot />
-		</div>
-	{/key}
-</div>
-
-<style>
-	.container {
-		max-width: 1000px !important;
-		padding: 0px 20px;
-		box-sizing: border-box;
-	}
-	.main {
-		padding: 0px 20px;
-		box-sizing: border-box;
+<style lang="postcss">
+	:global(html) {
+		background-color: theme(colors.neutral.900);
+        color: theme(colors.slate.50);
+        font-family: "Red Hat Display", sans-serif;
 	}
 </style>

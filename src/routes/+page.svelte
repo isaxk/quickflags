@@ -1,73 +1,51 @@
 <script lang="ts">
+	import Button from "$lib/components/Button.svelte";
+	import Stats from "$lib/components/home/Stats.svelte";
+	import { fade, slide, crossfade, draw, fly } from "svelte/transition";
 
-	import FlagBackground from "$lib/components/ui/FlagBackground.svelte";
-	import Footer from "$lib/components/ui/Footer.svelte";
-	import Countup from "svelte-countup";
+	const [send, receive] = crossfade({});
 
-	import { highscore, gamesPlayed } from "$lib/stores/stats";
+	let showStats: boolean = false;
 
-	import { onDestroy, onMount } from "svelte";
-	
-
-	let mounted: boolean = false;
-
-	onMount(() => {
-		mounted = true;
-	});
-	onDestroy(() => {
-		mounted = false;
-	});
-
+	function toggleStats() {
+		showStats = !showStats;
+	}
 </script>
 
-<FlagBackground>
-	<a href="/play" class="play-button" role="button">Play</a>
-</FlagBackground>
+<svelte:head>
+	<title>QuickFlags</title>
+</svelte:head>
 
-
-<div class="grid">
-	<article class="news">
-		<h3>v3 is here!</h3>
-		<a href="/info/v3">What's New?</a>
-		
-	</article>
-	<article>
-		<h3>Stats</h3>
-		{#if mounted && $gamesPlayed > 0}
-			<h5>
-				Highscore: <span class="mono"
-					><Countup value={$highscore} duration={500} /></span
-				>
-			</h5>
-			<h5>
-				Games Played: <span class="mono"
-					><Countup value={$gamesPlayed} duration={500} /></span
-				>
-			</h5>
-		{:else}
-			<h5>Start playing to see stats</h5>
-		{/if}
-	</article>
-
+<div class="h-screen flex flex-col w-full">
+	<div class="flex justify-center items-center h-full text-center">
+		<div class="flex justify-items-center flex-col">
+			<div class="sm:px-20">
+				<h1 class="text-5xl font-bold mb-2">QuickFlags</h1>
+				<h3 class="text-xl text-neutral-300">Fast paced, flag guessing game</h3>
+				<div class="flex justify-center py-3 gap-4 items-center">
+					<Button href="/play">Play</Button>
+				</div>
+			</div>
+			{#if showStats}
+				<div class="border-t-2 border-neutral-800 mb-1" transition:slide></div>
+			{/if}
+			<button on:click={toggleStats} class="p-3">
+				{#if showStats}
+					<i class="fa-solid fa-chevron-up"></i> Hide Stats
+				{:else}
+					<i class="fa-solid fa-chevron-down"></i> Show Stats
+				{/if}
+			</button>
+			<div class="relative">
+				{#if showStats}
+					<Stats />
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div class="py-10 text-gray-400 flex flex-col gap-1 sm:flex-row sm:gap-4 justify-center text-center">
+		<a href="https://www.isaxk.com">by isaxk</a>
+		<a href="https://kit.svelte.dev">made with SvelteKit</a>
+		<a href="https://github.com/isaxk/quickflags">Project on Github</a>
+	</div>
 </div>
-
-
-<Footer />
-
-
-
-<style>
-	article {
-		height: 200px;
-	}
-	.play-button {
-		padding-right: 30px;
-		padding-left: 30px;
-	}
-	.news {
-		font-size: 80%;
-	}
-	.grid {
-		grid-template-columns: 1fr 2fr;
-	}
-</style>

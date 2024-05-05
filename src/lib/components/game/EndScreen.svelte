@@ -1,59 +1,76 @@
 <script lang="ts">
+	import { fly, slide } from "svelte/transition";
+	import Countup from "../Countup.svelte";
+	import { format } from "$lib/utils/format";
+	import BackLink from "../BackLink.svelte";
+	import Button from "../Button.svelte";
+	import { onMount } from "svelte";
+	import { goto, invalidateAll } from "$app/navigation";
 
-	import { score } from "$lib/stores/game";
-    import { standardScale } from "$lib/utils/transition";
-	import Countup from "svelte-countup";
-	import { fade, scale } from "svelte/transition";
-    import { createEventDispatcher } from "svelte";
+	export let score: number;
 
+	let highscore: number | null = null;
+	let beatHighscore: boolean = false;
+	let startCountup: boolean = false;
 
-    const dispatch = createEventDispatcher();
+	onMount(() => {
+		highscore = 0;
+		if (localStorage.highscore) {
+			highscore = localStorage.highscore;
+		} else {
+			localStorage.highscore = score;
+			beatHighscore = true;
+		}
+		if (score > localStorage.highscore) {
+			beatHighscore = true;
+			localStorage.highscore = score;
+		}
+		if(localStorage.gamesCompleted) {
+			localStorage.gamesCompleted = parseInt(localStorage.gamesCompleted) + 1;
+		}
+		else {
+			localStorage.gamesCompleted = 1;
+		}
+	});
 
-
-    export let beatHighscore:boolean;
-    export let oldHighscore:number;
-
-    function restartGame() {
-        dispatch("restart");
-    }
+	function restartGame() {
+		const thisPage = window.location.pathname;
+        goto('/').then(
+            () => goto(thisPage)
+        );
+	}
 </script>
 
-<div
-	class="end"
-	in:scale={standardScale.in} out:scale={standardScale.out}
->
-	<h1>Times Up!</h1>
-	<h3 class="score">
-		You scored: <span class="scorenumber"
-			><Countup value={$score} duration={1000} /></span
-		>
-	</h3>
-	{#if beatHighscore}
-		<p in:fade={{ duration: 200 }}>
-			And beat your highscore of {oldHighscore}!
-		</p>
-	{/if}
-	<div
-		class="buttons"
-		in:scale={standardScale.in} out:scale={standardScale.out}
-	>
-		<a href="/" class="btn outline" role="button">Main menu</a>
-		<button on:click={restartGame} class="btn">Play Again</button>
+{#if highscore !== null}
+	<div class="p-20" in:fly={{ y: 25, duration: 300, delay: 400 }}>
+		<div class="px-2 text-center">
+			<h1 class="text-4xl font-bold my-5">Game over</h1>
+			<h3
+				class="text-xl mb-3"
+				in:fly={{ y: -10, delay: 1200 }}
+				on:introstart={() => (startCountup = true)}
+			>
+				You scored: <span class="font-mono">
+					{#if startCountup}
+						<Countup value={score} duration={1000} format={true} />
+					{:else}
+						00000
+					{/if}
+				</span>
+			</h3>
+			<div class="text-md mb-5" in:fly={{ y: 10, duration: 300, delay: 2000 }}>
+				{#if beatHighscore}
+					And beat your highscore of: <span class="font-mono">{highscore}</span
+					>!
+				{/if}
+			</div>
+			<div
+				in:fly={{ y: 10, duration: 300, delay: beatHighscore ? 2900 : 2350 }}
+			>
+				<div class="flex justify-center mt-7">
+					<Button on:click={restartGame}>Play Again</Button>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
-
-<style>
-	.score {
-		font-size: 20px;
-	}
-	.scorenumber {
-		font-family: var(--mono-font-family);
-	}
-	.end {
-		padding: 50px 0px;
-		min-height: 100%;
-	}
-	.buttons {
-		padding: 20px 0px;
-	}
-</style>
+{/if}
