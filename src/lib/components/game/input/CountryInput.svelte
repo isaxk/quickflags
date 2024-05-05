@@ -1,5 +1,5 @@
 <script lang="ts">
-	import countries from "$lib/data/countries";
+	import { countries } from "$lib/data/countries";
 	import { format } from "$lib/utils/format";
 	import { createEventDispatcher, onMount } from "svelte";
 	import Button from "../../Button.svelte";
