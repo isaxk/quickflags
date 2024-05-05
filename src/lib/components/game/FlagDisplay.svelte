@@ -11,8 +11,8 @@
 <div class="relative h-52 sm:h-full w-full">
 	{#key countryCode}
 		<div
-			in:scale={{ delay: 200, duration: 300, start: 0.992, opacity: 0 }}
-			out:scale={{ duration: 200, start: 1.02, opacity: 0 }}
+			in:scale={{ delay: 300, duration: 350, start: 0.992, opacity: 0 }}
+			out:scale={{ duration: 350, start: 1.02, opacity: 0 }}
 			class="absolute top-0 left-0 w-full h-full flex items-center justify-center p-5 box-border"
 		>
 			{#if countryCode === null}
