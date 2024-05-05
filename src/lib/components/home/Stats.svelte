@@ -23,7 +23,7 @@
 </script>
 
 <div
-	class="absolute top-0 left-0 w-full flex text-xl px-20 py-0"
+	class="absolute top-0 left-0 w-full flex text-xl sm:px-20 py-0"
 	in:fly={{ y: -10 }}
 	out:fly={{ y: -10 }}
 >

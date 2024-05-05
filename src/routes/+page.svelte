@@ -16,10 +16,10 @@
 	<title>QuickFlags</title>
 </svelte:head>
 
-<div class="h-screen flex flex-col">
+<div class="h-screen flex flex-col w-full">
 	<div class="flex justify-center items-center h-full text-center">
 		<div class="flex justify-items-center flex-col">
-			<div class="px-20">
+			<div class="sm:px-20">
 				<h1 class="text-5xl font-bold mb-2">QuickFlags</h1>
 				<h3 class="text-xl text-neutral-300">Fast paced, flag guessing game</h3>
 				<div class="flex justify-center py-3 gap-4 items-center">
@@ -43,9 +43,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="py-10 text-gray-400 flex justify-center gap-4">
-		<div>isaxk.com</div>
-		<div>Made with SvelteKit</div>
-		<div>Project on Github</div>
+	<div class="py-10 text-gray-400 flex flex-col gap-1 sm:flex-row sm:gap-4 justify-center text-center">
+		<a href="https://www.isaxk.com">by isaxk</a>
+		<a href="https://kit.svelte.dev">made with SvelteKit</a>
+		<a href="https://github.com/isaxk/quickflags">Project on Github</a>
 	</div>
 </div>
