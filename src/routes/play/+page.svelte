@@ -16,7 +16,7 @@
 	import { sfxEnabled } from "$lib/stores";
 
 	let score: number = 0;
-	let timeRemaining: number = 10;
+	let timeRemaining: number = 45;
 	let increment: number | null = null;
 	let isPenaltyPause: boolean = false;
 
