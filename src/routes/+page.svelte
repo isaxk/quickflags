@@ -21,7 +21,7 @@
 		<div class="flex justify-items-center flex-col">
 			<div class="sm:px-20">
 				<h1 class="text-5xl font-bold mb-2">QuickFlags</h1>
-				<h3 class="text-xl text-neutral-300">Fast paced, flag guessing game</h3>
+				<h3 class="text-xl text-neutral-300">Fast paced, simple, flag knowledge game.</h3>
 				<div class="flex justify-center py-3 gap-4 items-center">
 					<Button href="/play">Play</Button>
 				</div>
