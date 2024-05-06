@@ -12,4 +12,5 @@ git clone https://github.com/isaxk/quickflags
 npm install
 
 npm run dev
-`
+
+```
