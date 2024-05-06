@@ -1,17 +1,40 @@
 <script lang="ts">
-	import { fly, slide } from "svelte/transition";
-	import Countup from "../Countup.svelte";
+	import { goto } from "$app/navigation";
 	import { format } from "$lib/utils/format";
-	import BackLink from "../BackLink.svelte";
-	import Button from "../Button.svelte";
+	import { Howl } from "howler";
 	import { onMount } from "svelte";
-	import { goto, invalidateAll } from "$app/navigation";
+	import { fly } from "svelte/transition";
+	import scoreCountWav from "../../../assets/sfx/scorecount.wav";
+	import newHighscoreMp3 from "../../../assets/sfx/newhighscore.mp3";
+	import Button from "../Button.svelte";
+	import Countup from "../Countup.svelte";
+	import { Confetti } from "svelte-confetti";
 
 	export let score: number;
 
 	let highscore: number | null = null;
 	let beatHighscore: boolean = false;
 	let startCountup: boolean = false;
+	let counterFinished: boolean = false;
+
+	let correctSfx = new Howl({
+		src: [scoreCountWav],
+		volume: 0.5,
+	});
+
+	let highscoreSfx = new Howl({
+		src: [newHighscoreMp3],
+		volume: 0.2,
+	});
+
+	$: if (startCountup) {
+		correctSfx.play();
+	}
+
+	$: if (counterFinished && beatHighscore) {
+		window.setTimeout(()=>highscoreSfx.play(), 500);
+		
+	}
 
 	onMount(() => {
 		highscore = 0;
@@ -25,19 +48,16 @@
 			beatHighscore = true;
 			localStorage.highscore = score;
 		}
-		if(localStorage.gamesCompleted) {
+		if (localStorage.gamesCompleted) {
 			localStorage.gamesCompleted = parseInt(localStorage.gamesCompleted) + 1;
-		}
-		else {
+		} else {
 			localStorage.gamesCompleted = 1;
 		}
 	});
 
 	function restartGame() {
 		const thisPage = window.location.pathname;
-        goto('/').then(
-            () => goto(thisPage)
-        );
+		goto("/").then(() => goto(thisPage));
 	}
 </script>
 
@@ -48,29 +68,52 @@
 			<h3
 				class="text-xl mb-3"
 				in:fly={{ y: -10, delay: 1200 }}
-				on:introstart={() => (startCountup = true)}
+				on:introend={() => (startCountup = true)}
 			>
 				You scored: <span class="font-mono">
 					{#if startCountup}
-						<Countup value={score} duration={1000} format={true} />
+						<Countup
+							value={score}
+							duration={1000}
+							format={true}
+							formatFn={format.score}
+							bind:finished={counterFinished}
+						/>
 					{:else}
 						00000
 					{/if}
 				</span>
 			</h3>
-			<div class="text-md mb-5" in:fly={{ y: 10, duration: 300, delay: 2000 }}>
-				{#if beatHighscore}
-					And beat your highscore of: <span class="font-mono">{highscore}</span
-					>!
-				{/if}
-			</div>
-			<div
-				in:fly={{ y: 10, duration: 300, delay: beatHighscore ? 2900 : 2350 }}
-			>
-				<div class="flex justify-center mt-7">
-					<Button on:click={restartGame}>Play Again</Button>
+			{#if counterFinished}
+				<div
+					class="text-md mb-5 w-full flex justify-center"
+					in:fly={{ y: 10, duration: 300, delay: 500 }}
+				>
+					{#if beatHighscore}
+						<div class="w-full">
+							<div class="w-full flex justify-items-center">
+								<div class="w-full flex justify-center">
+									<Confetti
+										delay={[800, 1025]}
+										fallDistance="50px"
+										x={[-1, 1]}
+										y={[0.1, 2]}
+									/>
+								</div>
+							</div>
+							And beat your highscore of:
+							<span class="font-mono">{highscore}</span>
+						</div>
+					{/if}
 				</div>
-			</div>
+				<div
+					in:fly={{ y: 10, duration: 300, delay: beatHighscore ? 1500 : 800 }}
+				>
+					<div class="flex justify-center mt-7">
+						<Button on:click={restartGame}>Play Again</Button>
+					</div>
+				</div>
+			{/if}
 		</div>
 	</div>
 {/if}

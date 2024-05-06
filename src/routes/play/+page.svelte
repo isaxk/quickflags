@@ -1,18 +1,22 @@
 <script lang="ts">
-	import FlagDisplay from "$lib/components/game/FlagDisplay.svelte";
-	import Header from "$lib/components/game/Header.svelte";
-	import CountryInput from "$lib/components/game/input/CountryInput.svelte";
+	import BackLink from "$lib/components/BackLink.svelte";
 	import EndScreen from "$lib/components/game/EndScreen.svelte";
+	import FlagDisplay from "$lib/components/game/FlagDisplay.svelte";
+	import GameHeader from "$lib/components/game/GameHeader.svelte";
+	import Header from "$lib/components/game/Header.svelte";
+	import MainGame from "$lib/components/game/MainGame.svelte";
+	import CountryInput from "$lib/components/game/input/CountryInput.svelte";
 	import { countries } from "$lib/data/countries";
 	import type { Country } from "$lib/types";
 	import { onDestroy, onMount } from "svelte";
 	import { fly } from "svelte/transition";
-	import MainGame from "$lib/components/game/MainGame.svelte";
-	import BackLink from "$lib/components/BackLink.svelte";
-	import GameHeader from "$lib/components/game/GameHeader.svelte";
+	import { Howl, Howler } from "howler";
+	import correctWav from "../../assets/sfx/correct.wav";
+	import wrongMp3 from "../../assets/sfx/wrong.mp3";
+	import { sfxEnabled } from "$lib/stores";
 
 	let score: number = 0;
-	let timeRemaining: number = 45;
+	let timeRemaining: number = 10;
 	let increment: number | null = null;
 	let isPenaltyPause: boolean = false;
 
@@ -20,8 +24,26 @@
 	let endTime: EpochTimeStamp;
 
 	let timer: number;
+	let mounted = false;
+
+	let correctSfx = new Howl({
+		src: [correctWav],
+		volume: 0.2,
+	});
+
+	let wrongSfx = new Howl({
+		src: [wrongMp3]
+	});
+
+	$: if($sfxEnabled && mounted) {
+		Howler.volume(1);
+	}
+	else if(mounted) {
+		Howler.volume(0);
+	}
 
 	function startTimer() {
+		mounted = true;
 		startTime = Date.now();
 		endTime = startTime + timeRemaining * 1000;
 		timer = setInterval(() => {
@@ -52,6 +74,7 @@
 
 	function handleEnteredCountry(enteredCountry: Country) {
 		if (enteredCountry === currentCountry) {
+			correctSfx.play();
 			nextCountry();
 			var scoreCalc = 4000;
 			increment = scoreCalc;
@@ -60,6 +83,7 @@
 				increment = null;
 			}, 500);
 		} else {
+			wrongSfx.play();
 			penaltyPause();
 		}
 	}
@@ -74,7 +98,10 @@
 		<GameHeader {score} {timeRemaining} {increment} />
 	</Header>
 	<MainGame>
-		<FlagDisplay countryCode={isPenaltyPause ? null : currentCountry.code} {currentCountry}/>
+		<FlagDisplay
+			countryCode={isPenaltyPause ? null : currentCountry.code}
+			{currentCountry}
+		/>
 
 		<CountryInput
 			on:submit={(e) => handleEnteredCountry(e.detail.value)}
