@@ -32,7 +32,8 @@
 	});
 
 	let wrongSfx = new Howl({
-		src: [wrongMp3]
+		src: [wrongMp3],
+		volume: 0.5,
 	});
 
 	$: if($sfxEnabled && mounted) {
@@ -64,6 +65,7 @@
 	}
 
 	function penaltyPause() {
+		wrongSfx.play();
 		if (isPenaltyPause) return;
 		isPenaltyPause = true;
 		setTimeout(() => {

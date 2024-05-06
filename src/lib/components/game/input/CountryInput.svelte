@@ -42,7 +42,7 @@
 		}
 		// Up Arrow
 		if (e.detail.e.keyCode == 38) {
-			e.preventDefault();
+			e.detail.e.preventDefault();
 			if (active === results.length - 1) {
 				active = 0;
 			} else {
@@ -52,11 +52,12 @@
 		}
 		// Down Arrow
 		if (e.detail.e.keyCode == 40) {
+			e.detail.e.preventDefault();
 			if (active === 0) {
 				active = results.length-1;
 			}
 			else {
-				e.preventDefault();
+
 				active += -1;
 			}
 
