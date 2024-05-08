@@ -37,7 +37,7 @@
 	});
 
 	$: if($sfxEnabled && mounted) {
-		Howler.volume(1);
+		Howler.volume(0.5);
 	}
 	else if(mounted) {
 		Howler.volume(0);
