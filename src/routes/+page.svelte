@@ -1,6 +1,7 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte";
     import ShowHideToggle from "$lib/components/ShowHideToggle.svelte";
+    import Banner from "$lib/components/home/Banner.svelte";
     import Stats from "$lib/components/home/Stats.svelte";
     import { fade, slide, crossfade, draw, fly } from "svelte/transition";
 </script>
@@ -10,6 +11,11 @@
 </svelte:head>
 
 <div class="h-screen flex flex-col w-full">
+    <Banner href="/info"
+        >Gaza conflict, ethics and more info. <i
+            class="fa-solid fa-arrow-up-right-from-square ml-1"
+        ></i></Banner
+    >
     <div class="flex justify-center items-center h-full text-center">
         <div class="flex justify-items-center flex-col">
             <div class="sm:px-20">
