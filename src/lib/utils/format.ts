@@ -1,5 +1,5 @@
-export const format =  {
-    time: (input:number) => {
+export const format = {
+    time: (input: number) => {
         const numFormat = new Intl.NumberFormat("en-US", {
             minimumIntegerDigits: 2,
             minimumFractionDigits: 2,
@@ -7,24 +7,32 @@ export const format =  {
         });
         return numFormat.format(input);
     },
-    score: (input:number) => {
+    score: (input: number) => {
         const numFormat = new Intl.NumberFormat("en-US", {
             minimumIntegerDigits: 5,
             maximumFractionDigits: 0,
         });
         return numFormat.format(input);
     },
-    increment: (input:number) => {
+    increment: (input: number) => {
         const numFormat = new Intl.NumberFormat("en-US", {
             minimumIntegerDigits: 4,
             maximumFractionDigits: 0,
         });
         return numFormat.format(input);
     },
-    clean: (input:string) => {
-        var toReturn = input.replace(/\s/g, '');
+    answerTime: (input: number) => {
+        const numFormat = new Intl.NumberFormat("en-US", {
+            minimumIntegerDigits: 1,
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+        });
+        return numFormat.format(input);
+    },
+    clean: (input: string) => {
+        var toReturn = input.replace(/\s/g, "");
         toReturn = toReturn.toLowerCase();
 
         return toReturn;
-    }
-}
+    },
+};
