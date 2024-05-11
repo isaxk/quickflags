@@ -34,20 +34,20 @@
                 </div>
                 {#if question.answered}
                     {#if question.answered == question.correct}
-                        <BreakdownCard icon="check" color="green"
+                        <BreakdownCard icon="check" css="bg-green-800"
                             >{question.answered.name}</BreakdownCard
                         >
                     {:else}
-                        <BreakdownCard icon="xmark" color="red">
+                        <BreakdownCard icon="xmark" css="bg-red-800">
                             {question.answered.name}
                         </BreakdownCard>
                     {/if}
                 {:else if i == qHistory.length - 1}
-                    <BreakdownCard icon="hourglass-end" color="yellow">
+                    <BreakdownCard icon="hourglass-end" css="bg-yellow-800">
                         Time ran out
                     </BreakdownCard>
                 {:else}
-                    <BreakdownCard icon="forward" color="yellow">
+                    <BreakdownCard icon="forward" css="bg-yellow-800">
                         Skipped
                     </BreakdownCard>
                 {/if}
