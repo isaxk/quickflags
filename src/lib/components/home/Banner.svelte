@@ -4,7 +4,7 @@
 
 <a
     {href}
-    class="fixed left-0 w-full grid place-content-center h-14 bg-teal-900 bg-opacity-65"
+    class="fixed left-0 w-full grid place-content-center h-12 bg-teal-900 bg-opacity-65"
 >
     <div>
         <slot />
