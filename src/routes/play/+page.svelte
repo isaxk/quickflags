@@ -116,6 +116,10 @@
     onDestroy(() => clearInterval(timer));
 </script>
 
+<svelte:head>
+    <title>Playing QuickFlags</title>
+</svelte:head>
+
 {#if timeRemaining > 0}
     <Header>
         <GameHeader {score} {timeRemaining} {increment} />
