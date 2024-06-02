@@ -11,11 +11,11 @@
 </svelte:head>
 
 <div class="h-screen flex flex-col w-full">
-    <Banner href="/info"
+    <!-- <Banner href="/info"
         >Gaza conflict, ethics and more info. <i
             class="fa-solid fa-arrow-up-right-from-square ml-1"
         ></i></Banner
-    >
+    > -->
     <div class="flex justify-center items-center h-full text-center">
         <div class="flex justify-items-center flex-col">
             <div class="sm:px-20">
