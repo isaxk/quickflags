@@ -113,23 +113,25 @@
 <svelte:window on:scroll={() => window.scrollTo(0, 0)} />
 
 <PlayPageTransition>
-	{#if loadedFirstFlag && endTime && fState.current !== 'restart'}
-		<GameBody>
-			{#if gameFinished}
-				<EndScreen {score} {history} />
-			{:else}
+	<GameBody>
+		{#if gameFinished}
+			<EndScreen {score} {history} />
+		{:else}
+			{#if loadedFirstFlag && endTime && fState.current !== 'restart'}
 				<FlagDisplay {currentCountry} />
-				<CountryBox onnext={(selected) => handleNext(selected)} />
-				<BottomBarContainer>
-					<NavBar />
-					<StatDisplayContainer>
-						<ScoreDisplay {score} />
-						<TimeDisplay {endTime} />
-					</StatDisplayContainer>
-				</BottomBarContainer>
+			{:else}
+				<Spinner />
 			{/if}
-		</GameBody>
-	{:else}
-		<Spinner />
-	{/if}
+			<CountryBox onnext={(selected) => handleNext(selected)} />
+			<BottomBarContainer>
+				<NavBar />
+				<StatDisplayContainer>
+					<ScoreDisplay {score} />
+					{#if endTime}
+						<TimeDisplay {endTime} />
+					{/if}
+				</StatDisplayContainer>
+			</BottomBarContainer>
+		{/if}
+	</GameBody>
 </PlayPageTransition>

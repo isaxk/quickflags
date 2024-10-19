@@ -26,7 +26,8 @@
 		skip: 'focus:border-amber-500',
 		correct: 'focus:border-green-500',
 		incorrect: 'focus:border-red-500',
-		idle: 'focus:border-blue-500'
+		idle: 'focus:border-blue-500',
+		restart: ''
 	};
 
 	$effect(() => {
