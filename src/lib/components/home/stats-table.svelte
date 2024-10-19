@@ -53,6 +53,9 @@
 	}
 
 	onMount(() => {
+		if (localStorage.getItem('highscore') && localStorage.highscore > 1000) {
+			localStorage.setItem('highscore', '0');
+		}
 		stats = [
 			{
 				label: 'Highscore',
