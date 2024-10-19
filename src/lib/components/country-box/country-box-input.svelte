@@ -48,7 +48,7 @@
 	{onkeydown}
 	{onkeyup}
 	spellcheck="false"
-	autocorrect="false"
+	autocorrect="off"
 	class="w-full rounded-l rounded-r-none border bg-muted p-2 text-xl outline-none drop-shadow-md transition-all duration-200 focus:border-2
 	{states[fState.current]}"
 />
