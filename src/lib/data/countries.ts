@@ -1082,12 +1082,6 @@ export const countries: Array<Country> = [
 		easy: 23
 	},
 	{
-		code: 'TC',
-		name: 'Turks and Caicos',
-		short: 'Turks and',
-		easy: 23
-	},
-	{
 		code: 'TV',
 		name: 'Tuvalu',
 		short: null,
