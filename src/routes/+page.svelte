@@ -28,12 +28,7 @@
 					>
 						<Github size="18" /> GitHub Project
 					</a>
-					<a
-						href="https://www.isaxk.com"
-						class="flex items-center gap-1 px-2 text-sm hover:underline"
-					>
-						<User size="18" /> by isaxk
-					</a>
+				
 				</div>
 			</div>
 		</div>
